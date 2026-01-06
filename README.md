@@ -14,3 +14,6 @@ visszajelzes, elorejelzes
 fogas feljegyzes
  
 kepfeltoltes
+
+
+finom alma
