@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('catch_logs', function (Blueprint $table) {
              $table->id();
         $table->unsignedBigInteger('userid');
-        $table->foreignId('horgaszto_id')->constrained('helyszinek');
-        $table->text('megjegyzes')->nullable();
-        $table->date('horgaszat_kezdete')->nullable();
-        $table->date('horgaszat_vege')->nullable();
+        $table->foreignId('FishingLakeId')->constrained('helyszinek');
+        $table->text('comment')->nullable();
+        $table->date('fishing_start')->nullable();
+        $table->date('fishing_end')->nullable();
         $table->timestamps();
         });
     }

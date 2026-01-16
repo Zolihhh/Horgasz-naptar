@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('lures', function (Blueprint $table) {
-             $table->id();
-        $table->string('csali');
+        $table->id();
+        $table->string('lure');
         $table->timestamps();
         });
     }

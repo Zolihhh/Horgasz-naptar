@@ -12,9 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('species', function (Blueprint $table) {
-              $table->id();
-        $table->string('foto')->nullable();
-        $table->string('hal_neve');
+        $table->id();
+        $table->string('photo')->nullable();
+        $table->string('fish_name');
         $table->timestamps();
         });
     }
