@@ -11,15 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-         Schema::create('fogasi_naplok', function (Blueprint $table) {
-        $table->id();
+        Schema::create('catch_logs', function (Blueprint $table) {
+             $table->id();
         $table->unsignedBigInteger('userid');
         $table->foreignId('horgaszto_id')->constrained('helyszinek');
         $table->text('megjegyzes')->nullable();
         $table->date('horgaszat_kezdete')->nullable();
         $table->date('horgaszat_vege')->nullable();
         $table->timestamps();
-    });
+        });
     }
 
     /**
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('fogasi_naplok');
+        Schema::dropIfExists('catch_logs');
     }
 };

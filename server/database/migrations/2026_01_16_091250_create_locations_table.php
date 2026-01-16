@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('helyszinek', function (Blueprint $table) {
-            $table->id();
+        Schema::create('locations', function (Blueprint $table) {
+          $table->id();
             $table->integer('vizterKod');
             $table->decimal('latitude', 9, 6)->nullable();
             $table->decimal('longitude', 9, 6)->nullable();
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('helyszinek');
+        Schema::dropIfExists('locations');
     }
 };

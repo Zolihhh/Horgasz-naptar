@@ -11,11 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-         Schema::create('csalik', function (Blueprint $table) {
-        $table->id();
-        $table->string('csali');
+        Schema::create('species', function (Blueprint $table) {
+              $table->id();
+        $table->string('foto')->nullable();
+        $table->string('hal_neve');
         $table->timestamps();
-    });
+        });
     }
 
     /**
@@ -23,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('csalik');
+        Schema::dropIfExists('species');
     }
 };
