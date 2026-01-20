@@ -1,91 +1,120 @@
-id,photo,fish_name
-1,common_carp.jpg,Common Carp
-2,grass_carp.jpg,Grass Carp
-3,silver_carp.jpg,Silver Carp
-4,bighead_carp.jpg,Bighead Carp
-5,crucian_carp.jpg,Crucian Carp
-6,tench.jpg,Tench
-7,common_bream.jpg,Common Bream
-8,white_bream.jpg,White Bream
-9,common_roach.jpg,Common Roach
-10,rudd.jpg,Rudd
-11,bleak.jpg,Bleak
-12,asp.jpg,Asp
-13,chub.jpg,Chub
-14,dace.jpg,Dace
-15,ide.jpg,Ide
-16,northern_pike.jpg,Northern Pike
-17,zander.jpg,Zander
-18,volga_pikeperch.jpg,Volga Pikeperch
-19,european_perch.jpg,European Perch
-20,ruffe.jpg,Ruffe
-21,european_catfish.jpg,European Catfish
-22,burbot.jpg,Burbot
-23,european_eel.jpg,European Eel
-24,rainbow_trout.jpg,Rainbow Trout
-25,brown_trout.jpg,Brown Trout
-26,grayling.jpg,Grayling
-27,huchen.jpg,Huchen
-28,stone_loach.jpg,Stone Loach
-29,spined_loach.jpg,Spined Loach
-30,weatherfish.jpg,Weatherfish
-31,bitterling.jpg,Bitterling
-32,topmouth_gudgeon.jpg,Topmouth Gudgeon
-33,common_gudgeon.jpg,Common Gudgeon
-34,whitefin_gudgeon.jpg,Whitefin Gudgeon
-35,tubenose_goby.jpg,Tubenose Goby
-36,round_goby.jpg,Round Goby
-37,bighead_goby.jpg,Bighead Goby
-38,monkey_goby.jpg,Monkey Goby
-39,pumpkinseed.jpg,Pumpkinseed
-40,black_bullhead.jpg,Black Bullhead
-41,brown_bullhead.jpg,Brown Bullhead
-42,channel_catfish.jpg,Channel Catfish
-43,largemouth_bass.jpg,Largemouth Bass
-44,smallmouth_bass.jpg,Smallmouth Bass
-45,common_sunfish.jpg,Common Sunfish
-46,amur_sleeper.jpg,Amur Sleeper
-47,mosquitofish.jpg,Mosquitofish
-48,three_spined_stickleback.jpg,Three-spined Stickleback
-49,nine_spined_stickleback.jpg,Nine-spined Stickleback
-50,weather_loach.jpg,Weather Loach
-51,brook_lamprey.jpg,Brook Lamprey
-52,danube_salmon.jpg,Danube Salmon
-53,danube_roach.jpg,Danube Roach
-54,danube_bream.jpg,Danube Bream
-55,danube_gudgeon.jpg,Danube Gudgeon
-56,striped_ruffe.jpg,Striped Ruffe
-57,whitefish.jpg,Whitefish
-58,peled.jpg,Peled
-59,pygmy_perch.jpg,Pygmy Perch
-60,alpine_bullhead.jpg,Alpine Bullhead
-61,schneider.jpg,Schneider
-62,spirlin.jpg,Spirlin
-63,brook_trout.jpg,Brook Trout
-64,arctic_char.jpg,Arctic Char
-65,river_blenny.jpg,River Blenny
-66,black_sea_shad.jpg,Black Sea Shad
-67,alosa_fallax.jpg,Twaite Shad
-68,sturgeon.jpg,Sturgeon
-69,sterlet.jpg,Sterlet
-70,russian_sturgeon.jpg,Russian Sturgeon
-71,beluga_sturgeon.jpg,Beluga Sturgeon
-72,ship_sturgeon.jpg,Ship Sturgeon
-73,atlantic_sturgeon.jpg,Atlantic Sturgeon
-74,common_nase.jpg,Common Nase
-75,vimba_bream.jpg,Vimba Bream
-76,sofie.jpg,Sofie
-77,donets_ruffe.jpg,Donets Ruffe
-78,black_bass.jpg,Black Bass
-79,amur_catfish.jpg,Amur Catfish
-80,siberian_sturgeon.jpg,Siberian Sturgeon
-81,stone_moroko.jpg,Stone Moroko
-82,asian_weatherfish.jpg,Asian Weatherfish
-83,italian_bleak.jpg,Italian Bleak
-84,carpathian_brook_lamprey.jpg,Carpathian Brook Lamprey
-85,danube_streber.jpg,Danube Streber
-86,streber.jpg,Streber
-87,zingel.jpg,Zingel
-88,striped_bystranka.jpg,Striped Bystranka
-89,danube_zingel.jpg,Danube Zingel
-90,alpine_sculpin.jpg,Alpine Sculpin
+id;photo;fish_name
+1;tiszai_ingola.jpg;tiszai ingola
+2;dunai_ingola.jpg;dunai ingola
+3;vágótok.jpg;vágótok
+4;sima_tok.jpg;sima tok
+5;kecsege.jpg;kecsege
+6;sőregtok.jpg;sőregtok
+7;viza.jpg;viza
+8;szibériai_tok.jpg;szibériai tok
+9;angolna.jpg;angolna
+10;dunai_hering.jpg;dunai hering
+11;kövi_csík.jpg;kövi csík
+12;vágó_csík.jpg;vágó csík
+13;kőfúró_csík.jpg;kőfúró csík
+14;lapos_keszeg.jpg;lapos keszeg
+15;dévér_keszeg.jpg;dévér keszeg
+16;bagolykeszeg.jpg;bagolykeszeg
+17;karikakeszeg.jpg;karikakeszeg
+18;sújtásos_küsz.jpg;sújtásos küsz
+19;szélhajtó_küsz.jpg;szélhajtó küsz
+20;állas_küsz.jpg;állas küsz
+
+21;;balin
+
+22;márna.jpg;márna
+23;peetényi_márna.jpg;petényi-márna
+24;ezüstkárász.jpg;ezüstkárász
+
+25;;aranykárász
+
+26;paduc.jpg;paduc
+
+27;;amur
+28;;ponty
+
+29;fenékjáró_küllő.jpg;fenékjáró küllő
+30;homoki_küllő.jpg;homoki küllő
+31;felpillantó_küllő.jpg;felpillantó küllő
+32;halványfoltú_küllő.jpg;halványfoltú küllő
+
+33;;fehér busa
+
+34;pettyes_busa.jpg;pettyes busa
+35;kurta_baing.jpg;kurta baing
+36;fejes_domolykó.jpg;fejes domolykó
+37;jászkeszeg.jpg;jászkeszeg
+38;nyúldomolykó.jpg;nyúldomolykó
+39;vaskos_csabak.jpg;vaskos csabak
+40;fekete_amur.jpg;fekete amur
+
+41;;garda
+
+42;fürge_cselle.jpg;fürge cselle
+43;kínai_razbóra.jpg;kínai razbóra
+44;szivárványos_ökle.jpg;szivárványos ökle
+45;gyöngyös_koncér.jpg;gyöngyös koncér
+
+46;;leány kocér
+
+47;bodorka.jpg;bodorka
+
+48;;vörösszárnyú keszeg
+
+49;compó.jpg;compó
+50;szilvaorrú_keszeg.jpg;szilvaorrú keszeg
+51;európai_harcsa.jpg;európai harcsa
+
+52;;afrikai harcsa
+53;;fekete törpeharcsa
+
+54;törpeharcsa.jpg;törpeharcsa
+
+55;;pettyes harcsa
+
+56;;törpemaréna
+57;;nagy maréna
+
+58;dunai_galóca.jpg;dunai galóca
+
+59;;szivárványos pisztráng
+60;;sebes pisztráng
+61;;pataki szajbling
+
+62;pénzes_pér.jpg;pénzes pér
+63;csuka.jpg;csuka
+64;lápi_póc.jpg;lápi póc
+
+65;;menyhal
+
+66;szúnyogírtó_fogasponty.jpg;szúnyogirtó fogasponty
+
+67;;szivárványos guppi
+
+68;;tüskés pikó
+
+69;folyami_géb.jpg;folyami géb
+
+70;;csupasztorkú géb
+71;;kessler géb
+
+72;feketeszájú_géb.jpg;feketeszájú géb
+
+73;;szirman géb
+74;;tarka géb
+75;;amurgéb
+76;;széles durbincs
+77;;vágó durbincs
+78;;selymes durbincs
+79;;csapósügér
+
+80;süllő.jpg;süllő
+81;kősüllő.jpg;kősüllő
+82;német_bucó.jpg;német bucó
+83;magyar_bucó.jpg;magyar bucó
+
+84;;naphal
+85;;pisztángsügér
+86;;botos kölönte
+
+87;cifra_kölönte.jpg;cifra kölönte
