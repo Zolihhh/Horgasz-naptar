@@ -20,33 +20,69 @@ id;photo;fish_name
 19;szélhajtó_küsz.jpg;szélhajtó küsz
 20;állas_küsz.jpg;állas küsz
 21;balin.jpg;balin
-25;aranykarasz.jpg;aranykárász
+22;márna.jpg;márna
+23;peetényi_márna.jpg;petényi-márna
+24;ezüstkárász.jpg;ezüstkárász
+25;aranykárász.jpg;aranykárász
+26;paduc.jpg;paduc
 27;amur.jpg;amur
 28;ponty.jpg;ponty
-33;feher_busa.jpg;fehér busa
+29;fenékjáró_küllő.jpg;fenékjáró küllő
+30;homoki_küllő.jpg;homoki küllő
+31;felpillantó_küllő.jpg;felpillantó küllő
+32;halványfoltú_küllő.jpg;halványfoltú küllő
+33;fehér_busa.jpg;fehér busa
+34;pettyes_busa.jpg;pettyes busa
+35;kurta_baing.jpg;kurta baing
+36;fejes_domolykó.jpg;fejes domolykó
+37;jászkeszeg.jpg;jászkeszeg
+38;nyúldomolykó.jpg;nyúldomolykó
+39;vaskos_csabak.jpg;vaskos csabak
+40;fekete_amur.jpg;fekete amur
 41;garda.jpg;garda
-46;leany_kocer.jpg;leány kocér
-48;vorosszarnyu_keszeg.jpg;vörösszárnyú keszeg
+42;fürge_cselle.jpg;fürge cselle
+43;kínai_razbóra.jpg;kínai razbóra
+44;szivárványos_ökle.jpg;szivárványos ökle
+45;gyöngyös_koncér.jpg;gyöngyös koncér
+46;leány_koncér.jpg;leány koncér
+47;bodorka.jpg;bodorka
+48;vörösszárnyú_keszeg.jpg;vörösszárnyú keszeg
+49;compó.jpg;compó
+50;szilvaorrú_keszeg.jpg;szilvaorrú keszeg
+51;európai_harcsa.jpg;európai harcsa
 52;afrikai_harcsa.jpg;afrikai harcsa
-53;fekete_torpeharcsa.jpg;fekete törpeharcsa
+53;fekete_törpeharcsa;fekete törpeharcsa
+54;törpeharcsa.jpg;törpeharcsa
 55;pettyes_harcsa.jpg;pettyes harcsa
-56;torpemarena.jpg;törpemaréna
-57;nagy_marena.jpg;nagy maréna
+56;törpemaréna.jpg;törpemaréna
+57;nagy_maréna.jpg;nagy maréna
+58;dunai_galóca.jpg;dunai galóca
 59;szivarvanyos_pisztrang.jpg;szivárványos pisztráng
 60;sebes_pisztrang.jpg;sebes pisztráng
 61;pataki_szajbling.jpg;pataki szajbling
+62;pénzes_pér.jpg;pénzes pér
+63;csuka.jpg;csuka
+64;lápi_póc.jpg;lápi póc
 65;menyhal.jpg;menyhal
-67;szivarvanyos_guppi.jpg;szivárványos guppi
-68;tuskes_piko.jpg;tüskés pikó
-70;csupasztorku_geb.jpg;csupasztorkú géb
-71;kessler_geb.jpg;kessler géb
-73;szirman_geb.jpg;szirman géb
-74;tarka_geb.jpg;tarka géb
-75;amurgeb.jpg;amurgéb
-76;szeles_durbincs.jpg;széles durbincs
-77;vago_durbincs.jpg;vágó durbincs
-78;selymes_durbincs.jpg;selymes durbincs
-79;csaposuger.jpg;csapósügér
+66;szúnyogírtó_fogasponty.jpg;szúnyogirtó fogasponty
+67;szivárványos_guppi.jpg;szivárványos guppi
+68;tüskés_pikó.jpg;tüskés pikó
+69;folyami_géb.jpg;folyami géb
+70;csupasztorkú_géb.jpg;csupasztorkú géb
+71;kessler_géb.jpg;kessler géb
+72;feketeszájú_géb.jpg;feketeszájú géb
+73;szirman_géb.jpg;szirman géb
+74;tarka_géb.jpg;tarka géb
+75;amurgéb.jpg;amurgéb
+76;széles_durbincs.jpg;széles durbincs
+77;vágó_durbincs.jpg;vágó durbincs
+78;selmyes_durbincs.jpg;selymes durbincs
+79;csapósügér.jpg;csapósügér
+80;süllő.jpg;süllő
+81;kősüllő.jpg;kősüllő
+82;német_bucó.jpg;német bucó
+83;magyar_bucó.jpg;magyar bucó
 84;naphal.jpg;naphal
-85;pisztrangsuger.jpg;pisztángsügér
-86;botos_kolonte.jpg;botos kölönte
+85;pisztángsügér.jpg;pisztángsügér
+86;botos_kölönte.jpg;botos kölönte
+87;cifra_kölönte.jpg;cifra kölönte
