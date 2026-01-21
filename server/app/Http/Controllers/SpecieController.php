@@ -14,8 +14,8 @@ class SpecieController extends Controller
      */
     public function index()
     {
-        // Lekérdezi az összes fajt
-        $species = Specie::orderBy('id')->get();
+       // Lekérdezi az összes fajt
+        $species = Specie::orderBy('id')->get(['id', 'fish_name', 'photo']);
 
         // Ha nincs adat → visszaad egy üzenetet
         if ($species->isEmpty()) {
@@ -24,11 +24,12 @@ class SpecieController extends Controller
             ], 200);
         }
 
-        // JSON visszaadás
-        return response()->json($species);
+        // JSON visszaadás ékezetekkel
+        return response()->json($species, 200, [], JSON_UNESCAPED_UNICODE);
+    }
     
 
-    }
+    
 
     /**
      * Store a newly created resource in storage.

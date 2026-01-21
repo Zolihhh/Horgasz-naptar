@@ -35,5 +35,7 @@ class SpecieSeeder extends Seeder
 
             Specie::insert($data);
         }
+        
     }
+    
 }
