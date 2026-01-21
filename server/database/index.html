@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <title>Halfajták</title>
+    <style>
+        .item {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin: 10px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        img {
+            width: 100px;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Halfajták</h1>
+<div id="container"></div>
+
+<script>
+const imageFolder = '../public/images/';  // A helyes mappa útvonal a képekhez
+
+fetch('csv/species.csv')  // CSV fájl betöltése
+    .then(response => response.text())
+    .then(data => {
+        const rows = data.trim().split('\n');
+        const container = document.getElementById('container');
+
+        // Kihagyjuk az első sort (fejléc)
+        rows.slice(1).forEach(row => {
+            const [id, photo, name] = row.split(';');  // Különböző elválasztó lehet (itt: `;`)
+
+            const div = document.createElement('div');
+            div.className = 'item';
+
+            div.innerHTML = `
+                <div><strong>ID:</strong> ${id}</div>
+                <img src="${imageFolder}${photo}" alt="${name}">
+                <div><strong>Név:</strong> ${name}</div>
+            `;
+
+            container.appendChild(div);
+        });
+    })
+    .catch(error => console.error('Hiba a CSV betöltésekor:', error));
+</script>
+
+</body>
+</html>
