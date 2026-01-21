@@ -1,13 +1,10 @@
-### változók
+### VÁLTOZÓK
 @protocol = http://
 @hostname = localhost
 @port = 8000
 @host = {{protocol}}{{hostname}}:{{port}}
-### @token = 12|ibiwTdr77o8ppToh1tBxIkckBNb8ECjIjLgaweTaa757cdef
-
-
-### login
-# @name login
+@token = 12|ibiwTdr77o8ppToh1tBxIkckBNb8ECjIjLgaweTaa757cdef
+### LOGIN
 POST {{host}}/api/users/login
 Accept: application/json
 Content-Type: application/json
@@ -17,38 +14,43 @@ Content-Type: application/json
     "password": "ronaldo"
 }
 
-###
-@token = {{login.response.body.data.token}}
+### TOKEN FRISSÍTÉSE
+# @token = {{login.response.body.data.token}}
 
-### logout user
-POST  {{host}}/api/users/logout
+### LOGOUT USER
+POST {{host}}/api/users/logout
+Accept: application/json
+Authorization: Bearer {{token}}
+
+### GET ALL USERS
+GET {{host}}/api/users
+Accept: application/json
+Authorization: Bearer {{token}}
+
+### get all species
+GET http://localhost:8000/api/specie
 Accept: application/json
 Authorization: Bearer {{token}}
 
 
-### get users
-GET  {{host}}/api/users
+### GET USER BY ID
+GET {{host}}/api/users/1
 Accept: application/json
 Authorization: Bearer {{token}}
 
-### get user by id
-GET  {{host}}/api/users/1
-Accept: application/json
-Authorization: Bearer {{token}}
-
-### post user
-POST {{host}}/api/users 
+### CREATE NEW USER
+POST {{host}}/api/users
 Content-Type: application/json
 Accept: application/json
 Authorization: Bearer {{token}}
 
 {
-    "name":  "Vásárló2",
+    "name": "Vásárló2",
     "email": "vasarlo2@example.com",
     "password": "123"
 }
 
-### patch user
+### UPDATE USER
 PATCH {{host}}/api/users/2
 Content-Type: application/json
 Accept: application/json
@@ -58,20 +60,19 @@ Authorization: Bearer {{token}}
     "name": "No Boss"
 }
 
-### delete user
+### DELETE USER
 DELETE {{host}}/api/users/2
 Content-Type: application/json
 Accept: application/json
 Authorization: Bearer {{token}}
 
-
-### User csak önmagát törölheti
+### DELETE SELF
 DELETE {{host}}/api/usersme
 Content-Type: application/json
 Accept: application/json
 Authorization: Bearer {{token}}
 
-### A bejelentkezett user a jelszavát módosítja
+### UPDATE SELF INFO
 PATCH {{host}}/api/usersme
 Content-Type: application/json
 Accept: application/json
@@ -82,17 +83,17 @@ Authorization: Bearer {{token}}
     "email": "vasarlo2@example.com"
 }
 
-### A bejelentkezett user egy adatát módosítja. A role tiltott
+### SELF PATCH ROLE (TILTOTT)
 PATCH {{host}}/api/usersme
 Content-Type: application/json
 Accept: application/json
 Authorization: Bearer {{token}}
 
 {
-     "name": "admin1"
+    "name": "admin1"
 }
 
-### A bejelnkezett felhasználó jelszó cseréje
+### SELF PASSWORD CHANGE
 PATCH {{host}}/api/usersmeupdatepassword
 Content-Type: application/json
 Accept: application/json
@@ -104,31 +105,28 @@ Authorization: Bearer {{token}}
     "newpassword_confirmation": "123"
 }
 
-### A bejelentkezett user önmagát lekérheti
-GET  {{host}}/api/usersme
+### GET SELF INFO
+GET {{host}}/api/usersme
 Accept: application/json
 Authorization: Bearer {{token}}
 
+### TESZT ENDPOINT
+GET {{host}}/api/x
 
-
-### teszt
-get {{host}}/api/x
-
-### get products
-get {{host}}/api/products
+### GET ALL PRODUCTS
+GET {{host}}/api/products
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
-
-### get product by id
-get {{host}}/api/products/1
+### GET PRODUCT BY ID
+GET {{host}}/api/products/1
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
-### post products
-POST  {{host}}/api/products
+### CREATE PRODUCT
+POST {{host}}/api/products
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
@@ -137,24 +135,22 @@ Authorization: Bearer {{token}}
     "category": "Bogyós",
     "name": "f3333xx",
     "description": "Kézzel termelt egészség",
-    "picture": "https:\/\/hur.webmania.cc\/img\/malna.jpg",
+    "picture": "https://hur.webmania.cc/img/malna.jpg",
     "price": 8000,
     "stock": 22
 }
 
-### delete product by id
-delete {{host}}/api/products/104
+### DELETE PRODUCT BY ID
+DELETE {{host}}/api/products/104
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
-
-### post products
+### PATCH PRODUCT
 PATCH {{host}}/api/products/1
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
-
 
 {
     "price": 1002,

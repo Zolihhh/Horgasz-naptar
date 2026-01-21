@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\CatchLog;
+use App\Models\FishCatch;
 use App\Http\Requests\StoreCatchLogRequest;
 use App\Http\Requests\UpdateCatchLogRequest;
 
@@ -13,7 +14,8 @@ class CatchLogController extends Controller
      */
     public function index()
     {
-        //
+        $catchLogs = CatchLog::with('fishCatches')->where('userid', auth()->id())->get();
+        return view('catch_logs.index', compact('catchLogs'));
     }
 
     /**
@@ -21,7 +23,29 @@ class CatchLogController extends Controller
      */
     public function store(StoreCatchLogRequest $request)
     {
-        //
+        // 1️⃣ CatchLog létrehozása
+        $catchLog = CatchLog::create([
+            'userid' => auth()->id(),
+            'fishing_lake_id' => $request->fishing_lake_id,
+            'comment' => $request->comment,
+            'fishing_start' => $request->fishing_start,
+            'fishing_end' => $request->fishing_end,
+        ]);
+
+        // 2️⃣ FishCatch-ek mentése, ha vannak
+        if ($request->has('fish_catches')) {
+            foreach ($request->fish_catches as $catch) {
+                $catchLog->fishCatches()->create([
+                    'species_id' => $catch['species_id'],
+                    'weight' => $catch['weight'],
+                    'length' => $catch['length'],
+                    'lure_id' => $catch['lure_id'],
+                    'catch_time' => $catch['catch_time'],
+                ]);
+            }
+        }
+
+        return redirect()->back()->with('success', 'Catch log sikeresen mentve!');
     }
 
     /**
@@ -29,7 +53,8 @@ class CatchLogController extends Controller
      */
     public function show(CatchLog $catchLog)
     {
-        //
+        $catchLog->load('fishCatches');
+        return view('catch_logs.show', compact('catchLog'));
     }
 
     /**
@@ -37,7 +62,10 @@ class CatchLogController extends Controller
      */
     public function update(UpdateCatchLogRequest $request, CatchLog $catchLog)
     {
-        //
+        $catchLog->update($request->validated());
+
+        // Itt lehetne frissíteni a fish_catches-eket is, ha szükséges
+        return redirect()->back()->with('success', 'Catch log frissítve!');
     }
 
     /**
@@ -45,6 +73,9 @@ class CatchLogController extends Controller
      */
     public function destroy(CatchLog $catchLog)
     {
-        //
+        $catchLog->fishCatches()->delete();
+        $catchLog->delete();
+
+        return redirect()->back()->with('success', 'Catch log törölve!');
     }
 }

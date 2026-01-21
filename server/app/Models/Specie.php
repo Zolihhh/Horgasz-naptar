@@ -9,4 +9,7 @@ class Specie extends Model
 {
     /** @use HasFactory<\Database\Factories\SpecieFactory> */
     use HasFactory;
+    
 }
+Specie::all();
+Specie::pluck('photo');

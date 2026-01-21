@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Specie;
 use App\Http\Requests\StoreSpecieRequest;
 use App\Http\Requests\UpdateSpecieRequest;
+use Illuminate\Http\Request;
 
 class SpecieController extends Controller
 {
@@ -13,7 +14,20 @@ class SpecieController extends Controller
      */
     public function index()
     {
-        //
+        // Lekérdezi az összes fajt
+        $species = Specie::orderBy('id')->get();
+
+        // Ha nincs adat → visszaad egy üzenetet
+        if ($species->isEmpty()) {
+            return response()->json([
+                'message' => 'Nincs adat a species táblában. Futtasd a seeder-t!'
+            ], 200);
+        }
+
+        // JSON visszaadás
+        return response()->json($species);
+    
+
     }
 
     /**

@@ -2,16 +2,21 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Helpers\CsvReader;
+use App\Models\Location;
 
 class LocationSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
-        //
+        $fileName = 'csv/locations.csv';
+        $delimiter = ',';
+
+        $data = CsvReader::csvToArray($fileName, $delimiter);
+
+        if (Location::count() === 0) {
+            Location::insert($data);
+        }
     }
 }
