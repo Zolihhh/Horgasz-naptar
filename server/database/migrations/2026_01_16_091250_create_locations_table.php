@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('locations', function (Blueprint $table) {
           $table->id();
-            $table->integer('waterAreaCode');
+            $table->string('waterAreaCode',20);
             $table->decimal('latitude', 9, 6)->nullable();
             $table->decimal('longitude', 9, 6)->nullable();
-            $table->string('FishingLakeName');
+            $table->string('FishingLakeName',80);
             $table->timestamps();
         });
     }

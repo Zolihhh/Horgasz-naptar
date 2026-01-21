@@ -12,13 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('catch_logs', function (Blueprint $table) {
-             $table->id();
-        $table->unsignedBigInteger('userid');
-        $table->foreignId('FishingLakeId')->constrained('helyszinek');
+        $table->id();
+        $table->foreignId('locationid')->constrained('locations')->onDelete('restrict');
+        $table->foreignId('userid')->constrained('users')->onDelete('restrict');
         $table->text('comment')->nullable();
         $table->date('fishing_start')->nullable();
         $table->date('fishing_end')->nullable();
         $table->timestamps();
+        $table->unique(['userid', 'locationid','fishing_start','fishing_end']);
         });
     }
 
