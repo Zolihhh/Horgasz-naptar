@@ -2,85 +2,145 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\CatchLog;
 use App\Models\FishCatch;
-use App\Http\Requests\StoreCatchLogRequest;
-use App\Http\Requests\UpdateCatchLogRequest;
+use App\Http\Requests\StoreFishCatchRequest;
+use App\Http\Requests\UpdateFishCatchRequest;
+use Illuminate\Database\QueryException;
 
-class CatchLogController extends Controller
+class FishCatchController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        // Az aktuális felhasználó CatchLog-jai fishCatches-rel együtt
-        $catchLogs = CatchLog::with('fishCatches')->where('userid', auth()->id())->get();
-        return view('catch_logs.index', compact('catchLogs'));
+        try {
+            $fishCatches = FishCatch::with('catchLog')
+                ->whereHas('catchLog', function ($query) {
+                    $query->where('userid', auth()->id());
+                })
+                ->get();
+
+            $status = 200;
+            $data = [
+                'message' => 'OK',
+                'data' => $fishCatches
+            ];
+        } catch (\Exception $e) {
+            $status = 500;
+            $data = [
+                'message' => "Server error {$e->getCode()}",
+                'data' => []
+            ];
+        }
+
+        return response()->json($data, $status, ['json_encode_options' => JSON_UNESCAPED_UNICODE]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreCatchLogRequest $request)
+    public function store(StoreFishCatchRequest $request)
     {
-        // 1️⃣ CatchLog létrehozása
-        $catchLog = CatchLog::create([
-            'userid' => auth()->id(),
-            'fishing_lake_id' => $request->fishing_lake_id,
-            'comment' => $request->comment,
-            'fishing_start' => $request->fishing_start,
-            'fishing_end' => $request->fishing_end,
-        ]);
+        try {
+            $fishCatch = FishCatch::create([
+                'catch_log_id' => $request->catch_log_id,
+                'species_id' => $request->species_id,
+                'weight' => $request->weight,
+                'length' => $request->length,
+                'lure_id' => $request->lure_id,
+                'catch_time' => $request->catch_time,
+            ]);
 
-        // 2️⃣ FishCatch-ek mentése, ha a felhasználó adott meg
-        if ($request->has('fish_catches')) {
-            foreach ($request->fish_catches as $catch) {
-                $catchLog->fishCatches()->create([
-                    'species_id' => $catch['species_id'],
-                    'weight' => $catch['weight'],
-                    'length' => $catch['length'],
-                    'lure_id' => $catch['lure_id'],
-                    'catch_time' => $catch['catch_time'],
-                ]);
-            }
+            $status = 201;
+            $data = [
+                'message' => 'Fish catch sikeresen mentve!',
+                'data' => $fishCatch
+            ];
+        } catch (QueryException $e) {
+            $status = 400;
+            $data = [
+                'message' => "Insert error: {$e->getMessage()}",
+                'data' => []
+            ];
         }
 
-        return redirect()->back()->with('success', 'Catch log sikeresen mentve!');
+        return response()->json($data, $status, ['json_encode_options' => JSON_UNESCAPED_UNICODE]);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(CatchLog $catchLog)
+    public function show(int $id)
     {
-        $catchLog->load('fishCatches');
-        return view('catch_logs.show', compact('catchLog'));
+        $fishCatch = FishCatch::with('catchLog')->find($id);
+
+        if ($fishCatch) {
+            $status = 200;
+            $data = [
+                'message' => 'OK',
+                'data' => $fishCatch
+            ];
+        } else {
+            $status = 404;
+            $data = [
+                'message' => "Not found id: $id",
+                'data' => null
+            ];
+        }
+
+        return response()->json($data, $status, ['json_encode_options' => JSON_UNESCAPED_UNICODE]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateCatchLogRequest $request, CatchLog $catchLog)
+    public function update(UpdateFishCatchRequest $request, int $id)
     {
-        // CatchLog frissítése
-        $catchLog->update($request->validated());
+        $fishCatch = FishCatch::find($id);
 
-        // Itt lehetne frissíteni a fish_catches-eket is, ha akarod
-        return redirect()->back()->with('success', 'Catch log frissítve!');
+        if ($fishCatch) {
+            $fishCatch->update($request->validated());
+
+            $status = 200;
+            $data = [
+                'message' => 'Fish catch frissítve!',
+                'data' => $fishCatch
+            ];
+        } else {
+            $status = 404;
+            $data = [
+                'message' => "Patch error. Not found id: $id",
+                'data' => null
+            ];
+        }
+
+        return response()->json($data, $status, ['json_encode_options' => JSON_UNESCAPED_UNICODE]);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(CatchLog $catchLog)
+    public function destroy(int $id)
     {
-        // Kapcsolódó FishCatch-ek törlése
-        $catchLog->fishCatches()->delete();
+        $fishCatch = FishCatch::find($id);
 
-        // CatchLog törlése
-        $catchLog->delete();
+        if ($fishCatch) {
+            $fishCatch->delete();
 
-        return redirect()->back()->with('success', 'Catch log törölve!');
+            $status = 200;
+            $data = [
+                'message' => 'Fish catch törölve!',
+                'data' => ['id' => $id]
+            ];
+        } else {
+            $status = 404;
+            $data = [
+                'message' => "Delete error. Not found id: $id",
+                'data' => null
+            ];
+        }
+
+        return response()->json($data, $status, ['json_encode_options' => JSON_UNESCAPED_UNICODE]);
     }
 }
