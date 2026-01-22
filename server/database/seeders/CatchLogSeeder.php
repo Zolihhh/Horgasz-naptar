@@ -32,7 +32,7 @@ class CatchLogSeeder extends Seeder
             return;
         }
 
-        // hány catch log legyen
+        // catch logok száma
         $numberOfCatchLogs = round($users->count() * 2);
 
         for ($i = 0; $i < $numberOfCatchLogs; $i++) {
@@ -41,7 +41,6 @@ class CatchLogSeeder extends Seeder
             $location = $locations->random();
 
             $catchLog = CatchLog::create([
-                //'id'->$catchLog->id,
                 'locationid' => $location->id,
                 'userid' => $user->id,
                 'comment' => 'Seeder által generált fogásnapló',
@@ -53,13 +52,17 @@ class CatchLogSeeder extends Seeder
             $numberOfFishCatches = rand(1, 3);
 
             for ($j = 0; $j < $numberOfFishCatches; $j++) {
+
+                $specie = $species->random();
+                $lure = $lures->random();
+
                 FishCatch::create([
-                    'catch_log_id' => $catchLog->id,
-                    'species_id' => $species->id,
-                    'lure_id' => $lures->id,
-                    'weight' => rand(50, 1500) / 100, // 0.5 – 15 kg
-                    'length' => rand(20, 120),
-                    'catch_time' => now()->subMinutes(rand(10, 300)),
+                    'catchLogId' => $catchLog->id,
+                    'spiecesID' => $specie->id,
+                    'LureId' => $lure->id,
+                    'weight' => rand(min: 0.1, max: 99), // 0.5 – 15 kg
+                    'length' => rand(15, 300),        // cm
+                    'catchTime' => now()->subMinutes(rand(10, 300)),
                 ]);
             }
         }
