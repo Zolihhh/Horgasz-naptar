@@ -7,36 +7,58 @@ use App\Models\CatchLog;
 use App\Models\FishCatch;
 use App\Models\User;
 use App\Models\Location;
+use App\Models\Specie;
+use App\Models\Lure;
 
 class CatchLogSeeder extends Seeder
 {
+    /**
+     * Run the database seeds.
+     */
     public function run(): void
     {
-        // Feltételezzük, hogy van legalább 1 user és 1 location
-        $user = User::first();
+        $users = User::all();
         $locations = Location::all();
-        $speciesIds = [1, 2, 3]; // feltételezett species ID-k
-        $lureIds = [1, 2, 3];    // feltételezett lure ID-k
+        $species = Specie::all();
+        $lures = Lure::all();
 
-        // 5 db teszt CatchLog
-        foreach (range(1, 5) as $i) {
+        // ha nincs elég adat, nem seedelünk
+        if (
+            $users->isEmpty() ||
+            $locations->isEmpty() ||
+            $species->isEmpty() ||
+            $lures->isEmpty()
+        ) {
+            return;
+        }
+
+        // hány catch log legyen
+        $numberOfCatchLogs = round($users->count() * 2);
+
+        for ($i = 0; $i < $numberOfCatchLogs; $i++) {
+
+            $user = $users->random();
+            $location = $locations->random();
+
             $catchLog = CatchLog::create([
                 'userid' => $user->id,
-                'fishing_lake_id' => $locations->random()->id,
-                'comment' => "Teszt catch log $i",
-                'fishing_start' => now()->subDays(rand(1,10)),
+                'fishing_lake_id' => $location->id,
+                'comment' => 'Seeder által generált fogásnapló',
+                'fishing_start' => now()->subHours(rand(2, 10)),
                 'fishing_end' => now(),
             ]);
 
-            // minden CatchLog-hoz 1-3 FishCatch
-            foreach (range(1, rand(1,3)) as $j) {
+            // 1–3 hal egy naplóhoz
+            $numberOfFishCatches = rand(1, 3);
+
+            for ($j = 0; $j < $numberOfFishCatches; $j++) {
                 FishCatch::create([
                     'catch_log_id' => $catchLog->id,
-                    'species_id' => $speciesIds[array_rand($speciesIds)],
-                    'weight' => rand(1, 10) + rand(0,99)/100, // pl. 3.57
-                    'length' => rand(20, 100) + rand(0,99)/100,
-                    'lure_id' => $lureIds[array_rand($lureIds)],
-                    'catch_time' => now()->subHours(rand(1,10)),
+                    'species_id' => $species->random()->id,
+                    'lure_id' => $lures->random()->id,
+                    'weight' => rand(50, 1500) / 100, // 0.5 – 15 kg
+                    'length' => rand(20, 120),
+                    'catch_time' => now()->subMinutes(rand(10, 300)),
                 ]);
             }
         }
