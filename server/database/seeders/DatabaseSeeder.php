@@ -35,7 +35,7 @@ class DatabaseSeeder extends Seeder
             SpecieSeeder::class,
             LocationSeeder::class,
             CatchLogSeeder::class,
-            //FishCatchSeeder::class,
+            FishCatchSeeder::class,
         ]);
     }
 }

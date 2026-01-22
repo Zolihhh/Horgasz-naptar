@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('fish_catches', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('spiecesID')->constrained('species')->onDelete('restrict');
-            $table->foreignId('LureId')->constrained('lures')->onDelete('restrict');
+            $table->foreignId('specieId')->constrained('species')->onDelete('restrict');
+            $table->foreignId('lureId')->constrained('lures')->onDelete('restrict');
             $table->foreignId('catchLogId')->constrained('catch_logs')->onDelete('restrict');
             $table->decimal('weight', 3, 2);
             $table->decimal('length', 5);
