@@ -19,23 +19,10 @@ class SpecieSeeder extends Seeder
 
         // CSV betöltése tömbbe
         $data = CsvReader::csvToArray($fileName, $delimiter);
-
-        // Csak akkor töltjük fel, ha nincs még adat a táblában
-        if (Specie::count() === 0) {
-            foreach ($data as &$row) {
-                // Ellenőrizzük, hogy van-e photo oszlop, ha nincs akkor null
-                $row = [
-                    'id' => $row['id'] ?? null,
-                    'photo' => $row['photo'] ?? null,
-                    'fish_name' => $row['fish_name'],
-                    'created_at' => now(),
-                    'updated_at' => now(),
-                ];
-            }
-
-            Specie::insert($data);
+        Specie::factory()->createMany($data);
+        
         }
         
     }
     
-}
+

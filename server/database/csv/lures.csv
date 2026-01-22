@@ -1,201 +1,201 @@
-id,csali
-1,saját csali
-2,Kukorica
-3,Csemegekukorica
-4,Főtt kukorica
-5,Tigrismogyoró
-6,Bojli
-7,Pop-up bojli
-8,Wafter bojli
-9,Pellet
-10,Micro pellet
-11,Method pellet
-12,Horgász pellet
-13,Halibut pellet
-14,Etetőanyag
-15,Method mix
-16,Feeder mix
-17,Spod mix
-18,Giliszta
-19,Trágya giliszta
-20,Földi giliszta
-21,CSONTI
-22,Pinki
-23,Nadály
-24,Kenyér
-25,Kenyérbél
-26,Kenyérhéj
-27,Sajt
-28,Sajt kocka
-29,Kolbász
-30,Szalonna
-31,Hal darab
-32,Apróhal
-33,Keszeg
-34,Kárász
-35,Kárász filé
-36,Élő csalihal
-37,Döglött csalihal
-38,Gumihal
-39,Gumicsali
-40,Twister
-41,Shad gumihal
-42,Creature bait
-43,Wobbler
-44,Crankbait
-45,Jerbait
-46,Spinner
-47,Spinnerbait
-48,Kanál
-49,Plüss csali
-50,Műkukorica
-51,Műpellet
-52,Műbojli
-53,Műcsonti
-54,Műgiliszta
-55,Popcorn
-56,Vaníliás kukorica
-57,Epres bojli
-58,Fokhagymás bojli
-59,Halolajos bojli
-60,Fűszeres bojli
-61,Mézes bojli
-62,Scopex bojli
-63,Tintahal bojli
-64,Ananászos bojli
-65,Barackos bojli
-66,Fahéjas bojli
-67,Chilis bojli
-68,Krilles bojli
-69,Liver bojli
-70,Oldódó bojli
-71,Oldódó pellet
-72,Fluoros pop-up
-73,Snowman szerelék csali
-74,Dipelt bojli
-75,Dipelt kukorica
-76,Aroma
-77,Folyékony aroma
-78,PVA csomag
-79,PVA stick mix
-80,PVA pellet
-81,PVA bojli
-82,Mini bojli
-83,Nagy bojli
-84,Hibrid csali
-85,Flottáló csali
-86,Süllyedő csali
-87,Natur csali
-88,Erjesztett kukorica
-89,Főtt magmix
-90,Magmix
-91,Kendermag
-92,Búza
-93,Árpa
-94,Repce
-95,Csontkukac mix
-96,Gumirák
-97,Gumiféreg
-98,Gumibéka
-99,Felszíni csali
-100,Popper
-101,Jig fej
-102,Drop shot csali
-103,Folyami rák
-104,Krill
-105,Kapribogyó
-106,Szezámmag pellet
-107,Füstölt bojli
-108,Hal pellet mix
-109,Földimogyoró
-110,Kukorica tészta
-111,Fagyasztott csonti
-112,Marha máj darab
-113,Marcipános bojli
-114,Chilis pellet
-115,Halas dip
-116,Tejsavas kukorica
-117,Keverék pellet
-118,Gumicsiga
-119,Kövesgiliszta
-120,Larva mix
-121,Édes kukorica
-122,Főtt tészta
-123,Halkocka
-124,Halpehely
-125,Hering darab
-126,Heringszirup
-127,Redworm
-128,Bloodworm
-129,Ciklámen bojli
-130,Áfonyás pellet
-131,Mangós bojli
-132,Édes kukoricapehely
-133,Halas csaliolaj
-134,Halas krill paszta
-135,Fűszeres pellet mix
-136,Feeder pellet mix
-137,Etető pellet
-138,Gyömbéres bojli
-139,Paprikás pellet
-140,Csemege pellet
-141,Mikro giliszta
-142,Mini csonti
-143,Mini kukorica
-144,Horgász kenyér
-145,Édes kenyér
-146,Savanyított kukorica
-147,Erjesztett magvak
-148,Kukorica massza
-149,Pop-up pellet
-150,Fluoreszkáló pellet
-151,Glow bojli
-152,Édes bojli mix
-153,Fagyasztott hal
-154,Fagyasztott rák
-155,Rák pellet
-156,Rák bojli
-157,Süllyedő pellet
-158,Feeder corn
-159,Method corn
-160,Etető mix pellet
-161,Fűszeres corn
-162,Mézes corn
-163,Scopex corn
-164,Popcorn bojli
-165,Mini pop-up
-166,Oldódó pop-up
-167,Flottáló pellet
-168,Plasztik kukorica
-169,Soft pellet
-170,Gumihal mix
-171,Twin tail gumihal
-172,Shad twister
-173,Shad minnow
-174,Wobbling shad
-175,Blade spinner
-176,Inline spinner
-177,Metal jig
-178,Micro jig
-179,Folyékony dip
-180,Pva bag mix
-181,Pva stick bojli
-182,Pva pellet mix
-183,Stick mix
-184,Főtt kukorica mix
-185,Erjesztett kukorica mix
-186,Bojli mix
-187,Pop-up mix
-188,Gumicsali mix
-189,Halibajos csali
-190,Krill olajos pellet
-191,Halolajos dip
-192,Mézes dip
-193,Chilis dip
-194,Fokhagymás dip
-195,Édes dip
-196,Aroma paszta
-197,Etető csali mix
-198,Feeder csali mix
-199,Method csali mix
-200,Spod mix pellet
+id;lure
+1;saját csali
+2;Kukorica
+3;Csemegekukorica
+4;Főtt kukorica
+5;Tigrismogyoró
+6;Bojli
+7;Pop-up bojli
+8;Wafter bojli
+9;Pellet
+10;Micro pellet
+11;Method pellet
+12;Horgász pellet
+13;Halibut pellet
+14;Etetőanyag
+15;Method mix
+16;Feeder mix
+17;Spod mix
+18;Giliszta
+19;Trágya giliszta
+20;Földi giliszta
+21;CSONTI
+22;Pinki
+23;Nadály
+24;Kenyér
+25;Kenyérbél
+26;Kenyérhéj
+27;Sajt
+28;Sajt kocka
+29;Kolbász
+30;Szalonna
+31;Hal darab
+32;Apróhal
+33;Keszeg
+34;Kárász
+35;Kárász filé
+36;Élő csalihal
+37;Döglött csalihal
+38;Gumihal
+39;Gumicsali
+40;Twister
+41;Shad gumihal
+42;Creature bait
+43;Wobbler
+44;Crankbait
+45;Jerbait
+46;Spinner
+47;Spinnerbait
+48;Kanál
+49;Plüss csali
+50;Műkukorica
+51;Műpellet
+52;Műbojli
+53;Műcsonti
+54;Műgiliszta
+55;Popcorn
+56;Vaníliás kukorica
+57;Epres bojli
+58;Fokhagymás bojli
+59;Halolajos bojli
+60;Fűszeres bojli
+61;Mézes bojli
+62;Scopex bojli
+63;Tintahal bojli
+64;Ananászos bojli
+65;Barackos bojli
+66;Fahéjas bojli
+67;Chilis bojli
+68;Krilles bojli
+69;Liver bojli
+70;Oldódó bojli
+71;Oldódó pellet
+72;Fluoros pop-up
+73;Snowman szerelék csali
+74;Dipelt bojli
+75;Dipelt kukorica
+76;Aroma
+77;Folyékony aroma
+78;PVA csomag
+79;PVA stick mix
+80;PVA pellet
+81;PVA bojli
+82;Mini bojli
+83;Nagy bojli
+84;Hibrid csali
+85;Flottáló csali
+86;Süllyedő csali
+87;Natur csali
+88;Erjesztett kukorica
+89;Főtt magmix
+90;Magmix
+91;Kendermag
+92;Búza
+93;Árpa
+94;Repce
+95;Csontkukac mix
+96;Gumirák
+97;Gumiféreg
+98;Gumibéka
+99;Felszíni csali
+100;Popper
+101;Jig fej
+102;Drop shot csali
+103;Folyami rák
+104;Krill
+105;Kapribogyó
+106;Szezámmag pellet
+107;Füstölt bojli
+108;Hal pellet mix
+109;Földimogyoró
+110;Kukorica tészta
+111;Fagyasztott csonti
+112;Marha máj darab
+113;Marcipános bojli
+114;Chilis pellet
+115;Halas dip
+116;Tejsavas kukorica
+117;Keverék pellet
+118;Gumicsiga
+119;Kövesgiliszta
+120;Larva mix
+121;Édes kukorica
+122;Főtt tészta
+123;Halkocka
+124;Halpehely
+125;Hering darab
+126;Heringszirup
+127;Redworm
+128;Bloodworm
+129;Ciklámen bojli
+130;Áfonyás pellet
+131;Mangós bojli
+132;Édes kukoricapehely
+133;Halas csaliolaj
+134;Halas krill paszta
+135;Fűszeres pellet mix
+136;Feeder pellet mix
+137;Etető pellet
+138;Gyömbéres bojli
+139;Paprikás pellet
+140;Csemege pellet
+141;Mikro giliszta
+142;Mini csonti
+143;Mini kukorica
+144;Horgász kenyér
+145;Édes kenyér
+146;Savanyított kukorica
+147;Erjesztett magvak
+148;Kukorica massza
+149;Pop-up pellet
+150;Fluoreszkáló pellet
+151;Glow bojli
+152;Édes bojli mix
+153;Fagyasztott hal
+154;Fagyasztott rák
+155;Rák pellet
+156;Rák bojli
+157;Süllyedő pellet
+158;Feeder corn
+159;Method corn
+160;Etető mix pellet
+161;Fűszeres corn
+162;Mézes corn
+163;Scopex corn
+164;Popcorn bojli
+165;Mini pop-up
+166;Oldódó pop-up
+167;Flottáló pellet
+168;Plasztik kukorica
+169;Soft pellet
+170;Gumihal mix
+171;Twin tail gumihal
+172;Shad twister
+173;Shad minnow
+174;Wobbling shad
+175;Blade spinner
+176;Inline spinner
+177;Metal jig
+178;Micro jig
+179;Folyékony dip
+180;Pva bag mix
+181;Pva stick bojli
+182;Pva pellet mix
+183;Stick mix
+184;Főtt kukorica mix
+185;Erjesztett kukorica mix
+186;Bojli mix
+187;Pop-up mix
+188;Gumicsali mix
+189;Halibajos csali
+190;Krill olajos pellet
+191;Halolajos dip
+192;Mézes dip
+193;Chilis dip
+194;Fokhagymás dip
+195;Édes dip
+196;Aroma paszta
+197;Etető csali mix
+198;Feeder csali mix
+199;Method csali mix
+200;Spod mix pellet

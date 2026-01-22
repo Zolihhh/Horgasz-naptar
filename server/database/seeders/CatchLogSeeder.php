@@ -41,8 +41,9 @@ class CatchLogSeeder extends Seeder
             $location = $locations->random();
 
             $catchLog = CatchLog::create([
+                //'id'->$catchLog->id,
+                'locationid' => $location->id,
                 'userid' => $user->id,
-                'fishing_lake_id' => $location->id,
                 'comment' => 'Seeder által generált fogásnapló',
                 'fishing_start' => now()->subHours(rand(2, 10)),
                 'fishing_end' => now(),
@@ -54,8 +55,8 @@ class CatchLogSeeder extends Seeder
             for ($j = 0; $j < $numberOfFishCatches; $j++) {
                 FishCatch::create([
                     'catch_log_id' => $catchLog->id,
-                    'species_id' => $species->random()->id,
-                    'lure_id' => $lures->random()->id,
+                    'species_id' => $species->id,
+                    'lure_id' => $lures->id,
                     'weight' => rand(50, 1500) / 100, // 0.5 – 15 kg
                     'length' => rand(20, 120),
                     'catch_time' => now()->subMinutes(rand(10, 300)),

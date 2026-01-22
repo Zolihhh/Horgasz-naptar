@@ -11,10 +11,10 @@ use Illuminate\Support\Str;
  */
 class UserFactory extends Factory
 {
-    /**
-     * The current password being used by the factory.
-     */
-    protected static ?string $password;
+    protected function withFaker()
+    {
+        return \Faker\Factory::create('hu_HU');
+    }
 
     /**
      * Define the model's default state.
@@ -23,12 +23,20 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
+        static $number = 0;
+        $current = $number;   // eltesszük az aktuális értéket
+        $number++;
+
         return [
-            'name' => fake()->name(),
-            'email' => fake()->unique()->safeEmail(),
-            'email_verified_at' => now(),
-            'password' => static::$password ??= Hash::make('password'),
-            'remember_token' => Str::random(10),
+            'name' => 'Horgasz' . $current,
+            'email' => 'horgasz' . $current . "@minta.hu",
+            'password' => Hash::make('123'),
+            'role' => 2,
+            'idNumber' => strtoupper($this->faker->bothify('??######')),
+            'city' => $this->faker->city(),
+            'street' => $this->faker->streetName(),
+            'houseNumber' => $this->faker->numberBetween(1, 200),
+            'postCode' => $this->faker->postcode(),
         ];
     }
 
@@ -37,7 +45,7 @@ class UserFactory extends Factory
      */
     public function unverified(): static
     {
-        return $this->state(fn (array $attributes) => [
+        return $this->state(fn(array $attributes) => [
             'email_verified_at' => null,
         ]);
     }
