@@ -15,38 +15,49 @@ use App\Http\Controllers\LureController;
 // })->middleware('auth:sanctum');
 
 //endpoint
-Route::get('/x', function(){
+Route::get('/x', function () {
     return 'API';
 });
-    // SPECIE
-    Route::get('/specie', [SpecieController::class, 'index']);
-    Route::post('/specie', [SpecieController::class, 'store']);
+// SPECIE
+Route::get('/specie', [SpecieController::class, 'index']);
+Route::post('/specie', [SpecieController::class, 'store']);
 
-    // LOCATION
-    Route::get('/location', [LocationController::class, 'index']);
-    Route::post('/location', [LocationController::class, 'store']);
+// LOCATION
+Route::get('/location', [LocationController::class, 'index']);
+// Route::get('/location', [LocationController::class, 'post']);
+// Route::get('/location', [LocationController::class, 'show']);
+Route::post('/location', [LocationController::class, 'store']);
+// Route::get('/location', [LocationController::class, 'update']);
+//Route::get('/location', [LocationController::class, 'destroy']);
 
-    // LURE
-    Route::get('/lure', [LureController::class, 'index']);
-    Route::post('/lure', [LureController::class, 'store']);
+// LURE
+Route::get('/lure', [LureController::class, 'index']);
+Route::post('/lure', [LureController::class, 'store']);
 
-    // CATCH LOG
-    Route::get('/catchlog', [CatchLogController::class, 'index']);
-    Route::get('/catchlog/{id}', [CatchLogController::class, 'show']);
-    Route::post('/catchlog', [CatchLogController::class, 'store']);
-    Route::patch('/catchlog/{id}', [CatchLogController::class, 'update']);
-    Route::delete('/catchlog/{id}', [CatchLogController::class, 'destroy']);
+// CATCH LOG
+Route::get('/catchlog', [CatchLogController::class, 'index']);
+Route::get('/catchlog/{id}', [CatchLogController::class, 'show']);
+Route::post('/catchlog', [CatchLogController::class, 'store']);
+Route::patch('/catchlog/{id}', [CatchLogController::class, 'update']);
+Route::delete('/catchlog/{id}', [CatchLogController::class, 'destroy']);
 
-    // FISH CATCH
-    Route::get('/fishcatch', [FishCatchController::class, 'index']);
-    Route::get('/fishcatch/{id}', [FishCatchController::class, 'show']);
-    Route::post('/fishcatch', [FishCatchController::class, 'store']);
-    Route::delete('/fishcatch/{id}', [FishCatchController::class, 'destroy']);
+// FISH CATCH
+Route::get('/fishcatch', [FishCatchController::class, 'index']);
+Route::get('/fishcatch/{id}', [FishCatchController::class, 'show']);
+Route::post('/fishcatch', [FishCatchController::class, 'store']);
+Route::delete('/fishcatch/{id}', [FishCatchController::class, 'destroy']);
 
 Route::get('/specie', [SpecieController::class, 'index']);
 
 //region users
 //User kezelés, login, logout
+//Mindenki
+Route::post('user/login', [UserController::class, 'login']);
+Route::post('user/logout', [UserController::class, 'logout']);
+Route::post('user', [UserController::class, 'store']);
+Route::post('user', [UserController::class, 'show']);
+
+
 //Mindenki
 Route::post('users/login', [UserController::class, 'login']);
 Route::post('users/logout', [UserController::class, 'logout']);
@@ -54,29 +65,15 @@ Route::post('users', [UserController::class, 'store']);
 
 //Admin: 
 //minden user lekérdezése
-Route::get('users', [UserController::class, 'index'])
-    ->middleware('auth:sanctum', 'ability:admin');
+Route::get('user', [UserController::class, 'index']);
+
 //Egy user lekérése    
-Route::get('users/{id}', [UserController::class, 'show'])
-    ->middleware('auth:sanctum', 'ability:admin');
+Route::get('user/{id}', [UserController::class, 'show']);
+
 //User adatok módosítása      
-Route::patch('users/{id}', [UserController::class, 'update'])
-->middleware('auth:sanctum', 'ability:admin');
+Route::patch('user/{id}', [UserController::class, 'update']);
+
 //User törlés
-Route::delete('users/{id}', [UserController::class, 'destroy'])
-->middleware('auth:sanctum', 'ability:admin');  
-
-//User self (Amit a user önmagával csinálhat) parancsok
-Route::delete('usersme', [UserController::class, 'destroySelf'])
-->middleware('auth:sanctum', 'ability:usersme:delete');
-
-Route::patch('usersme', [UserController::class, 'updateSelf'])
-->middleware('auth:sanctum', 'ability:usersme:patch');
-
-Route::patch('usersmeupdatepassword', [UserController::class, 'updatePassword'])
-->middleware('auth:sanctum', 'ability:usersme:updatePassword');
-
-Route::get('usersme', [UserController::class, 'indexSelf'])
-    ->middleware('auth:sanctum', 'ability:usersme:get'); 
+Route::delete('user/{id}', [UserController::class, 'destroy']);
 //endregion
 

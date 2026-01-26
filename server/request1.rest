@@ -13,13 +13,13 @@
 ### =========================
 
 ### LOGIN
-POST {{host}}/api/users/login
+POST {{host}}/api/user/login
 Accept: application/json
 Content-Type: application/json
 
 {
-    "email": "vasarlo1@example.com",
-    "password": "ronaldo"
+    "email": "admin@example.com",
+    "password": "123"
 }
 
 ### TOKEN FRISSÍTÉS
@@ -37,13 +37,13 @@ Authorization: Bearer {{token}}
 ### =========================
 
 ### GET ALL USERS
-GET {{host}}/api/users
+GET {{host}}/api/user
 Accept: application/json
 Authorization: Bearer {{token}}
 
 
 ### GET USER BY ID
-GET {{host}}/api/users/1
+GET {{host}}/api/user/2
 Accept: application/json
 Authorization: Bearer {{token}}
 
@@ -64,8 +64,8 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-    "name": "Balaton",
-    "description": "Magyarország legnagyobb tava"
+    "waterAreaCode": "99-999-9-9",
+    "fishingLakeName": "Alma"
 }
 
 
@@ -85,7 +85,8 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-    "name": "Ponty"
+    "fish_name": "Alma",
+    "photo": "alma.jpg"
 }
 
 

@@ -9,6 +9,11 @@ class Specie extends Model
 {
     /** @use HasFactory<\Database\Factories\SpecieFactory> */
     use HasFactory;
+
+    protected $fillable = [
+        'fish_name',
+        'photo'
+    ];
     
 }
 Specie::all();
