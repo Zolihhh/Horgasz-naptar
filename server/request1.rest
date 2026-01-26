@@ -1,0 +1,197 @@
+### =========================
+### VÁLTOZÓK
+### =========================
+@protocol = http://
+@hostname = localhost
+@port = 8000
+@host = {{protocol}}{{hostname}}:{{port}}
+@token = 12|ibiwTdr77o8ppToh1tBxIkckBNb8ECjIjLgaweTaa757cdef
+
+
+### =========================
+### AUTH
+### =========================
+
+### LOGIN
+POST {{host}}/api/users/login
+Accept: application/json
+Content-Type: application/json
+
+{
+    "email": "vasarlo1@example.com",
+    "password": "ronaldo"
+}
+
+### TOKEN FRISSÍTÉS
+#@token = {{login.response.body.data.token}}
+
+### LOGOUT
+POST {{host}}/api/users/logout
+Accept: application/json
+Authorization: Bearer {{token}}
+
+
+
+### =========================
+### USERS
+### =========================
+
+### GET ALL USERS
+GET {{host}}/api/users
+Accept: application/json
+Authorization: Bearer {{token}}
+
+
+### GET USER BY ID
+GET {{host}}/api/users/1
+Accept: application/json
+Authorization: Bearer {{token}}
+
+
+### =========================
+### LOCATIONS
+### =========================
+
+### GET ALL LOCATIONS
+GET {{host}}/api/location
+Accept: application/json
+Authorization: Bearer {{token}}
+
+### CREATE LOCATION
+POST {{host}}/api/location
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "name": "Balaton",
+    "description": "Magyarország legnagyobb tava"
+}
+
+
+### =========================
+### SPECIES
+### =========================
+
+### GET ALL SPECIES
+GET {{host}}/api/specie
+Accept: application/json
+Authorization: Bearer {{token}}
+
+### CREATE SPECIE
+POST {{host}}/api/specie
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "name": "Ponty"
+}
+
+
+### =========================
+### LURES
+### =========================
+
+### GET ALL LURES
+GET {{host}}/api/lure
+Accept: application/json
+Authorization: Bearer {{token}}
+
+### CREATE LURE
+POST {{host}}/api/lure
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "name": "Gumihal",
+    "color": "zöld"
+}
+
+
+### =========================
+### CATCH LOGS
+### =========================
+
+### GET ALL CATCH LOGS (SAJÁT)
+GET {{host}}/api/catchlog
+Accept: application/json
+Authorization: Bearer {{token}}
+
+### GET CATCH LOG BY ID
+GET {{host}}/api/catchlog/1
+Accept: application/json
+Authorization: Bearer {{token}}
+
+### CREATE CATCH LOG + FISH CATCHES
+POST {{host}}/api/catchlog
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "fishing_lake_id": 1,
+    "comment": "Nagyon jó horgászat volt",
+    "fishing_start": "2025-03-10 06:00:00",
+    "fishing_end": "2025-03-10 11:30:00",
+    "fish_catches": [
+        {
+            "species_id": 1,
+            "weight": 3.2,
+            "length": 52,
+            "lure_id": 1,
+            "catch_time": "2025-03-10 07:20:00"
+        }
+    ]
+}
+
+### UPDATE CATCH LOG
+PATCH {{host}}/api/catchlog/1
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "comment": "Később erős szél lett"
+}
+
+### DELETE CATCH LOG
+DELETE {{host}}/api/catchlog/1
+Accept: application/json
+Authorization: Bearer {{token}}
+
+
+### =========================
+### FISH CATCHES (KÜLÖN)
+### =========================
+
+### GET ALL FISH CATCHES
+GET {{host}}/api/fishcatch
+Accept: application/json
+Authorization: Bearer {{token}}
+
+### GET FISH CATCH BY ID
+GET {{host}}/api/fishcatch/1
+Accept: application/json
+Authorization: Bearer {{token}}
+
+### CREATE FISH CATCH
+POST {{host}}/api/fishcatch
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "catch_log_id": 1,
+    "species_id": 1,
+    "weight": 2.1,
+    "length": 44,
+    "lure_id": 2,
+    "catch_time": "2025-03-10 08:10:00"
+}
+
+### DELETE FISH CATCH
+DELETE {{host}}/api/fishcatch/1
+Accept: application/json
+Authorization: Bearer {{token}}

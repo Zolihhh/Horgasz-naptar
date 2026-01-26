@@ -3,63 +3,25 @@
 namespace App\Http\Controllers;
 
 use App\Models\Specie;
-use App\Http\Requests\StoreSpecieRequest;
-use App\Http\Requests\UpdateSpecieRequest;
 use Illuminate\Http\Request;
 
 class SpecieController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-       // Lekérdezi az összes fajt
-        $species = Specie::orderBy('id')->get(['id', 'fish_name', 'photo']);
-
-        // Ha nincs adat → visszaad egy üzenetet
-        if ($species->isEmpty()) {
-            return response()->json([
-                'message' => 'Nincs adat a species táblában. Futtasd a seeder-t!'
-            ], 200);
-        }
-
-        // JSON visszaadás ékezetekkel
-        return response()->json($species, 200, [], JSON_UNESCAPED_UNICODE);
-    }
-    
-
-    
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreSpecieRequest $request)
-    {
-        //
+        return response()->json([
+            'message' => 'OK',
+            'data' => Specie::all()
+        ], 200, ['json_encode_options' => JSON_UNESCAPED_UNICODE]);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Specie $specie)
+    public function store(Request $request)
     {
-        //
-    }
+        $row = Specie::create($request->all());
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateSpecieRequest $request, Specie $specie)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Specie $specie)
-    {
-        //
+        return response()->json([
+            'message' => 'Specie created',
+            'data' => $row
+        ], 201, ['json_encode_options' => JSON_UNESCAPED_UNICODE]);
     }
 }

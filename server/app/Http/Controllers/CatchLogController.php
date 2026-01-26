@@ -83,6 +83,19 @@ class CatchLogController extends Controller
      */
     public function show(int $id)
     {
+        // Eager load a fishCatches relációra
+        $catchLog = CatchLog::with('fishCatches')->find($id);
+
+        if (!$catchLog) {
+            return response()->json([
+                'message' => 'Catch log not found'
+            ], 404);
+        }
+
+        return response()->json([
+            'message' => 'Success',
+            'data' => $catchLog
+        ]);
         $catchLog = CatchLog::with('fishCatches')->find($id);
 
         if ($catchLog) {

@@ -3,48 +3,63 @@
 namespace App\Http\Controllers;
 
 use App\Models\Location;
-use App\Http\Requests\StoreLocationRequest;
-use App\Http\Requests\UpdateLocationRequest;
+use Illuminate\Http\Request;
 
 class LocationController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        return response()->json([
+            'message' => 'OK',
+            'data' => Location::all()
+        ], 200, ['json_encode_options' => JSON_UNESCAPED_UNICODE]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreLocationRequest $request)
+    public function show(int $id)
     {
-        //
+        $row = Location::find($id);
+
+        return $row
+            ? response()->json(['message' => 'OK', 'data' => $row], 200, ['json_encode_options' => JSON_UNESCAPED_UNICODE])
+            : response()->json(['message' => "Not found id: $id", 'data' => null], 404, ['json_encode_options' => JSON_UNESCAPED_UNICODE]);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Location $location)
+    public function store(Request $request)
     {
-        //
+        $row = Location::create($request->all());
+
+        return response()->json([
+            'message' => 'Location created',
+            'data' => $row
+        ], 201, ['json_encode_options' => JSON_UNESCAPED_UNICODE]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateLocationRequest $request, Location $location)
+    public function update(Request $request, int $id)
     {
-        //
+        $row = Location::find($id);
+
+        if (!$row) {
+            return response()->json([
+                'message' => "Update error. Not found id: $id",
+                'data' => null
+            ], 404, ['json_encode_options' => JSON_UNESCAPED_UNICODE]);
+        }
+
+        $row->update($request->all());
+
+        return response()->json([
+            'message' => 'Location updated',
+            'data' => $row
+        ], 200, ['json_encode_options' => JSON_UNESCAPED_UNICODE]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Location $location)
+    public function destroy(int $id)
     {
-        //
+        Location::destroy($id);
+
+        return response()->json([
+            'message' => 'Location deleted',
+            'data' => ['id' => $id]
+        ], 200, ['json_encode_options' => JSON_UNESCAPED_UNICODE]);
     }
 }
