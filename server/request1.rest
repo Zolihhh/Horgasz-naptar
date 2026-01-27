@@ -12,13 +12,23 @@
 ### AUTH
 ### =========================
 
-### LOGIN
+### ADMIN LOGIN 
 POST {{host}}/api/user/login
 Accept: application/json
 Content-Type: application/json
 
 {
     "email": "admin@example.com",
+    "password": "123"
+}
+
+### HORGASZ LOGIN 
+POST {{host}}/api/user/login
+Accept: application/json
+Content-Type: application/json
+
+{
+    "email": "horgasz6@minta.hu",
     "password": "123"
 }
 
@@ -43,13 +53,13 @@ Authorization: Bearer {{token}}
 
 
 ### GET USER BY ID
-GET {{host}}/api/user/2
+GET {{host}}/api/user/1
 Accept: application/json
 Authorization: Bearer {{token}}
 
 
 ### =========================
-### LOCATIONS
+### --- LOCATIONS
 ### =========================
 
 ### GET ALL LOCATIONS
@@ -65,12 +75,12 @@ Authorization: Bearer {{token}}
 
 {
     "waterAreaCode": "99-999-9-9",
-    "fishingLakeName": "Alma"
+    "fishingLakeName": "Alma-tó"
 }
 
 
 ### =========================
-### SPECIES
+### --- SPECIES
 ### =========================
 
 ### GET ALL SPECIES
@@ -106,9 +116,9 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-    "name": "Gumihal",
-    "color": "zöld"
+    "lure": "aaaaa"
 }
+
 
 
 ### =========================

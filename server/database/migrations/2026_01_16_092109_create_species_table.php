@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('species', function (Blueprint $table) {
         $table->id();
-        $table->string('photo')->nullable();
-        $table->string('fish_name');
+        $table->string('photo');
+        $table->string('fish_name')->unique();
         $table->timestamps();
         });
     }

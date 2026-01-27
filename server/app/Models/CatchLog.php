@@ -10,10 +10,10 @@ class CatchLog extends Model
     /** @use HasFactory<\Database\Factories\CatchLogFactory> */
     use HasFactory;
      protected $fillable = [
-        'user_id',
-        'location',
-        'date',
-        // egyéb mezők
+         'locationid',
+        'userid',
+        'fishing_start',
+        'fishing_end',
     ];
 
     // Reláció a halfogásokhoz

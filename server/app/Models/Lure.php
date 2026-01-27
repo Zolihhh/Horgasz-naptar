@@ -9,4 +9,7 @@ class Lure extends Model
 {
     /** @use HasFactory<\Database\Factories\LureFactory> */
     use HasFactory;
+    protected $fillable = [
+        'lure',
+    ];
 }

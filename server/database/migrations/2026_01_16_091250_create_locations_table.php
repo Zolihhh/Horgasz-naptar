@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('waterAreaCode',20);
             $table->decimal('latitude', 9, 6)->nullable();
             $table->decimal('longitude', 9, 6)->nullable();
-            $table->string('FishingLakeName',80);
+            $table->string('FishingLakeName',80)->unique();
             $table->timestamps();
         });
     }

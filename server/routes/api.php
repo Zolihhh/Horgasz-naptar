@@ -47,7 +47,9 @@ Route::get('/fishcatch/{id}', [FishCatchController::class, 'show']);
 Route::post('/fishcatch', [FishCatchController::class, 'store']);
 Route::delete('/fishcatch/{id}', [FishCatchController::class, 'destroy']);
 
+// SPECIE
 Route::get('/specie', [SpecieController::class, 'index']);
+Route::get('/specie', [SpecieController::class, 'store']);
 
 //region users
 //User kezelés, login, logout
