@@ -36,7 +36,7 @@ Content-Type: application/json
 #@token = {{login.response.body.data.token}}
 
 ### LOGOUT
-POST {{host}}/api/users/logout
+POST {{host}}/api/user/logout
 Accept: application/json
 Authorization: Bearer {{token}}
 
@@ -75,7 +75,7 @@ Authorization: Bearer {{token}}
 
 {
     "waterAreaCode": "99-999-9-9",
-    "fishingLakeName": "Alma-tó"
+    "fishingLakeName": "Aldma-hhtó"
 }
 
 

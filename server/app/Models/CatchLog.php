@@ -10,15 +10,11 @@ class CatchLog extends Model
     /** @use HasFactory<\Database\Factories\CatchLogFactory> */
     use HasFactory;
      protected $fillable = [
-         'locationid',
-        'userid',
+        'locationid',  
+        'userid',     
         'fishing_start',
         'fishing_end',
     ];
 
-    // Reláció a halfogásokhoz
-    public function fishCatches()
-    {
-        return $this->hasMany(FishCatch::class);
-    }
+
 }

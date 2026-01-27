@@ -7,6 +7,7 @@ use App\Models\FishCatch;
 use App\Http\Requests\StoreCatchLogRequest;
 use App\Http\Requests\UpdateCatchLogRequest;
 use Illuminate\Database\QueryException;
+use Illuminate\Http\Request;
 
 class CatchLogController extends Controller
 {
@@ -39,44 +40,36 @@ class CatchLogController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreCatchLogRequest $request)
-    {
-        try {
-            $catchLog = CatchLog::create([
-                'userid' => auth()->id(),
-                'fishing_lake_id' => $request->fishing_lake_id,
-                'comment' => $request->comment,
-                'fishing_start' => $request->fishing_start,
-                'fishing_end' => $request->fishing_end,
-            ]);
+public function store(StoreCatchLogRequest $request)
+{
+$user = $request->user(); // token alapján
 
-            if ($request->has('fish_catches')) {
-                foreach ($request->fish_catches as $catch) {
-                    $catchLog->fishCatches()->create([
-                        'species_id' => $catch['species_id'],
-                        'weight' => $catch['weight'],
-                        'length' => $catch['length'],
-                        'lure_id' => $catch['lure_id'],
-                        'catch_time' => $catch['catch_time'],
-                    ]);
-                }
-            }
+if (!$user) {
+    return response()->json([
+        'message' => 'Unauthorized. Nincs bejelentkezett user.',
+        'data' => []
+    ], 401);
+}
 
-            $status = 201;
-            $data = [
-                'message' => 'Catch log sikeresen mentve!',
-                'data' => $catchLog->load('fishCatches')
-            ];
-        } catch (QueryException $e) {
-            $status = 400;
-            $data = [
-                'message' => "Insert error: {$e->getMessage()}",
-                'data' => []
-            ];
-        }
+    // CatchLog létrehozása
+    $catchLog = CatchLog::create([
+        'userid' => $user->id,
+        'fishing_lake_id' => $request->fishing_lake_id,
+        'comment' => $request->comment,
+        'fishing_start' => $request->fishing_start,
+        'fishing_end' => $request->fishing_end,
+    ]);
 
-        return response()->json($data, $status, ['json_encode_options' => JSON_UNESCAPED_UNICODE]);
+    // FishCatches létrehozása
+    foreach ($request->fish_catches as $catch) {
+        $catchLog->fishCatches()->create($catch);
     }
+
+    return response()->json([
+        'message' => 'Catch log és fish catches sikeresen létrehozva!',
+        'data' => $catchLog->load('fishCatches')
+    ], 201, ['json_encode_options' => JSON_UNESCAPED_UNICODE]);
+}
 
     /**
      * Display the specified resource.
@@ -105,53 +98,53 @@ public function show(int $id)
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateCatchLogRequest $request, int $id)
-    {
-        $catchLog = CatchLog::find($id);
+    // public function update(UpdateCatchLogRequest $request, int $id)
+    // {
+    //     $catchLog = CatchLog::find($id);
 
-        if ($catchLog) {
-            $catchLog->update($request->validated());
+    //     if ($catchLog) {
+    //         $catchLog->update($request->validated());
 
-            $status = 200;
-            $data = [
-                'message' => 'Catch log frissítve!',
-                'data' => $catchLog
-            ];
-        } else {
-            $status = 404;
-            $data = [
-                'message' => "Patch error. Not found id: $id",
-                'data' => null
-            ];
-        }
+    //         $status = 200;
+    //         $data = [
+    //             'message' => 'Catch log frissítve!',
+    //             'data' => $catchLog
+    //         ];
+    //     } else {
+    //         $status = 404;
+    //         $data = [
+    //             'message' => "Patch error. Not found id: $id",
+    //             'data' => null
+    //         ];
+    //     }
 
-        return response()->json($data, $status, ['json_encode_options' => JSON_UNESCAPED_UNICODE]);
-    }
+    //     return response()->json($data, $status, ['json_encode_options' => JSON_UNESCAPED_UNICODE]);
+    // }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(int $id)
-    {
-        $catchLog = CatchLog::find($id);
+    // public function destroy(int $id)
+    // {
+    //     $catchLog = CatchLog::find($id);
 
-        if ($catchLog) {
-            $catchLog->fishCatches()->delete();
-            $catchLog->delete();
+    //     if ($catchLog) {
+    //         $catchLog->fishCatches()->delete();
+    //         $catchLog->delete();
 
-            $status = 200;
-            $data = [
-                'message' => 'Catch log törölve!',
-                'data' => ['id' => $id]
-            ];
-        } else {
-            $status = 404;
-            $data = [
-                'message' => "Delete error. Not found id: $id",
-                'data' => null
-            ];
-        }
+    //         $status = 200;
+    //         $data = [
+    //             'message' => 'Catch log törölve!',
+    //             'data' => ['id' => $id]
+    //         ];
+    //     } else {
+    //         $status = 404;
+    //         $data = [
+    //             'message' => "Delete error. Not found id: $id",
+    //             'data' => null
+    //         ];
+    //     }
 
-        return response()->json($data, $status, ['json_encode_options' => JSON_UNESCAPED_UNICODE]);
-    }
+    //     return response()->json($data, $status, ['json_encode_options' => JSON_UNESCAPED_UNICODE]);
+    // }
 }
