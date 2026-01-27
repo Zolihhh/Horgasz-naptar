@@ -22,7 +22,8 @@ class StoreSpecieRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'fish_name' => 'nullable|string',
+            'photo' => 'nullable|string'
         ];
     }
 }

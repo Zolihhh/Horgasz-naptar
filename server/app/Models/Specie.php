@@ -16,5 +16,4 @@ class Specie extends Model
     ];
     
 }
-Specie::all();
-Specie::pluck('photo');
+

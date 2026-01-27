@@ -95,7 +95,7 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-    "fish_name": "Alma",
+    "fish_name": "Almasdgggggssddddss",
     "photo": "alma.jpg"
 }
 
