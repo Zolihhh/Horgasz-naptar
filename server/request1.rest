@@ -46,7 +46,7 @@ Authorization: Bearer {{token}}
 
 
 ### GET USER BY ID
-GET {{host}}/api/users/1
+GET {{host}}/api/users/2
 Accept: application/json
 Authorization: Bearer {{token}}
 

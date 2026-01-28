@@ -36,21 +36,7 @@ Route::get('/lures', [LureController::class, 'index']);
 Route::post('/lures', [LureController::class, 'store']);
  
 // CATCH LOG
-<<<<<<< HEAD
-Route::get('/catchlog', [CatchLogController::class, 'index']);
-Route::get('/catchlog/{id}', [CatchLogController::class, 'show']);
-Route::post('/catchlog', [CatchLogController::class, 'store']);
-Route::patch('/catchlog/{id}', [CatchLogController::class, 'update']);
-Route::delete('/catchlog/{id}', [CatchLogController::class, 'destroy']);
 
-=======
-Route::get('/catchlogs', [CatchLogController::class, 'index']);
-Route::get('/catchlogs/{id}', [CatchLogController::class, 'show']);
-Route::post('/catchlogs', [CatchLogController::class, 'store']);
-Route::patch('/catchlogs/{id}', [CatchLogController::class, 'update']);
-Route::delete('/catchlogs/{id}', [CatchLogController::class, 'destroy']);
- 
->>>>>>> 2b0f748797368cd95b35601c30b2252f98f8b8a2
 // FISH CATCH
 Route::get('/fishcatches', [FishCatchController::class, 'index']);
 Route::get('/fishcatches/{id}', [FishCatchController::class, 'show']);
