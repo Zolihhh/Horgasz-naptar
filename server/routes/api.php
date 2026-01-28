@@ -36,7 +36,12 @@ Route::get('/lures', [LureController::class, 'index']);
 Route::post('/lures', [LureController::class, 'store']);
  
 // CATCH LOG
-
+Route::get('/catchlogs', [CatchLogController::class, 'index']);
+Route::get('/catchlogs/{id}', [CatchLogController::class, 'show']);
+Route::post('/catchlogs', [CatchLogController::class, 'store']);
+Route::patch('/catchlogs/{id}', [CatchLogController::class, 'update']);
+Route::delete('/catchlogs/{id}', [CatchLogController::class, 'destroy']);
+ 
 // FISH CATCH
 Route::get('/fishcatches', [FishCatchController::class, 'index']);
 Route::get('/fishcatches/{id}', [FishCatchController::class, 'show']);
