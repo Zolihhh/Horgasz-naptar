@@ -15,4 +15,6 @@ class CatchLogSeeder extends Seeder
             CatchLog::factory()->create();
         }
     }
+
+    
 }

@@ -11,10 +11,14 @@ class CatchLog extends Model
     use HasFactory;
      protected $fillable = [
         'locationid',  
-        'userid',     
+        'userid',   
+        'comment',  
         'fishing_start',
         'fishing_end',
     ];
 
-
+  public function catchLog()
+    {
+        return $this->belongsTo(CatchLog::class, 'catchLogId');
+    }
 }

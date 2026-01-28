@@ -9,14 +9,18 @@ class FishCatch extends Model
 {
     /** @use HasFactory<\Database\Factories\FishCatchFactory> */
     use HasFactory;
-   protected $fillable = [
-    'catch_log_id',
-    'species_id',
-    'weight',
-    'length',
-    'lure_id',
-    'catch_time',
-];
+ protected $fillable = [
+        'catchLogId',
+        'species_id',
+        'weight',
+        'length',
+        'lure_id',
+        'catch_time',
+    ];
 
-
+    public function fishCatches()
+    {
+        return $this->hasMany(FishCatch::class, 'catchLogId'); 
+        // 'catchLogId' → a fish_catches tábla idegen kulcsa
+    }
 }

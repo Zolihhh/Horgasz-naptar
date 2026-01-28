@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('specieId')->constrained('species')->onDelete('restrict');
             $table->foreignId('lureId')->constrained('lures')->onDelete('restrict');
-            $table->foreignId('catchLogId')->constrained('catch_logs')->onDelete('restrict');
+            $table->foreignId('catchLogId')->constrained('catch_logs')->onDelete('cascade');
             $table->decimal('weight', 3, 2);
             $table->decimal('length', 5);
             $table->dateTime('catchTime');

@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('catch_logs', function (Blueprint $table) {
         $table->id();
-        $table->foreignId('locationid')->constrained('locations')->onDelete('restrict');
-        $table->foreignId('userid')->constrained('users')->onDelete('restrict');
+        $table->foreignId('locationid')->constrained('locations')->onDelete('cascade');
+        $table->foreignId('userid')->constrained('users')->onDelete('cascade');
         $table->text('comment')->nullable();
         $table->date('fishing_start')->nullable();
         $table->date('fishing_end')->nullable();

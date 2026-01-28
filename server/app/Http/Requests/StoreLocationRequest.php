@@ -21,8 +21,11 @@ class StoreLocationRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            //
-        ];
+      return [
+    'waterAreaCode'   => 'required|string',
+    'fishingLakeName' => 'required|string',
+];
+
+
     }
 }
