@@ -13,7 +13,8 @@
 ### =========================
 
 ### ADMIN LOGIN 
-POST {{host}}/api/user/login
+# @name login
+POST {{host}}/api/users/login
 Accept: application/json
 Content-Type: application/json
 
@@ -22,21 +23,13 @@ Content-Type: application/json
     "password": "123"
 }
 
-### HORGASZ LOGIN 
-POST {{host}}/api/user/login
-Accept: application/json
-Content-Type: application/json
 
-{
-    "email": "horgasz6@minta.hu",
-    "password": "123"
-}
 
 ### TOKEN FRISSÍTÉS
-#@token = {{login.response.body.data.token}}
+@token = {{login.response.body.data.token}}
 
 ### LOGOUT
-POST {{host}}/api/user/logout
+POST {{host}}/api/users/logout
 Accept: application/json
 Authorization: Bearer {{token}}
 
@@ -47,13 +40,13 @@ Authorization: Bearer {{token}}
 ### =========================
 
 ### GET ALL USERS
-GET {{host}}/api/user
+GET {{host}}/api/users
 Accept: application/json
 Authorization: Bearer {{token}}
 
 
 ### GET USER BY ID
-GET {{host}}/api/user/1
+GET {{host}}/api/users/1
 Accept: application/json
 Authorization: Bearer {{token}}
 
@@ -63,19 +56,19 @@ Authorization: Bearer {{token}}
 ### =========================
 
 ### GET ALL LOCATIONS
-GET {{host}}/api/location
+GET {{host}}/api/locations
 Accept: application/json
 Authorization: Bearer {{token}}
 
 ### CREATE LOCATION
-POST {{host}}/api/location
+POST {{host}}/api/locations
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
     "waterAreaCode": "99-999-9-9",
-    "fishingLakeName": "Aldma-hhtó"
+    "fishingLakeName": "Alma-hhtó"
 }
 
 
@@ -84,18 +77,18 @@ Authorization: Bearer {{token}}
 ### =========================
 
 ### GET ALL SPECIES
-GET {{host}}/api/specie
+GET {{host}}/api/species
 Accept: application/json
 Authorization: Bearer {{token}}
 
 ### CREATE SPECIE
-POST {{host}}/api/specie
+POST {{host}}/api/species
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-    "fish_name": "Almasdgggggssddddss",
+    "fish_name": "Alma",
     "photo": "alma.jpg"
 }
 
@@ -105,18 +98,18 @@ Authorization: Bearer {{token}}
 ### =========================
 
 ### GET ALL LURES
-GET {{host}}/api/lure
+GET {{host}}/api/lures
 Accept: application/json
 Authorization: Bearer {{token}}
 
 ### CREATE LURE
-POST {{host}}/api/lure
+POST {{host}}/api/lures
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-    "lure": "aaaaa"
+    "lure": "popap"
 }
 
 
@@ -126,17 +119,17 @@ Authorization: Bearer {{token}}
 ### =========================
 
 ### GET ALL CATCH LOGS (SAJÁT)
-GET {{host}}/api/catchlog
+GET {{host}}/api/catchlogs
 Accept: application/json
 Authorization: Bearer {{token}}
 
 ### GET CATCH LOG BY ID
-GET {{host}}/api/catchlog/1
+GET {{host}}/api/catchlogs/1
 Accept: application/json
 Authorization: Bearer {{token}}
 
 ### CREATE CATCH LOG + FISH CATCHES
-POST {{host}}/api/catchlog
+POST {{host}}/api/catchlogs
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
@@ -159,7 +152,11 @@ Authorization: Bearer {{token}}
 }
 
 ### UPDATE CATCH LOG
+<<<<<<< HEAD
 PATCH {{host}}/api/catchlog/3
+=======
+PATCH {{host}}/api/catchlogs/1
+>>>>>>> 2b0f748797368cd95b35601c30b2252f98f8b8a2
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
@@ -169,7 +166,11 @@ Authorization: Bearer {{token}}
 }
 
 ### DELETE CATCH LOG
+<<<<<<< HEAD
 DELETE {{host}}/api/catchlog/3
+=======
+DELETE {{host}}/api/catchlogs/1
+>>>>>>> 2b0f748797368cd95b35601c30b2252f98f8b8a2
 Accept: application/json
 Authorization: Bearer {{token}}
 
@@ -179,17 +180,21 @@ Authorization: Bearer {{token}}
 ### =========================
 
 ### GET ALL FISH CATCHES
-GET {{host}}/api/fishcatch
+GET {{host}}/api/fishcatches
 Accept: application/json
 Authorization: Bearer {{token}}
 
 ### GET FISH CATCH BY ID
+<<<<<<< HEAD
 GET {{host}}/api/fishcatch/4
+=======
+GET {{host}}/api/fishcatches/1
+>>>>>>> 2b0f748797368cd95b35601c30b2252f98f8b8a2
 Accept: application/json
 Authorization: Bearer {{token}}
 
 ### CREATE FISH CATCH
-POST {{host}}/api/fishcatch
+POST {{host}}/api/fishcatches
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
