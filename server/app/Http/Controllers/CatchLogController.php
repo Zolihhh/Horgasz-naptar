@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UpdateCatchLogRequest;
 use App\Models\CatchLog as CurrentModel;
 use App\Models\FishCatch;
 use App\Http\Requests\StoreCatchLogRequest as StoreCurrentModelRequest;
@@ -56,10 +57,7 @@ public function show(int $id)
             return $row;
         });
     }
-
-    /**
-     * Remove the specified resource from storage.
-     */
+    
     public function destroy(int $id,  )
     {
         
