@@ -9,9 +9,10 @@ class StoreFishCatchRequest extends FormRequest
     /**
      * Determine if the user is authorized to make this request.
      */
+      
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -21,8 +22,13 @@ class StoreFishCatchRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            //
+       return [
+            'catchLogId'  => 'required|integer|exists:catch_logs,id',
+            'specieId'    => 'required|integer|exists:species,id',
+            'weight'      => 'required|numeric|min:0',
+            'length'      => 'required|numeric|min:0',
+            'lureId'      => 'required|integer|exists:lures,id',
+            'catchTime'   => 'required|date',
         ];
     }
 }

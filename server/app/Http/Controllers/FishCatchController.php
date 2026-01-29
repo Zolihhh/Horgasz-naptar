@@ -58,9 +58,10 @@ class FishCatchController extends Controller
      */
     public function destroy(int $id)
     {
-        return $this->apiResponse(function () use ($id) {
+          return $this->apiResponse(function () use ($id) {
             CurrentModel::findOrFail($id)->delete();
             return ['id' => $id];
+            
         });
     }
 }

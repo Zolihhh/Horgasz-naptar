@@ -10,13 +10,13 @@ class FishCatch extends Model
     /** @use HasFactory<\Database\Factories\FishCatchFactory> */
     use HasFactory;
  protected $fillable = [
-        'catchLogId',
-        'species_id',
-        'weight',
-        'length',
-        'lure_id',
-        'catch_time',
-    ];
+    'catchLogId',
+    'specieId',
+    'weight',
+    'length',
+    'lureId',
+    'catchTime',
+];
 
     public function fishCatches()
     {
