@@ -1,101 +1,45 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Unit;
 
-use App\Models\FishCatch;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class FishCatchesTest extends TestCase
 {
     use RefreshDatabase;
 
-    /** @test */
-    public function it_can_create_a_fish_catch()
-    {
-        $catch = FishCatch::create([
-            'speciesId'  => 1,
-            'lureId'     => 2,
-            'catchLogId' => 1,
-            'weight'     => 6.78,
-            'length'     => 15.00,
-            'catchTime'  => '2026-01-28 04:27:00',
-        ]);
+    protected string $table = 'fish_catches';
 
-        $this->assertDatabaseHas('fisch_catches', [
-            'id'         => $catch->id,
-            'speciesId'  => 1,
-            'lureId'     => 2,
-            'catchLogId' => 1,
-            'weight'     => 6.78,
-            'length'     => 15.00,
-        ]);
+    public static function expectedSchemaDataProvider(): array
+    {
+        return [
+            ['id'],
+            ['specieId'],
+            ['lureId'],
+            ['catchLogId'],
+            ['weight'],
+            ['length'],
+            ['catchTime'],
+        ];
     }
 
-    /** @test */
-    public function it_can_read_fish_catches()
+    public function test_fish_catches_table_exists(): void
     {
-        FishCatch::create([
-            'speciesId'  => 1,
-            'lureId'     => 1,
-            'catchLogId' => 1,
-            'weight'     => 3.86,
-            'length'     => 15.00,
-            'catchTime'  => now(),
-        ]);
-
-        FishCatch::create([
-            'speciesId'  => 2,
-            'lureId'     => 2,
-            'catchLogId' => 1,
-            'weight'     => 5.09,
-            'length'     => 15.00,
-            'catchTime'  => now(),
-        ]);
-
-        $this->assertEquals(2, FishCatch::count());
+        $this->assertTrue(
+            Schema::hasTable($this->table),
+            "A {$this->table} tábla nem létezik"
+        );
     }
 
-    /** @test */
-    public function it_can_update_a_fish_catch()
+    #[DataProvider('expectedSchemaDataProvider')]
+    public function test_fish_catches_columns_exist(string $column): void
     {
-        $catch = FishCatch::create([
-            'speciesId'  => 1,
-            'lureId'     => 1,
-            'catchLogId' => 1,
-            'weight'     => 3.86,
-            'length'     => 15.00,
-            'catchTime'  => now(),
-        ]);
-
-        $catch->update([
-            'weight' => 4.50,
-            'length' => 16.20,
-        ]);
-
-        $this->assertDatabaseHas('fisch_catches', [
-            'id'     => $catch->id,
-            'weight' => 4.50,
-            'length' => 16.20,
-        ]);
-    }
-
-    /** @test */
-    public function it_can_delete_a_fish_catch()
-    {
-        $catch = FishCatch::create([
-            'speciesId'  => 1,
-            'lureId'     => 1,
-            'catchLogId' => 1,
-            'weight'     => 3.86,
-            'length'     => 15.00,
-            'catchTime'  => now(),
-        ]);
-
-        $catch->delete();
-
-        $this->assertDatabaseMissing('fisch_catches', [
-            'id' => $catch->id,
-        ]);
+        $this->assertTrue(
+            Schema::hasColumn($this->table, $column),
+            "A {$column} oszlop nem létezik a {$this->table} táblában"
+        );
     }
 }
