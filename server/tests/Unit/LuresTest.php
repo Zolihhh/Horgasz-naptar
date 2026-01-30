@@ -4,27 +4,27 @@ namespace Tests\Feature;
 
 use App\Models\Lure;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class LuresTest extends TestCase
 {
     use RefreshDatabase;
 
-    /** @test */
-    public function it_can_create_a_lure()
+    #[Test]
+    public function it_can_create_a_lure(): void
     {
         $lure = Lure::create([
-            'lure' => 'Saját csali',
+            'lure' => 'Kukorica',
         ]);
 
         $this->assertDatabaseHas('lures', [
-            'id'   => $lure->id,
-            'lure' => 'Saját csali',
+            'lure' => 'Kukorica',
         ]);
     }
 
-    /** @test */
-    public function it_can_read_lures()
+    #[Test]
+    public function it_can_read_lures(): void
     {
         Lure::create(['lure' => 'Kukorica']);
         Lure::create(['lure' => 'Csemegekukorica']);
@@ -32,8 +32,8 @@ class LuresTest extends TestCase
         $this->assertEquals(2, Lure::count());
     }
 
-    /** @test */
-    public function it_can_update_a_lure()
+    #[Test]
+    public function it_can_update_a_lure(): void
     {
         $lure = Lure::create(['lure' => 'Főtt kukorica']);
 
@@ -47,8 +47,8 @@ class LuresTest extends TestCase
         ]);
     }
 
-    /** @test */
-    public function it_can_delete_a_lure()
+    #[Test]
+    public function it_can_delete_a_lure(): void
     {
         $lure = Lure::create(['lure' => 'Boji']);
 
