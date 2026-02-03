@@ -3,8 +3,10 @@
 namespace Tests\Feature;
 
 use App\Models\Lure;
+use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
@@ -14,48 +16,33 @@ class LuresTest extends TestCase
     use DatabaseTransactions;
 
     protected string $table = 'lures';
+    
 
-    // Adat szolgáltató a tesztekhez
-    public static function lureDataProvider(): array
+    public function test_lure_column_unique(): void
     {
-        return [
-            ['Lure1'],
-            ['Lure2'],
-            ['Lure3'],
-            ['Lure4'],
-            ['Lure5'],
-        ];
-    }
-
-    #[Test]
-    #[DataProvider('lureDataProvider')]
-    public function it_can_create_a_lure(string $lureName): void
-    {
-        $lure = Lure::create([
-            'lure' => $lureName,
-        ]);
-
-        $this->assertDatabaseHas($this->table, [
-            'lure' => $lureName,
-        ]);
-    }
-
-    #[Test]
-    public function it_can_read_lures(): void
-    {
-        foreach (self::lureDataProvider() as [$name]) {
-            Lure::create(['lure' => $name]);
+        $name = "Lure1";
+        try {
+            DB::table('lures')->insert(['lure' => $name, 'created_at' => now(), 'updated_at' => now()]);
+            DB::table('lures')->insert(['lure' => $name, 'created_at' => now(), 'updated_at' => now()]);
+        } catch (QueryException $e) {
+            $errorCode = $e->errorInfo[1]; // MySQL hibakód
         }
 
-        $this->assertEquals(count(self::lureDataProvider()), Lure::count());
+        // ellenőrizzük, hogy valóban duplicate entry hibát kaptunk
+        $this->assertEquals(
+            1062,
+            $errorCode,
+            'Duplicate entry error code (1062) expected for unique constraint violation.'
+        );
+
     }
 
-    #[Test]
-    public function it_can_update_a_lure(): void
+
+    public function test_it_can_update_a_lure(): void
     {
         // Véletlenszerű név generálása a teszthez
         $original = 'OriginalLure';
-        $updated  = 'UpdatedLure';
+        $updated = 'UpdatedLure';
 
         $lure = Lure::create(['lure' => $original]);
 
@@ -64,13 +51,13 @@ class LuresTest extends TestCase
         ]);
 
         $this->assertDatabaseHas($this->table, [
-            'id'   => $lure->id,
+            'id' => $lure->id,
             'lure' => $updated,
         ]);
     }
 
-    #[Test]
-    public function it_can_delete_a_lure(): void
+
+    public function test_it_can_delete_a_lure(): void
     {
         $lureName = 'DeleteMe';
         $lure = Lure::create(['lure' => $lureName]);
@@ -82,7 +69,7 @@ class LuresTest extends TestCase
         ]);
     }
 
-    #[Test]
+
     public function test_lures_table_exists(): void
     {
         $this->assertTrue(
@@ -91,7 +78,6 @@ class LuresTest extends TestCase
         );
     }
 
-    #[Test]
     public function test_lure_column_exists(): void
     {
         $this->assertTrue(
