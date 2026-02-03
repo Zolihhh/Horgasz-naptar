@@ -16,12 +16,12 @@ class CatchLogsTest extends TestCase
     public static function expectedSchemaDataProvider(): array
     {
         return [
-            ['id'],
-            ['userid'],
-            ['locationid'],
-            ['comment'],
-            ['fishing_start'],
-            ['fishing_end'],
+        'id oszlop' =>   ['id'],
+            'userid oszlop' => ['userid'],
+            'locationid oszlop' => ['locationid'],
+            'comment oszlop' => ['comment'],
+            'fishing_start oszlop' => ['fishing_start'],
+            'fishing_end oszlop' => ['fishing_end'],
         ];
     }
 
