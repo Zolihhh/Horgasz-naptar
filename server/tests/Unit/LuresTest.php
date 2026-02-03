@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Lure;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -10,7 +11,7 @@ use Tests\TestCase;
 
 class LuresTest extends TestCase
 {
-    use RefreshDatabase;
+    use DatabaseTransactions;
 
     protected string $table = 'lures';
 

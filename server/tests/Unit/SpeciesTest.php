@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -10,7 +11,7 @@ use PHPUnit\Framework\Attributes\Test;
 
 class SpeciesTest extends TestCase
 {
-    use RefreshDatabase;
+    use DatabaseTransactions;
 
 
     protected string $table = 'species';

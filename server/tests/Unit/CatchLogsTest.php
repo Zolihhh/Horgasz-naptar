@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -9,8 +10,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 
 class CatchLogsTest extends TestCase
 {
-    use RefreshDatabase;
-
+    use DatabaseTransactions;
     protected string $table = 'catch_logs';
 
     public static function expectedSchemaDataProvider(): array
