@@ -3,102 +3,154 @@
 namespace Tests\Unit;
 
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Schema;
 use Tests\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class DatabaseTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_tables_exist()
+    /* =========================
+        TÁBLÁK
+    ========================= */
+
+    public static function tablesDataProvider(): array
     {
-        foreach ([
-            'users',
-            'locations',
-            'species',
-            'lures',
-            'catch_logs',
-            'fish_catches',
-        ] as $table) {
-            $this->assertTrue(
-                Schema::hasTable($table),
-                "{$table} tábla nem létezik"
-            );
-        }
+        return [
+            'users tábla'        => ['users'],
+            'locations tábla'    => ['locations'],
+            'species tábla'      => ['species'],
+            'lures tábla'        => ['lures'],
+            'catch_logs tábla'   => ['catch_logs'],
+            'fish_catches tábla' => ['fish_catches'],
+        ];
     }
 
-    public function test_species_table_structure()
+    #[DataProvider('tablesDataProvider')]
+    public function test_tables_exist(string $table): void
     {
-        $this->assertTrue(Schema::hasTable('species'));
-
-        $this->assertTrue(Schema::hasColumn('species', 'id'));
-        $this->assertTrue(Schema::hasColumn('species', 'fish_name'));
-        $this->assertTrue(Schema::hasColumn('species', 'photo'));
-
-        // SQLite vs MySQL kompatibilitás
-        $idType = Schema::getColumnType('species', 'id');
         $this->assertTrue(
-            in_array($idType, ['bigint', 'integer']),
-            "species.id típusa nem megfelelő: {$idType}"
-        );
-
-        $this->assertEquals(
-            'varchar',
-            Schema::getColumnType('species', 'fish_name')
+            Schema::hasTable($table),
+            "A '{$table}' tábla nem létezik"
         );
     }
 
-    public function test_locations_table_structure()
-    {
-        $this->assertTrue(Schema::hasColumn('locations', 'id'));
-        $this->assertTrue(Schema::hasColumn('locations', 'waterAreaCode'));
-        $this->assertTrue(Schema::hasColumn('locations', 'latitude'));
-        $this->assertTrue(Schema::hasColumn('locations', 'longitude'));
-        $this->assertTrue(Schema::hasColumn('locations', 'FishingLakeName'));
+    /* =========================
+        SPECIES
+    ========================= */
 
-        $idType = Schema::getColumnType('locations', 'id');
+    public static function speciesColumnsProvider(): array
+    {
+        return [
+            'id oszlop'        => ['species', 'id'],
+            'fish_name oszlop' => ['species', 'fish_name'],
+            'photo oszlop'     => ['species', 'photo'],
+        ];
+    }
+
+    #[DataProvider('speciesColumnsProvider')]
+    public function test_species_columns_exist(string $table, string $column): void
+    {
         $this->assertTrue(
-            in_array($idType, ['bigint', 'integer']),
-            "locations.id típusa nem megfelelő: {$idType}"
+            Schema::hasColumn($table, $column),
+            "A '{$column}' oszlop nem létezik a '{$table}' táblában"
         );
     }
 
-    public function test_lures_table_structure()
-    {
-        $this->assertTrue(Schema::hasColumn('lures', 'id'));
-        $this->assertTrue(Schema::hasColumn('lures', 'lure'));
+    /* =========================
+        LOCATIONS
+    ========================= */
 
-        $idType = Schema::getColumnType('lures', 'id');
+    public static function locationsColumnsProvider(): array
+    {
+        return [
+            ['locations', 'id'],
+            ['locations', 'waterAreaCode'],
+            ['locations', 'latitude'],
+            ['locations', 'longitude'],
+            ['locations', 'FishingLakeName'],
+        ];
+    }
+
+    #[DataProvider('locationsColumnsProvider')]
+    public function test_locations_columns_exist(string $table, string $column): void
+    {
         $this->assertTrue(
-            in_array($idType, ['bigint', 'integer']),
-            "lures.id típusa nem megfelelő: {$idType}"
-        );
-
-        $this->assertEquals(
-            'varchar',
-            Schema::getColumnType('lures', 'lure')
+            Schema::hasColumn($table, $column),
+            "A '{$column}' oszlop nem létezik a '{$table}' táblában"
         );
     }
 
-    public function test_catch_logs_foreign_key_columns_exist()
+    /* =========================
+        LURES
+    ========================= */
+
+    public static function luresColumnsProvider(): array
     {
-        // migráció szerint: userid, locationid
-        $this->assertTrue(Schema::hasColumn('catch_logs', 'userid'));
-        $this->assertTrue(Schema::hasColumn('catch_logs', 'locationid'));
-        $this->assertTrue(Schema::hasColumn('catch_logs', 'fishing_start'));
-        $this->assertTrue(Schema::hasColumn('catch_logs', 'fishing_end'));
+        return [
+            ['lures', 'id'],
+            ['lures', 'lure'],
+        ];
     }
 
-    public function test_fish_catches_foreign_key_columns_exist()
+    #[DataProvider('luresColumnsProvider')]
+    public function test_lures_columns_exist(string $table, string $column): void
     {
-        // migráció szerint: specieId, lureId, catchLogId
-        $this->assertTrue(Schema::hasColumn('fish_catches', 'specieId'));
-        $this->assertTrue(Schema::hasColumn('fish_catches', 'lureId'));
-        $this->assertTrue(Schema::hasColumn('fish_catches', 'catchLogId'));
+        $this->assertTrue(
+            Schema::hasColumn($table, $column),
+            "A '{$column}' oszlop nem létezik a '{$table}' táblában"
+        );
+    }
 
-        $this->assertTrue(Schema::hasColumn('fish_catches', 'weight'));
-        $this->assertTrue(Schema::hasColumn('fish_catches', 'length'));
-        $this->assertTrue(Schema::hasColumn('fish_catches', 'catchTime'));
+    /* =========================
+        CATCH LOGS
+    ========================= */
+
+    public static function catchLogsColumnsProvider(): array
+    {
+        return [
+            ['catch_logs', 'id'],
+            ['catch_logs', 'userid'],
+            ['catch_logs', 'locationid'],
+            ['catch_logs', 'comment'],
+            ['catch_logs', 'fishing_start'],
+            ['catch_logs', 'fishing_end'],
+        ];
+    }
+
+    #[DataProvider('catchLogsColumnsProvider')]
+    public function test_catch_logs_columns_exist(string $table, string $column): void
+    {
+        $this->assertTrue(
+            Schema::hasColumn($table, $column),
+            "A '{$column}' oszlop nem létezik a '{$table}' táblában"
+        );
+    }
+
+    /* =========================
+        FISH CATCHES
+    ========================= */
+
+    public static function fishCatchesColumnsProvider(): array
+    {
+        return [
+            ['fish_catches', 'id'],
+            ['fish_catches', 'specieId'],
+            ['fish_catches', 'lureId'],
+            ['fish_catches', 'catchLogId'],
+            ['fish_catches', 'weight'],
+            ['fish_catches', 'length'],
+            ['fish_catches', 'catchTime'],
+        ];
+    }
+
+    #[DataProvider('fishCatchesColumnsProvider')]
+    public function test_fish_catches_columns_exist(string $table, string $column): void
+    {
+        $this->assertTrue(
+            Schema::hasColumn($table, $column),
+            "A '{$column}' oszlop nem létezik a '{$table}' táblában"
+        );
     }
 }

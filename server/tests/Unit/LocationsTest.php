@@ -4,7 +4,6 @@ namespace Tests\Unit;
 
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 
@@ -14,14 +13,17 @@ class LocationsTest extends TestCase
 
     protected string $table = 'locations';
 
+    /**
+     * Oszlopok listája providerből (feliratozva)
+     */
     public static function expectedSchemaDataProvider(): array
     {
         return [
-            ['id'],
-            ['waterAreaCode'],
-            ['latitude'],
-            ['longitude'],
-            ['FishingLakeName'],
+            'id oszlop'             => ['id'],
+            'waterAreaCode oszlop'  => ['waterAreaCode'],
+            'latitude oszlop'       => ['latitude'],
+            'longitude oszlop'      => ['longitude'],
+            'FishingLakeName oszlop'=> ['FishingLakeName'],
         ];
     }
 
@@ -38,7 +40,7 @@ class LocationsTest extends TestCase
     {
         $this->assertTrue(
             Schema::hasColumn($this->table, $column),
-            "A {$column} oszlop nem létezik"
+            "A '{$column}' oszlop nem létezik a '{$this->table}' táblában"
         );
     }
 }

@@ -4,7 +4,6 @@ namespace Tests\Unit;
 
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 
@@ -14,16 +13,19 @@ class FishCatchesTest extends TestCase
 
     protected string $table = 'fish_catches';
 
+    /**
+     * Oszlopok listája providerből (feliratozva)
+     */
     public static function expectedSchemaDataProvider(): array
     {
         return [
-            ['id'],
-            ['specieId'],
-            ['lureId'],
-            ['catchLogId'],
-            ['weight'],
-            ['length'],
-            ['catchTime'],
+            'id oszlop'         => ['id'],
+            'specieId oszlop'   => ['specieId'],
+            'lureId oszlop'     => ['lureId'],
+            'catchLogId oszlop' => ['catchLogId'],
+            'weight oszlop'     => ['weight'],
+            'length oszlop'     => ['length'],
+            'catchTime oszlop'  => ['catchTime'],
         ];
     }
 
@@ -40,7 +42,7 @@ class FishCatchesTest extends TestCase
     {
         $this->assertTrue(
             Schema::hasColumn($this->table, $column),
-            "A {$column} oszlop nem létezik a {$this->table} táblában"
+            "A '{$column}' oszlop nem létezik a '{$this->table}' táblában"
         );
     }
 }
