@@ -21,9 +21,9 @@ class StoreLureRequest extends FormRequest
      */
     public function rules(): array
     {
-       return [
-    'lure' => 'required|string',
-];
+        return [
+            'lure' => 'required|string',
+        ];
 
     }
 }
