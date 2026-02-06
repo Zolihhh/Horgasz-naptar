@@ -12,18 +12,32 @@ class DatabaseTest extends TestCase
     use DatabaseTransactions;
 
     /* =========================
+        SEGÉD – TÍPUS NORMALIZÁLÁS
+    ========================= */
+
+    private function normalizeType(string $dbType): string
+    {
+        return match ($dbType) {
+            'bigint'  => 'integer',
+            'varchar' => 'string',
+            'float'   => 'decimal', // sqlite vs mysql
+            default   => $dbType,
+        };
+    }
+
+    /* =========================
         TÁBLÁK
     ========================= */
 
     public static function tablesDataProvider(): array
     {
         return [
-            'users tábla'        => ['users'],
-            'locations tábla'    => ['locations'],
-            'species tábla'      => ['species'],
-            'lures tábla'        => ['lures'],
-            'catch_logs tábla'   => ['catch_logs'],
-            'fish_catches tábla' => ['fish_catches'],
+            ['users'],
+            ['locations'],
+            ['species'],
+            ['lures'],
+            ['catch_logs'],
+            ['fish_catches'],
         ];
     }
 
@@ -32,7 +46,7 @@ class DatabaseTest extends TestCase
     {
         $this->assertTrue(
             Schema::hasTable($table),
-            "A '{$table}' tábla nem létezik"
+            "A {$table} tábla nem létezik"
         );
     }
 
@@ -43,18 +57,28 @@ class DatabaseTest extends TestCase
     public static function speciesColumnsProvider(): array
     {
         return [
-            'id oszlop'        => ['species', 'id'],
-            'fish_name oszlop' => ['species', 'fish_name'],
-            'photo oszlop'     => ['species', 'photo'],
+            ['species', 'id', 'integer'],
+            ['species', 'fish_name', 'string'],
+            ['species', 'photo', 'string'],
         ];
     }
 
     #[DataProvider('speciesColumnsProvider')]
-    public function test_species_columns_exist(string $table, string $column): void
-    {
-        $this->assertTrue(
-            Schema::hasColumn($table, $column),
-            "A '{$column}' oszlop nem létezik a '{$table}' táblában"
+    public function test_species_columns_types(
+        string $table,
+        string $column,
+        string $expectedType
+    ): void {
+        $this->assertTrue(Schema::hasColumn($table, $column));
+
+        $type = $this->normalizeType(
+            Schema::getColumnType($table, $column)
+        );
+
+        $this->assertEquals(
+            $expectedType,
+            $type,
+            "{$table}.{$column} típusa hibás"
         );
     }
 
@@ -65,20 +89,30 @@ class DatabaseTest extends TestCase
     public static function locationsColumnsProvider(): array
     {
         return [
-            ['locations', 'id'],
-            ['locations', 'waterAreaCode'],
-            ['locations', 'latitude'],
-            ['locations', 'longitude'],
-            ['locations', 'FishingLakeName'],
+            ['locations', 'id', 'integer'],
+            ['locations', 'waterAreaCode', 'string'],
+            ['locations', 'latitude', 'decimal'],
+            ['locations', 'longitude', 'decimal'],
+            ['locations', 'FishingLakeName', 'string'],
         ];
     }
 
     #[DataProvider('locationsColumnsProvider')]
-    public function test_locations_columns_exist(string $table, string $column): void
-    {
-        $this->assertTrue(
-            Schema::hasColumn($table, $column),
-            "A '{$column}' oszlop nem létezik a '{$table}' táblában"
+    public function test_locations_columns_types(
+        string $table,
+        string $column,
+        string $expectedType
+    ): void {
+        $this->assertTrue(Schema::hasColumn($table, $column));
+
+        $type = $this->normalizeType(
+            Schema::getColumnType($table, $column)
+        );
+
+        $this->assertEquals(
+            $expectedType,
+            $type,
+            "{$table}.{$column} típusa hibás"
         );
     }
 
@@ -89,17 +123,27 @@ class DatabaseTest extends TestCase
     public static function luresColumnsProvider(): array
     {
         return [
-            ['lures', 'id'],
-            ['lures', 'lure'],
+            ['lures', 'id', 'integer'],
+            ['lures', 'lure', 'string'],
         ];
     }
 
     #[DataProvider('luresColumnsProvider')]
-    public function test_lures_columns_exist(string $table, string $column): void
-    {
-        $this->assertTrue(
-            Schema::hasColumn($table, $column),
-            "A '{$column}' oszlop nem létezik a '{$table}' táblában"
+    public function test_lures_columns_types(
+        string $table,
+        string $column,
+        string $expectedType
+    ): void {
+        $this->assertTrue(Schema::hasColumn($table, $column));
+
+        $type = $this->normalizeType(
+            Schema::getColumnType($table, $column)
+        );
+
+        $this->assertEquals(
+            $expectedType,
+            $type,
+            "{$table}.{$column} típusa hibás"
         );
     }
 
@@ -110,21 +154,31 @@ class DatabaseTest extends TestCase
     public static function catchLogsColumnsProvider(): array
     {
         return [
-            ['catch_logs', 'id'],
-            ['catch_logs', 'userid'],
-            ['catch_logs', 'locationid'],
-            ['catch_logs', 'comment'],
-            ['catch_logs', 'fishing_start'],
-            ['catch_logs', 'fishing_end'],
+            ['catch_logs', 'id', 'integer'],
+            ['catch_logs', 'userid', 'integer'],
+            ['catch_logs', 'locationid', 'integer'],
+            ['catch_logs', 'comment', 'text'],
+            ['catch_logs', 'fishing_start', 'date'],
+            ['catch_logs', 'fishing_end', 'date'],
         ];
     }
 
     #[DataProvider('catchLogsColumnsProvider')]
-    public function test_catch_logs_columns_exist(string $table, string $column): void
-    {
-        $this->assertTrue(
-            Schema::hasColumn($table, $column),
-            "A '{$column}' oszlop nem létezik a '{$table}' táblában"
+    public function test_catch_logs_columns_types(
+        string $table,
+        string $column,
+        string $expectedType
+    ): void {
+        $this->assertTrue(Schema::hasColumn($table, $column));
+
+        $type = $this->normalizeType(
+            Schema::getColumnType($table, $column)
+        );
+
+        $this->assertEquals(
+            $expectedType,
+            $type,
+            "{$table}.{$column} típusa hibás"
         );
     }
 
@@ -135,22 +189,32 @@ class DatabaseTest extends TestCase
     public static function fishCatchesColumnsProvider(): array
     {
         return [
-            ['fish_catches', 'id'],
-            ['fish_catches', 'specieId'],
-            ['fish_catches', 'lureId'],
-            ['fish_catches', 'catchLogId'],
-            ['fish_catches', 'weight'],
-            ['fish_catches', 'length'],
-            ['fish_catches', 'catchTime'],
+            ['fish_catches', 'id', 'integer'],
+            ['fish_catches', 'specieId', 'integer'],
+            ['fish_catches', 'lureId', 'integer'],
+            ['fish_catches', 'catchLogId', 'integer'],
+            ['fish_catches', 'weight', 'decimal'],
+            ['fish_catches', 'length', 'decimal'],
+            ['fish_catches', 'catchTime', 'datetime'],
         ];
     }
 
     #[DataProvider('fishCatchesColumnsProvider')]
-    public function test_fish_catches_columns_exist(string $table, string $column): void
-    {
-        $this->assertTrue(
-            Schema::hasColumn($table, $column),
-            "A '{$column}' oszlop nem létezik a '{$table}' táblában"
+    public function test_fish_catches_columns_types(
+        string $table,
+        string $column,
+        string $expectedType
+    ): void {
+        $this->assertTrue(Schema::hasColumn($table, $column));
+
+        $type = $this->normalizeType(
+            Schema::getColumnType($table, $column)
+        );
+
+        $this->assertEquals(
+            $expectedType,
+            $type,
+            "{$table}.{$column} típusa hibás"
         );
     }
 }
