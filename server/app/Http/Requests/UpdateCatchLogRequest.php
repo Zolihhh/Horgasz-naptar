@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\CatchLog;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateCatchLogRequest extends FormRequest
@@ -21,8 +22,26 @@ class UpdateCatchLogRequest extends FormRequest
      */
     public function rules(): array
     {
+        $id = $this->route('id');
         return [
-            //
+            'comment' => [
+                'required',
+                'string',
+                'min1',
+                'max250'
+            ],
+            'specieId' => [
+                'required',
+                'integer',
+                'exists:species,id'
+            ]
+        ];
+    }
+    
+        public function messages(): array
+    {
+        return [
+
         ];
     }
 }
