@@ -48,7 +48,8 @@ Route::get('/fishcatches/{id}', [FishCatchController::class, 'show']);
 Route::post('/fishcatches', [FishCatchController::class, 'store']);
 Route::delete('/fishcatches/{id}', [FishCatchController::class, 'destroy']);
  
- 
+ Route::patch('/fishcatches/{id}', [FishCatchController::class, 'update']);
+
 //region users
 //User kezelés, login, logout
 //Mindenki

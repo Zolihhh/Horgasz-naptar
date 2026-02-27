@@ -13,7 +13,8 @@ class FishCatchController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {   return $this->apiResponse(
+    {
+        return $this->apiResponse(
             function () {
                 return CurrentModel::all();
             }
@@ -25,7 +26,7 @@ class FishCatchController extends Controller
      */
     public function store(StoreCurrentModelRequest $request)
     {
-         return $this->apiResponse(
+        return $this->apiResponse(
             function () use ($request) {
                 return CurrentModel::create($request->validated());
             }
@@ -46,11 +47,14 @@ class FishCatchController extends Controller
      */
     public function update(UpdateCurrentModelRequest $request, int $id)
     {
-         return $this->apiResponse(function () use ($request, $id) {
-            $row = CurrentModel::findOrFail($id);
-            $row->update($request->validated());
-            return $row;
-        });
+         $fishCatch = CurrentModel::findOrFail($id);
+
+    $fishCatch->update($request->validated());
+
+    return response()->json([
+        'message' => 'updated',
+        'data' => $fishCatch
+    ], 200, options: JSON_UNESCAPED_UNICODE);
     }
 
     /**
@@ -58,10 +62,10 @@ class FishCatchController extends Controller
      */
     public function destroy(int $id)
     {
-          return $this->apiResponse(function () use ($id) {
+        return $this->apiResponse(function () use ($id) {
             CurrentModel::findOrFail($id)->delete();
             return ['id' => $id];
-            
+
         });
     }
 }

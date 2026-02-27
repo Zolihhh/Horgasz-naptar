@@ -135,11 +135,8 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-<<<<<<< HEAD
- "userid":3,
-=======
+
     "userid":3,
->>>>>>> 1267debc1b8890203b074934a92d87695ddf09cc
     "locationid": 1,
     "comment": "Nagyon jó horgászat volt",
     "fishing_start": "2025-03-10 06:00:00",
@@ -201,8 +198,22 @@ Authorization: Bearer {{token}}
 }
 
 ### DELETE FISH CATCH
-DELETE {{host}}/api/fishcatches/2
+DELETE {{host}}/api/fishcatches/3
 Accept: application/json
 Authorization: Bearer {{token}}
 
+### Update FISH CATCH
+PATCH {{host}}/api/fishcatches/5
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "catchLogId": 2,
+    "specieId": 1,
+    "weight": 2.1,
+    "length": 44,
+    "lureId": 2,
+    "catchTime": "2025-03-10 08:10:00"
+}
 
