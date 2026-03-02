@@ -19,7 +19,7 @@
 body{
 margin:0;
 font-family:Arial;
-background: url('@/assets/1.jpg') center/cover no-repeat fixed;
+background: url('@/assets/2.jpg') center/cover no-repeat fixed;
 color:white;
 }
 
