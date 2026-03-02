@@ -69,6 +69,22 @@ export const useUserLoginLogoutStore = defineStore("userLoginLogout", {
         this.loading = false;
       }
     },
+    async register(data) {
+      try {
+        this.loading = true;
+        this.error = null;
+        await service.register(data);
+        const toastStore = useToastStore();
+        toastStore.messages.push("Sikeres regisztracio");
+        toastStore.show("Success");
+        return true;
+      } catch (err) {
+        this.error = err;
+        throw err;
+      } finally {
+        this.loading = false;
+      }
+    },
     async logout() {
       try {
         this.error = null;
