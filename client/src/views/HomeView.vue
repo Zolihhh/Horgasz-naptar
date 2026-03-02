@@ -1,16 +1,23 @@
+
 <template>
-  <div>
-    <h1>Home</h1>
-    <div class="alert alert-primary" role="alert">
-      <i class="bi bi-airplane-engines"></i>
-        A simple primary alert—check it out!
-    </div>
-  </div>
+
+<div class="hero">
+
+<h1>Modern Horgász Napló</h1>
+
+<p>Fogások és időjárás egy helyen</p>
+
+</div>
+
 </template>
 
-<script>
-export default {};
-</script>
-
-<style>
+<style scoped>
+.hero{
+height:60vh;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+backdrop-filter:blur(5px);
+}
 </style>

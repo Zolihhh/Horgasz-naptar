@@ -1,64 +1,85 @@
 <template>
-  <nav aria-label="breadcrumb">
-    <p v-if="debug">{{ breadcrumbs }}</p>
-    <ol class="breadcrumb m-0">
-      <li class="breadcrumb-item">
-        <router-link to="/">Kezdőlap</router-link>
-      </li>
 
-      <li 
-        v-for="(crumb, index) in breadcrumbs" 
-        :key="index"
-        class="breadcrumb-item"
-        :class="{ active: index === breadcrumbs.length - 1 }"
-      >
-        <router-link 
-          v-if="index < breadcrumbs.length - 1 && !crumb.disabled" 
-          :to="crumb.path"
-        >
-          {{ crumb.label }}
-        </router-link>
-        
-        <span v-else :class="{ 'text-muted': crumb.disabled }">
-          {{ crumb.label }}
-        </span>
-      </li>
-    </ol>
-  </nav>
+<div class="breadcrumb-card">
+
+<ul class="breadcrumb-modern">
+
+<li>
+
+<router-link to="/">
+🏠 Kezdőlap
+</router-link>
+
+</li>
+
+<li
+v-for="(crumb,index) in breadcrumbs"
+:key="index"
+>
+
+<router-link
+v-if="index < breadcrumbs.length-1"
+:to="crumb.path"
+>
+
+{{crumb.label}}
+
+</router-link>
+
+<span v-else class="active">
+
+{{crumb.label}}
+
+</span>
+
+</li>
+
+</ul>
+
+</div>
+
 </template>
 
 <script>
-export default {
-data(){
-    return {
-        debug: 0
-        // debug: +import.meta.env.VITE_DEBUG_MODE
-    }
-},
-  computed: {
-    breadcrumbs() {
-      let matchedRoutes = this.$route.matched
-        .filter(route => route.meta && route.meta.breadcrumb);
 
-      // Eltávolítjuk a kezdőlapot, ha benne van (mert manuálisan kitettük)
-      if (matchedRoutes.length > 0 && (matchedRoutes[0].path === '/' || matchedRoutes[0].path === '')) {
-        matchedRoutes.shift();
-      }
+export default{
 
-      return matchedRoutes.map(route => ({
-        label: route.meta.breadcrumb,
-        path: route.path,
-        disabled: route.meta.disabled // Itt adjuk át a tiltás jelzőt
-      }));
-    }
-  }
+computed:{
+
+breadcrumbs(){
+
+let routes=this.$route.matched
+.filter(r=>r.meta?.breadcrumb)
+
+return routes.map(r=>({
+label:r.meta.breadcrumb,
+path:r.path
+}))
+
 }
+
+}
+
+}
+
 </script>
 
 <style scoped>
-/* A Bootstrap alapból ad stílust, de itt finomhangolhatod, ha kell */
-.breadcrumb {
-  background-color: transparent; /* Ha régebbi Bootstrapet használsz, ez jól jöhet */
-  padding: 0.75rem 0;
+
+.breadcrumb-wrapper{
+
+background:rgba(255,255,255,0.8);
+
+backdrop-filter:blur(10px);
+
+border-radius:12px;
+
+padding:12px 16px;
+
+margin-bottom:20px;
+
+box-shadow:0 3px 10px rgba(0,0,0,0.15);
+
 }
+
 </style>

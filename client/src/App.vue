@@ -1,45 +1,34 @@
+
 <template>
-  <div class="container-fluid my-container my-border mt-2">
-    <!-- Head -->
-    <Header/>
+<div>
 
-    <!-- Menü -->
-    <Menu class="my-border"/>
-    <Breadcrumb class="my-border"/>
+<nav class="menu">
 
-    <!-- Ide töltődnek be az oldalak -->
-    <RouterView class="my-border my-content-height"/>
+<RouterLink to="/">Főoldal</RouterLink>
+<RouterLink to="/weather">Időjárás</RouterLink>
+<RouterLink to="/catches">Fogások</RouterLink>
 
+</nav>
 
-    <Footer  class="my-border"
-      :content="footerContent"
-    />
-    <ToastContanier/>
-  </div>
+<RouterView/>
+
+</div>
 </template>
 
-<script>
-import Menu from './components/Layout/Menu.vue';
-import Header from './components/Layout/Header.vue';
-import Footer from './components/Layout/Footer.vue';
-import Breadcrumb from './components/Layout/Breadcrumb.vue';
-import ToastContanier from './components/Message/ToastContanier.vue';
-export default {
-  components:{
-    Menu,
-    Header,
-    Footer,
-    Breadcrumb,
-    ToastContanier,
-  },
-  data() {
-    return {
-      footerContent: "Ez egy másik lábléc szöveg",
-    }
-  }
-};
-</script>
-
 <style>
+body{
+margin:0;
+font-family:Arial;
+background: url('@/assets/1.jpg') center/cover no-repeat fixed;
+color:white;
+}
 
+.menu{
+display:flex;
+gap:20px;
+padding:20px;
+background:rgba(0,0,0,0.6);
+}
+
+a{color:white;text-decoration:none}
 </style>
