@@ -9,4 +9,7 @@ export default {
   async create(data) {
     return await apiClient.post(route, data);
   },
+  async update(id, data) {
+    return await apiClient.patch(`${route}/${id}`, data);
+  },
 };
