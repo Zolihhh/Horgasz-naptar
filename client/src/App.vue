@@ -49,20 +49,14 @@ export default {
 </script>
 
 <style>
-<<<<<<< HEAD
+
 body {
   margin: 0;
   font-family: Arial;
-  background: url("@/assets/1.jpg") center/cover no-repeat fixed;
+  background: url("@/assets/2.jpg") center/cover no-repeat fixed;
   color: white;
-=======
-body{
-margin:0;
-font-family:Arial;
-background: url('@/assets/2.jpg') center/cover no-repeat fixed;
-color:white;
->>>>>>> e5d8f817265460f8c5eb5effce783bfe253611e1
 }
+
 
 .menu {
   display: flex;

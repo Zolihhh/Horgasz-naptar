@@ -2,70 +2,84 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\FishCatch as CurrentModel;
 use App\Http\Requests\StoreFishCatchRequest as StoreCurrentModelRequest;
 use App\Http\Requests\UpdateFishCatchRequest as UpdateCurrentModelRequest;
-use Illuminate\Database\QueryException;
+use App\Models\CatchLog;
+use App\Models\FishCatch as CurrentModel;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\Request;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class FishCatchController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    private function myCatchesQuery(int $userId): Builder
     {
-        return $this->apiResponse(
-            function () {
-                return CurrentModel::all();
-            }
-        );
+        return CurrentModel::query()
+            ->whereHas('catchLog', function (Builder $query) use ($userId) {
+                $query->where('userid', $userId);
+            });
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreCurrentModelRequest $request)
+    private function ensureCatchLogBelongsToUser(int $catchLogId, int $userId): void
     {
-        return $this->apiResponse(
-            function () use ($request) {
-                return CurrentModel::create($request->validated());
-            }
-        );
+        $ownsCatchLog = CatchLog::query()
+            ->where('id', $catchLogId)
+            ->where('userid', $userId)
+            ->exists();
+
+        if (!$ownsCatchLog) {
+            throw new HttpException(403, 'Ehhez a fogasi naplohoz nincs jogosultsagod.');
+        }
     }
-    /**
-     * Display the specified resource.
-     */
-    public function show(int $id)
+
+    public function index(Request $request)
     {
-        return $this->apiResponse(function () use ($id) {
-            return CurrentModel::findOrFail($id);
+        return $this->apiResponse(function () use ($request) {
+            return $this->myCatchesQuery($request->user()->id)->get();
         });
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateCurrentModelRequest $request, int $id)
+    public function store(StoreCurrentModelRequest $request)
     {
-         $fishCatch = CurrentModel::findOrFail($id);
+        return $this->apiResponse(function () use ($request) {
+            $validated = $request->validated();
+            $userId = $request->user()->id;
 
-    $fishCatch->update($request->validated());
+            $this->ensureCatchLogBelongsToUser($validated['catchLogId'], $userId);
 
-    return response()->json([
-        'message' => 'updated',
-        'data' => $fishCatch
-    ], 200, options: JSON_UNESCAPED_UNICODE);
+            return CurrentModel::create($validated);
+        });
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(int $id)
+    public function show(Request $request, int $id)
     {
-        return $this->apiResponse(function () use ($id) {
-            CurrentModel::findOrFail($id)->delete();
-            return ['id' => $id];
+        return $this->apiResponse(function () use ($request, $id) {
+            return $this->myCatchesQuery($request->user()->id)->findOrFail($id);
+        });
+    }
 
+    public function update(UpdateCurrentModelRequest $request, int $id)
+    {
+        return $this->apiResponse(function () use ($request, $id) {
+            $userId = $request->user()->id;
+            $fishCatch = $this->myCatchesQuery($userId)->findOrFail($id);
+            $validated = $request->validated();
+
+            $this->ensureCatchLogBelongsToUser($validated['catchLogId'], $userId);
+
+            $fishCatch->update($validated);
+
+            return $fishCatch;
+        });
+    }
+
+    public function destroy(Request $request, int $id)
+    {
+        return $this->apiResponse(function () use ($request, $id) {
+            $fishCatch = $this->myCatchesQuery($request->user()->id)->findOrFail($id);
+            $fishCatch->delete();
+
+            return ['id' => $id];
         });
     }
 }

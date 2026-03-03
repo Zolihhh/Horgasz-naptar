@@ -43,12 +43,16 @@ Route::patch('/catchlogs/{id}', [CatchLogController::class, 'update']);
 Route::delete('/catchlogs/{id}', [CatchLogController::class, 'destroy']);
  
 // FISH CATCH
-Route::get('/fishcatches', [FishCatchController::class, 'index']);
-Route::get('/fishcatches/{id}', [FishCatchController::class, 'show']);
-Route::post('/fishcatches', [FishCatchController::class, 'store']);
-Route::delete('/fishcatches/{id}', [FishCatchController::class, 'destroy']);
- 
- Route::patch('/fishcatches/{id}', [FishCatchController::class, 'update']);
+Route::get('/fishcatches', [FishCatchController::class, 'index'])
+    ->middleware(['auth:sanctum', 'ability:fishcatches:get']);
+Route::get('/fishcatches/{id}', [FishCatchController::class, 'show'])
+    ->middleware(['auth:sanctum', 'ability:fishcatches:get']);
+Route::post('/fishcatches', [FishCatchController::class, 'store'])
+    ->middleware(['auth:sanctum', 'ability:fishcatches:post']);
+Route::delete('/fishcatches/{id}', [FishCatchController::class, 'destroy'])
+    ->middleware(['auth:sanctum', 'ability:fishcatches:delete']);
+Route::patch('/fishcatches/{id}', [FishCatchController::class, 'update'])
+    ->middleware(['auth:sanctum', 'ability:fishcatches:patch']);
 
 //region users
 //User kezelés, login, logout

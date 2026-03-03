@@ -23,11 +23,17 @@ class UserController extends Controller
    public function login(LoginUserRequest $request)
     {
         // adatok
-        $email = $request->input('email');
-        $password = $request->input('password');
+        try {
+            $email = $request->input('email');
+            $password = $request->input('password');
 
         // user keresése
-        $user = User::where('email', $email)->first();
+            $user = User::where('email', $email)->first();
+        } catch (\Throwable $e) {
+            return response()->json([
+                'message' => 'Adatbazis kapcsolat hiba. Ellenorizd, hogy fut-e a MySQL/MariaDB.'
+            ], 503, options: JSON_UNESCAPED_UNICODE);
+        }
 
         // email + jelszó ellenőrzés
         if (!$user || !Hash::check($password, $user->password)) {
@@ -83,6 +89,19 @@ class UserController extends Controller
         return response()->json([
             'message' => 'ok',
             'data' => $user
+        ], 200, options: JSON_UNESCAPED_UNICODE);
+    }
+
+    public function logout(Request $request)
+    {
+        $user = $request->user();
+
+        if ($user && $user->currentAccessToken()) {
+            $user->currentAccessToken()->delete();
+        }
+
+        return response()->json([
+            'message' => 'ok'
         ], 200, options: JSON_UNESCAPED_UNICODE);
     }
 
