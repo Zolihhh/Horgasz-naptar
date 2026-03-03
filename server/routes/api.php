@@ -22,6 +22,7 @@ Route::get('/x', function () {
  
 Route::get('/species', [SpecieController::class, 'index']);
 Route::post('/species', [SpecieController::class, 'store']);
+Route::get('/species/photo/{filename}', [SpecieController::class, 'photo']);
  
 // LOCATION
 Route::get('/locations', [LocationController::class, 'index']);

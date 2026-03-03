@@ -27,4 +27,16 @@ public function store(StoreCurrentModelRequest $request)
         );
         
     }
+
+    public function photo(string $filename)
+    {
+        $safeFilename = basename($filename);
+        $path = database_path('images/' . $safeFilename);
+
+        if (!is_file($path)) {
+            abort(404, 'A kep nem talalhato.');
+        }
+
+        return response()->file($path);
+    }
 }

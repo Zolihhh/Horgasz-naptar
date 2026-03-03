@@ -1,20 +1,41 @@
-﻿<template>
-  <div class="home-wrap">
-    <div class="hero">
-      <h1>Modern Horgasz Naplo</h1>
-      <p>Fogasok es idojaras egy helyen</p>
-    </div>
+<template>
+  <section class="home-wrap">
+    <header class="hero">
+      <p class="eyebrow">Horgasz Naptar</p>
+      <h1>Átlathato kezeles a fogasokhoz es idojarashoz</h1>
+      <p class="hero-text">
+        Egy feluleten kovetheted a fogasi adatokat, helyszineket es a kovetkezo napok varhato idojarasat.
+      </p>
+    </header>
+
+    <section class="features">
+      <article v-for="fish in featuredSpecies" :key="fish.id" class="feature-card fish-card">
+        <img
+          class="fish-image"
+          :src="getFishImageUrl(fish.photo)"
+          :alt="fish.fish_name"
+          loading="lazy"
+        />
+        <div class="fish-content">
+          <h2>{{ fish.fish_name }}</h2>
+          <p>{{ getFishHint(fish.fish_name) }}</p>
+        </div>
+      </article>
+    </section>
 
     <div v-if="!isLoggedIn" class="login-theme-wrap">
       <UserLogin @logIn="loginHandler" @register="registerHandler" />
     </div>
-  </div>
+  </section>
 </template>
 
 <script>
 import { mapActions, mapState } from "pinia";
 import { useUserLoginLogoutStore } from "@/stores/userLoginLogoutStore";
 import UserLogin from "@/components/User/UserLogin.vue";
+import specieService from "@/api/specieService";
+
+const API_BASE = (import.meta.env.VITE_API_URL || "").replace(/\/api\/?$/, "");
 
 export default {
   name: "HomeView",
@@ -24,8 +45,45 @@ export default {
   computed: {
     ...mapState(useUserLoginLogoutStore, ["isLoggedIn"]),
   },
+  data() {
+    return {
+      featuredSpecies: [],
+    };
+  },
+  async mounted() {
+    await this.fetchFeaturedSpecies();
+  },
   methods: {
     ...mapActions(useUserLoginLogoutStore, ["login", "register"]),
+    async fetchFeaturedSpecies() {
+      try {
+        const response = await specieService.getAll();
+        const species = Array.isArray(response?.data) ? response.data : [];
+        const cards = species.filter((row) => row?.photo && row?.fish_name).slice(0, 4);
+        if (cards[0]) {
+          cards[0] = { ...cards[0], fish_name: "ponty", photo: "ponty.jpg" };
+        }
+        if (cards[1]) {
+          cards[1] = { ...cards[1], fish_name: "csuka", photo: "csuka.jpg" };
+        }
+        this.featuredSpecies = cards;
+      } catch (error) {
+        this.featuredSpecies = [];
+      }
+    },
+    getFishImageUrl(photo) {
+      const encoded = encodeURIComponent(photo || "");
+      return `${API_BASE}/api/species/photo/${encoded}`;
+    },
+    getFishHint(name) {
+      const key = (name || "").toLowerCase();
+      if (key.includes("ponty")) return "Nepszeru bekes hal, melegebb vizekben aktiv.";
+      if (key.includes("csuka")) return "Ragadozo hal, gyakran a parti novenyzetnel all.";
+      if (key.includes("harcsa")) return "Nagy testu ragadozo, inkabb este mozog.";
+      if (key.includes("sullo") || key.includes("süllő")) return "Erzekeny ragadozo, tisztabb vizben eredmenyes.";
+      if (key.includes("balin")) return "Gyors ragadozo, felszin kozeleben tamad.";
+      return "Magyar vizekben gyakran fogott, ertekes halfaj.";
+    },
     async loginHandler(user) {
       try {
         await this.login(user);
@@ -48,39 +106,97 @@ export default {
 
 <style scoped>
 .home-wrap {
-  min-height: calc(100vh - 90px);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  max-width: 1150px;
+  margin: 0 auto;
+  padding: 28px 20px 40px;
 }
 
 .hero {
-  height: 42vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  backdrop-filter: blur(5px);
-  text-align: center;
+  border-radius: 20px;
+  border: 1px solid rgba(210, 232, 241, 0.22);
+  background: linear-gradient(
+    130deg,
+    rgba(7, 21, 30, 0.82),
+    rgba(16, 45, 61, 0.58)
+  );
+  backdrop-filter: blur(8px);
+  padding: clamp(22px, 4.5vw, 42px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+}
+
+.eyebrow {
+  margin: 0 0 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.75rem;
+  color: #bad7e4;
 }
 
 .hero h1 {
   margin: 0;
-  font-size: clamp(2rem, 4vw, 3.1rem);
-  font-weight: 700;
-  letter-spacing: 0.03em;
+  max-width: 18ch;
+  font-size: clamp(1.9rem, 4vw, 3rem);
+  line-height: 1.12;
 }
 
-.hero p {
-  margin-top: 0.75rem;
+.hero-text {
+  margin: 14px 0 0;
+  max-width: 62ch;
   color: #d8e6ee;
+}
+
+.features {
+  margin-top: 16px;
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+}
+
+.feature-card {
+  border: 1px solid rgba(202, 227, 238, 0.2);
+  background: linear-gradient(
+    145deg,
+    rgba(8, 17, 25, 0.78),
+    rgba(11, 34, 47, 0.62)
+  );
+  backdrop-filter: blur(7px);
+  padding: 16px;
+  border-radius: 14px;
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.2);
+}
+
+.fish-card {
+  padding: 0;
+  overflow: hidden;
+}
+
+.fish-image {
+  width: 100%;
+  height: 170px;
+  object-fit: cover;
+  display: block;
+  background: rgba(9, 21, 28, 0.8);
+}
+
+.fish-content {
+  padding: 14px 16px 16px;
+}
+
+.feature-card h2 {
+  margin: 0 0 6px;
+  font-size: 1.15rem;
+}
+
+.feature-card p {
+  margin: 0;
+  color: #d6e6ee;
 }
 
 .login-theme-wrap {
   width: 100%;
   display: flex;
   justify-content: center;
-  padding: 0 1rem 2rem;
+  padding: 20px 0 0;
 }
 
 .login-theme-wrap :deep(.card) {

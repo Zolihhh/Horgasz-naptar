@@ -1,13 +1,9 @@
 <template>
-
 <div class="breadcrumb-card">
-
 <ul class="breadcrumb-modern">
-
 <li>
-
 <router-link to="/">
-🏠 Kezdőlap
+ Kezdőlap
 </router-link>
 
 </li>
@@ -27,19 +23,12 @@ v-if="index < breadcrumbs.length-1"
 </router-link>
 
 <span v-else class="active">
-
 {{crumb.label}}
-
 </span>
-
 </li>
-
 </ul>
-
 </div>
-
 </template>
-
 <script>
 
 export default{
