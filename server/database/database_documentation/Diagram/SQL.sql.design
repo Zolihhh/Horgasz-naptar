@@ -11,7 +11,7 @@
   <Connection Name="localhost">
     <Category>00000000-0000-0000-0000-000000000000</Category>
     <ConnectionString>User Id=root;Host=localhost;Character Set=utf8</ConnectionString>
-    <Database>horgasz-naptar</Database>
+    <Database>fishing_log</Database>
   </Connection>
   <Views ShowAdditionalViews="False" IsLayoutActiveAttribute="True" MainViewAttribute="Code" MainViewScale="50">
     <View Name="Design" Visible="False" />
