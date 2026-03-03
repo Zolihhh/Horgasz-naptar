@@ -17,8 +17,6 @@
               v-if="isAdmin"
               to="/users"
               class="menu-dropdown-link"
-              target="_blank"
-              rel="noopener"
               @click="closeUserMenu"
             >
               Osszes felhasznalo
@@ -26,8 +24,6 @@
             <RouterLink
               to="/profile"
               class="menu-dropdown-link"
-              target="_blank"
-              rel="noopener"
               @click="closeUserMenu"
             >
               Sajat adatok
