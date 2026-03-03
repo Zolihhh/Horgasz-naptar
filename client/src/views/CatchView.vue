@@ -489,6 +489,7 @@ export default {
   max-width: 1150px;
   margin: 0 auto;
   padding: 28px 20px 40px;
+  color: #ffffff;
 }
 
 .page-head {
@@ -508,6 +509,7 @@ export default {
   margin: 0;
   font-size: clamp(1.4rem, 3.3vw, 2rem);
   letter-spacing: 0.02em;
+  color: #ffffff;
 }
 
 .page-head p {
@@ -544,6 +546,7 @@ export default {
   flex-direction: column;
   gap: 6px;
   font-size: 0.95rem;
+  color: #eef7fb;
 }
 
 .create-form input,
@@ -648,6 +651,7 @@ export default {
   display: grid;
   gap: 4px;
   font-size: 0.9rem;
+  color: #eef7fb;
 }
 
 .inline-actions {
