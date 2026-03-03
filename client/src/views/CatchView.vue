@@ -200,11 +200,11 @@
 <script>
 import { mapState } from "pinia";
 import { useUserLoginLogoutStore } from "@/stores/userLoginLogoutStore";
-import fishCatchService from "@/api/fishCatchService";
-import specieService from "@/api/specieService";
-import lureService from "@/api/lureService";
-import catchLogService from "@/api/catchLogService";
-import locationService from "@/api/locationService";
+import { useFishCatchStore } from "@/stores/fishCatchStore";
+import { useSpecieStore } from "@/stores/specieStore";
+import { useLureStore } from "@/stores/lureStore";
+import { useCatchLogStore } from "@/stores/catchLogStore";
+import { useLocationStore } from "@/stores/locationStore";
 
 function emptyCatch() {
   return {
@@ -247,6 +247,11 @@ export default {
       saving: false,
       savingLog: false,
       updating: false,
+      fishCatchStore: useFishCatchStore(),
+      specieStore: useSpecieStore(),
+      lureStore: useLureStore(),
+      catchLogStore: useCatchLogStore(),
+      locationStore: useLocationStore(),
     };
   },
   computed: {
@@ -285,19 +290,18 @@ export default {
     async fetchMyCatches() {
       this.loading = true;
       try {
-        const [catchesResponse, speciesResponse, luresResponse, logsResponse, locationsResponse] =
-          await Promise.all([
-            fishCatchService.getMyCatches(),
-            specieService.getAll(),
-            lureService.getAll(),
-            catchLogService.getAll(),
-            locationService.getAll(),
-          ]);
+        await Promise.all([
+          this.fishCatchStore.getMyCatches(),
+          this.specieStore.getAll(),
+          this.lureStore.getAll(),
+          this.catchLogStore.getAll(),
+          this.locationStore.getAll(),
+        ]);
 
-        this.catches = catchesResponse.data;
-        this.species = speciesResponse.data;
-        this.lures = luresResponse.data;
-        this.locations = locationsResponse.data;
+        this.catches = this.fishCatchStore.items;
+        this.species = this.specieStore.items;
+        this.lures = this.lureStore.items;
+        this.locations = this.locationStore.items;
         this.speciesById = this.species.reduce((acc, item) => {
           acc[item.id] = item.fish_name;
           return acc;
@@ -311,7 +315,7 @@ export default {
           acc[item.id] = name;
           return acc;
         }, {});
-        this.userCatchLogs = logsResponse.data.filter((item) => item.userid === this.currentUserId);
+        this.userCatchLogs = this.catchLogStore.items.filter((item) => item.userid === this.currentUserId);
         this.catchLogsById = this.userCatchLogs.reduce((acc, item) => {
           acc[item.id] = item;
           return acc;
@@ -387,8 +391,8 @@ export default {
           ...this.newCatchLog,
           userid: this.currentUserId,
         };
-        const response = await catchLogService.create(payload);
-        const createdLogId = response?.data?.id ?? null;
+        await this.catchLogStore.create(payload);
+        const createdLogId = this.catchLogStore.item?.id ?? null;
         this.showCreateLogForm = false;
         await this.fetchMyCatches();
         if (createdLogId) {
@@ -404,7 +408,7 @@ export default {
       if (this.userCatchLogs.length === 0) return;
       this.saving = true;
       try {
-        await fishCatchService.create(this.newCatch);
+        await this.fishCatchStore.create(this.newCatch);
         this.showCreateForm = false;
         await this.fetchMyCatches();
       } catch (error) {
@@ -432,7 +436,7 @@ export default {
     async updateCatch(id) {
       this.updating = true;
       try {
-        await fishCatchService.update(id, this.editCatch);
+        await this.fishCatchStore.update(id, this.editCatch);
         this.cancelEdit();
         await this.fetchMyCatches();
       } catch (error) {
@@ -489,6 +493,7 @@ export default {
   max-width: 1150px;
   margin: 0 auto;
   padding: 28px 20px 40px;
+  color: #ffffff;
 }
 
 .page-head {
@@ -508,6 +513,7 @@ export default {
   margin: 0;
   font-size: clamp(1.4rem, 3.3vw, 2rem);
   letter-spacing: 0.02em;
+  color: #ffffff;
 }
 
 .page-head p {
@@ -544,6 +550,7 @@ export default {
   flex-direction: column;
   gap: 6px;
   font-size: 0.95rem;
+  color: #eef7fb;
 }
 
 .create-form input,
@@ -648,6 +655,7 @@ export default {
   display: grid;
   gap: 4px;
   font-size: 0.9rem;
+  color: #eef7fb;
 }
 
 .inline-actions {

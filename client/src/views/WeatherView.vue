@@ -62,7 +62,7 @@
 
 <script>
 import axios from 'axios'
-import locationService from '@/api/locationService'
+import { useLocationStore } from '@/stores/locationStore'
 
 const WEATHER_VISUALS = {
   clear: {
@@ -99,7 +99,8 @@ export default {
       searchTerm: '',
       dailyForecast: [],
       loading: false,
-      error: ''
+      error: '',
+      locationStore: useLocationStore()
     }
   },
   computed: {
@@ -180,8 +181,8 @@ export default {
       this.error = ''
 
       try {
-        const response = await locationService.getAll()
-        const rows = Array.isArray(response?.data) ? response.data : []
+        await this.locationStore.getAll()
+        const rows = Array.isArray(this.locationStore.items) ? this.locationStore.items : []
         this.cities = rows
           .map((row) => this.normalizeLocation(row))
           .filter(Boolean)
@@ -261,6 +262,7 @@ export default {
   max-width: 1150px;
   margin: 0 auto;
   padding: 28px 20px 40px;
+  color: #ffffff;
 }
 
 .page-head {
@@ -276,6 +278,7 @@ export default {
   margin: 0;
   font-size: clamp(1.4rem, 3.3vw, 2rem);
   letter-spacing: 0.02em;
+  color: #ffffff;
 }
 
 .page-head p {
@@ -314,6 +317,7 @@ label {
   display: block;
   margin-bottom: 6px;
   font-size: 0.95rem;
+  color: #eef7fb;
 }
 
 select {

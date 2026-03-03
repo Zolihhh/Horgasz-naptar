@@ -9,18 +9,51 @@
     </header>
 
     <section class="features">
-      <article v-for="fish in featuredSpecies" :key="fish.id" class="feature-card fish-card">
-        <img
-          class="fish-image"
-          :src="getFishImageUrl(fish.photo)"
-          :alt="fish.fish_name"
-          loading="lazy"
-        />
-        <div class="fish-content">
-          <h2>{{ fish.fish_name }}</h2>
-          <p>{{ getFishHint(fish.fish_name) }}</p>
+      <div
+        v-if="speciesPages.length"
+        id="fishCardsCarousel"
+        class="carousel slide"
+        data-bs-ride="carousel"
+        data-bs-interval="5000"
+        data-bs-pause="false"
+        data-bs-wrap="true"
+      >
+        <div class="carousel-inner">
+          <div
+            v-for="(page, pageIndex) in speciesPages"
+            :key="`page-${pageIndex}`"
+            class="carousel-item"
+            :class="{ active: pageIndex === 0 }"
+          >
+            <div class="row g-3">
+              <div v-for="fish in page" :key="fish.id" class="col-12 col-sm-6 col-lg-3">
+                <article class="feature-card fish-card h-100">
+                  <img
+                    class="fish-image"
+                    :src="getFishImageUrl(fish.photo)"
+                    :alt="fish.fish_name"
+                    loading="lazy"
+                  />
+                  <div class="fish-content">
+                    <h2>{{ fish.fish_name }}</h2>
+                    <p>{{ getFishHint(fish.fish_name) }}</p>
+                  </div>
+                </article>
+              </div>
+            </div>
+          </div>
         </div>
-      </article>
+
+        <button class="carousel-control-prev" type="button" data-bs-target="#fishCardsCarousel" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#fishCardsCarousel" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      </div>
+      <p v-else class="feature-empty">Nincs megjelenitheto halkep.</p>
     </section>
 
     <div v-if="!isLoggedIn" class="login-theme-wrap">
@@ -32,8 +65,8 @@
 <script>
 import { mapActions, mapState } from "pinia";
 import { useUserLoginLogoutStore } from "@/stores/userLoginLogoutStore";
+import { useSpecieStore } from "@/stores/specieStore";
 import UserLogin from "@/components/User/UserLogin.vue";
-import specieService from "@/api/specieService";
 
 const API_BASE = (import.meta.env.VITE_API_URL || "").replace(/\/api\/?$/, "");
 
@@ -44,10 +77,19 @@ export default {
   },
   computed: {
     ...mapState(useUserLoginLogoutStore, ["isLoggedIn"]),
+    speciesPages() {
+      const pageSize = 4;
+      const pages = [];
+      for (let i = 0; i < this.featuredSpecies.length; i += pageSize) {
+        pages.push(this.featuredSpecies.slice(i, i + pageSize));
+      }
+      return pages;
+    },
   },
   data() {
     return {
       featuredSpecies: [],
+      specieStore: useSpecieStore(),
     };
   },
   async mounted() {
@@ -57,16 +99,9 @@ export default {
     ...mapActions(useUserLoginLogoutStore, ["login", "register"]),
     async fetchFeaturedSpecies() {
       try {
-        const response = await specieService.getAll();
-        const species = Array.isArray(response?.data) ? response.data : [];
-        const cards = species.filter((row) => row?.photo && row?.fish_name).slice(0, 4);
-        if (cards[0]) {
-          cards[0] = { ...cards[0], fish_name: "ponty", photo: "ponty.jpg" };
-        }
-        if (cards[1]) {
-          cards[1] = { ...cards[1], fish_name: "csuka", photo: "csuka.jpg" };
-        }
-        this.featuredSpecies = cards;
+        await this.specieStore.getAll();
+        const species = Array.isArray(this.specieStore.items) ? this.specieStore.items : [];
+        this.featuredSpecies = species.filter((row) => row?.photo && row?.fish_name);
       } catch (error) {
         this.featuredSpecies = [];
       }
@@ -109,6 +144,7 @@ export default {
   max-width: 1150px;
   margin: 0 auto;
   padding: 28px 20px 40px;
+  color: #ffffff;
 }
 
 .hero {
@@ -137,6 +173,7 @@ export default {
   max-width: 18ch;
   font-size: clamp(1.9rem, 4vw, 3rem);
   line-height: 1.12;
+  color: #ffffff;
 }
 
 .hero-text {
@@ -147,9 +184,6 @@ export default {
 
 .features {
   margin-top: 16px;
-  display: grid;
-  gap: 14px;
-  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
 }
 
 .feature-card {
@@ -168,6 +202,8 @@ export default {
 .fish-card {
   padding: 0;
   overflow: hidden;
+  max-width: 420px;
+  margin: 0 auto;
 }
 
 .fish-image {
@@ -185,9 +221,15 @@ export default {
 .feature-card h2 {
   margin: 0 0 6px;
   font-size: 1.15rem;
+  color: #ffffff;
 }
 
 .feature-card p {
+  margin: 0;
+  color: #d6e6ee;
+}
+
+.feature-empty {
   margin: 0;
   color: #d6e6ee;
 }
