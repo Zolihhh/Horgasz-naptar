@@ -8,17 +8,36 @@
       </div>
 
       <div class="menu-auth">
-        <span class="menu-user">
-          {{ isLoggedIn ? userName : "Nincs bejelentkezve" }}
-        </span>
-        <button
-          v-if="isLoggedIn"
-          type="button"
-          class="menu-logout"
-          @click="logoutHandler"
-        >
-          Kijelentkezes
-        </button>
+        <div v-if="isLoggedIn" class="user-menu">
+          <button type="button" class="menu-user menu-user-btn" @click="toggleUserMenu">
+            {{ userName }}
+          </button>
+          <div v-if="userMenuOpen" class="menu-dropdown">
+            <RouterLink
+              v-if="isAdmin"
+              to="/users"
+              class="menu-dropdown-link"
+              target="_blank"
+              rel="noopener"
+              @click="closeUserMenu"
+            >
+              Osszes felhasznalo
+            </RouterLink>
+            <RouterLink
+              to="/profile"
+              class="menu-dropdown-link"
+              target="_blank"
+              rel="noopener"
+              @click="closeUserMenu"
+            >
+              Sajat adatok
+            </RouterLink>
+            <button type="button" class="menu-dropdown-link menu-dropdown-btn" @click="logoutHandler">
+              Kijelentkezes
+            </button>
+          </div>
+        </div>
+        <span v-else class="menu-user">Nincs bejelentkezve</span>
       </div>
     </nav>
 
@@ -41,10 +60,34 @@ export default {
     FooterBar,
   },
   computed: {
-    ...mapState(useUserLoginLogoutStore, ["isLoggedIn", "userName"]),
+    ...mapState(useUserLoginLogoutStore, ["isLoggedIn", "userName", "role"]),
+    isAdmin() {
+      return this.role === 1;
+    },
+  },
+  data() {
+    return {
+      userMenuOpen: false,
+    };
+  },
+  watch: {
+    isLoggedIn(newValue) {
+      if (!newValue) {
+        this.userMenuOpen = false;
+      }
+    },
+    $route() {
+      this.userMenuOpen = false;
+    },
   },
   methods: {
     ...mapActions(useUserLoginLogoutStore, ["logout"]),
+    toggleUserMenu() {
+      this.userMenuOpen = !this.userMenuOpen;
+    },
+    closeUserMenu() {
+      this.userMenuOpen = false;
+    },
     async logoutHandler() {
       try {
         await this.logout();
@@ -98,6 +141,8 @@ body {
 }
 
 .menu {
+  position: relative;
+  z-index: 1000;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -118,6 +163,47 @@ body {
   display: flex;
   align-items: center;
   gap: 0.6rem;
+  position: relative;
+}
+
+.user-menu {
+  position: relative;
+}
+
+.menu-user-btn {
+  cursor: pointer;
+}
+
+.menu-dropdown {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  min-width: 170px;
+  border: 1px solid rgba(180, 210, 224, 0.28);
+  border-radius: 10px;
+  background: rgba(8, 23, 32, 0.92);
+  backdrop-filter: blur(6px);
+  padding: 6px;
+  z-index: 1100;
+}
+
+.menu-dropdown-link {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 8px 10px;
+  border-radius: 7px;
+  color: #eaf6fb;
+}
+
+.menu-dropdown-link:hover {
+  background: rgba(216, 238, 248, 0.12);
+}
+
+.menu-dropdown-btn {
+  border: 0;
+  background: transparent;
+  cursor: pointer;
 }
 
 .menu-user {

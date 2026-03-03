@@ -112,8 +112,46 @@ export const useUserLoginLogoutStore = defineStore("userLoginLogout", {
         this.error = null;
         this.loading = true;
         const response = await service.getMeRefresh();
-        this.item.name = response.data.name;
-        this.item.email = response.data.email;
+        const me = response?.data?.data || response?.data || {};
+        if (this.item) {
+          this.item.name = me.name ?? this.item.name;
+          this.item.email = me.email ?? this.item.email;
+          localStorage.setItem("user_data", JSON.stringify(this.item));
+        }
+        return true;
+      } catch (err) {
+        this.error = err;
+        throw err;
+        return false;
+      } finally {
+        this.loading = false;
+      }
+    },
+    async updateMe(data) {
+      try {
+        this.error = null;
+        this.loading = true;
+        const response = await service.updateMe(data);
+        const updated = response?.data?.data || response?.data || {};
+        if (this.item) {
+          this.item.name = updated.name ?? this.item.name;
+          this.item.email = updated.email ?? this.item.email;
+          localStorage.setItem("user_data", JSON.stringify(this.item));
+        }
+        return true;
+      } catch (err) {
+        this.error = err;
+        throw err;
+        return false;
+      } finally {
+        this.loading = false;
+      }
+    },
+    async updatePassword(data) {
+      try {
+        this.error = null;
+        this.loading = true;
+        await service.updatePassword(data);
         return true;
       } catch (err) {
         this.error = err;

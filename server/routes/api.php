@@ -62,6 +62,16 @@ Route::post('users/login', [UserController::class, 'login']);
 Route::post('users/logout', [UserController::class, 'logout']);
 Route::post('users', [UserController::class, 'store']);
 Route::post('users', [UserController::class, 'show']);
+
+//Bejelentkezett user sajat adatai
+Route::get('usersme', [UserController::class, 'indexSelf'])
+    ->middleware(['auth:sanctum', 'ability:usersme:get']);
+Route::patch('usersme', [UserController::class, 'updateSelf'])
+    ->middleware(['auth:sanctum', 'ability:usersme:patch']);
+Route::patch('usersme/password', [UserController::class, 'updatePassword'])
+    ->middleware(['auth:sanctum', 'ability:usersme:updatePassword']);
+Route::delete('usersme', [UserController::class, 'destroySelf'])
+    ->middleware(['auth:sanctum', 'ability:usersme:delete']);
  
  
 //Mindenki
@@ -71,14 +81,18 @@ Route::post('users', [UserController::class, 'store']);
  
 //Admin:
 //minden user lekérdezése
-Route::get('users', [UserController::class, 'index']);
+Route::get('users', [UserController::class, 'index'])
+    ->middleware(['auth:sanctum', 'ability:users:get']);
  
 //Egy user lekérése    
-Route::get('users/{id}', [UserController::class, 'show']);
+Route::get('users/{id}', [UserController::class, 'show'])
+    ->middleware(['auth:sanctum', 'ability:users:get']);
  
 //User adatok módosítása      
-Route::patch('users/{id}', [UserController::class, 'update']);
+Route::patch('users/{id}', [UserController::class, 'update'])
+    ->middleware(['auth:sanctum', 'ability:users:patch']);
  
 //User törlés
-Route::delete('users/{id}', [UserController::class, 'destroy']);
+Route::delete('users/{id}', [UserController::class, 'destroy'])
+    ->middleware(['auth:sanctum', 'ability:users:delete']);
 //endregion
