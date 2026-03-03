@@ -65,8 +65,8 @@
 <script>
 import { mapActions, mapState } from "pinia";
 import { useUserLoginLogoutStore } from "@/stores/userLoginLogoutStore";
+import { useSpecieStore } from "@/stores/specieStore";
 import UserLogin from "@/components/User/UserLogin.vue";
-import specieService from "@/api/specieService";
 
 const API_BASE = (import.meta.env.VITE_API_URL || "").replace(/\/api\/?$/, "");
 
@@ -89,6 +89,7 @@ export default {
   data() {
     return {
       featuredSpecies: [],
+      specieStore: useSpecieStore(),
     };
   },
   async mounted() {
@@ -98,8 +99,8 @@ export default {
     ...mapActions(useUserLoginLogoutStore, ["login", "register"]),
     async fetchFeaturedSpecies() {
       try {
-        const response = await specieService.getAll();
-        const species = Array.isArray(response?.data) ? response.data : [];
+        await this.specieStore.getAll();
+        const species = Array.isArray(this.specieStore.items) ? this.specieStore.items : [];
         this.featuredSpecies = species.filter((row) => row?.photo && row?.fish_name);
       } catch (error) {
         this.featuredSpecies = [];
