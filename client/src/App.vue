@@ -106,6 +106,7 @@ body {
   background: rgba(0, 0, 0, 0.58);
   backdrop-filter: blur(6px);
   border-bottom: 1px solid rgba(180, 210, 224, 0.22);
+  color: #ffffff;
 }
 
 .menu-links {
@@ -143,12 +144,12 @@ body {
   background: rgba(238, 247, 251, 0.12);
 }
 
-a {
+.menu a {
   color: #fff;
   text-decoration: none;
 }
 
-a.router-link-active {
+.menu a.router-link-active {
   color: #d9eef9;
   text-shadow: 0 0 12px rgba(180, 226, 245, 0.3);
 }
