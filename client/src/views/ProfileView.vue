@@ -123,6 +123,7 @@ export default {
 
 <style scoped>
 .profile-wrap {
+  color: #ffffff;
   max-width: 760px;
   margin: 0 auto;
   padding: 28px 20px 40px;
@@ -139,6 +140,7 @@ export default {
 
 .profile-head h1 {
   margin: 0;
+  color: #ffffff;
 }
 
 .profile-head p {
@@ -169,6 +171,7 @@ export default {
 .profile-card label {
   display: grid;
   gap: 6px;
+  color: #eef7fb;
 }
 
 .profile-card input {

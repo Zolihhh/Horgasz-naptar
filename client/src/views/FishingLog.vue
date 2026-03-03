@@ -157,7 +157,7 @@ button {
   cursor: pointer;
   font-weight: bold;
   background: linear-gradient(45deg, #00c3ff, #00ff99);
-  color: black;
+  color: #ffffff;
   transition: 0.3s;
 }
 

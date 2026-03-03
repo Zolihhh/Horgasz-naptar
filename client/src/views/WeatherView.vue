@@ -405,6 +405,7 @@ select:focus {
   padding: 18px;
   border-radius: 14px;
   box-shadow: 0 14px 32px rgba(0, 0, 0, 0.22);
+  color: #eaf5fb;
 }
 
 .card-head {
@@ -423,6 +424,7 @@ select:focus {
 .card h3 {
   margin: 0;
   font-size: 1rem;
+  color: #ffffff !important;
 }
 
 .weather-label {

@@ -2,7 +2,7 @@
   <footer class="site-footer">
     <div class="footer-inner">
       <p class="brand">Horgasz Naptar</p>
-      <p class="meta">© {{ year }} Minden jog fenntartva.</p>
+      <p class="meta">&copy; {{ year }} Minden jog fenntartva.</p>
     </div>
   </footer>
 </template>
@@ -35,6 +35,7 @@ export default {
     rgba(8, 17, 25, 0.8),
     rgba(11, 34, 47, 0.62)
   );
+  color: #eef7fb;
   backdrop-filter: blur(7px);
   box-shadow: 0 12px 28px rgba(0, 0, 0, 0.24);
   display: flex;
@@ -46,6 +47,7 @@ export default {
 
 .brand {
   margin: 0;
+  color: #ffffff;
   font-weight: 700;
   letter-spacing: 0.04em;
 }
