@@ -1,18 +1,18 @@
 <template>
   <div class="grid-wrap">
     <div class="page-head">
-      <h1>Fogasok</h1>
-      <p>Sajat fogasaid kezelese egy helyen</p>
+      <h1>Fogások</h1>
+      <p>Saját fogásaid egy helyen</p>
     </div>
 
-    <p v-if="!isLoggedIn" class="status-text">A fogasok megtekintesehez jelentkezz be.</p>
+    <p v-if="!isLoggedIn" class="status-text">A fogásaid megtekintéséhez jelentkezz be.</p>
 
     <div v-else class="top-actions">
       <button type="button" class="secondary-btn" @click="toggleCreateLogForm">
-        {{ showCreateLogForm ? "Naplo urlap bezarasa" : "Uj fogasi naplo" }}
+        {{ showCreateLogForm ? "Űrlap bezarasa" : "Új fogási naplo" }}
       </button>
       <button type="button" class="primary-btn" @click="toggleCreateForm">
-        {{ showCreateForm ? "Urlap bezarasa" : "Uj fogas rogzitese" }}
+        {{ showCreateForm ? "Űrlap bezarasa" : "Új fogás rögzítese" }}
       </button>
     </div>
 
@@ -22,18 +22,18 @@
       @submit.prevent="createCatchLog"
     >
       <label>
-        Viz keresese
+        Víz keresése
         <input
           v-model.trim="locationSearchTerm"
           type="text"
-          placeholder="Viz nevre szures..."
+          placeholder="Víz névre szűres..."
         />
       </label>
 
       <label>
         Viz
         <select v-model.number="newCatchLog.locationid" required>
-          <option disabled :value="null">Valassz vizet</option>
+          <option disabled :value="null">Válassz vizet</option>
           <option v-for="location in filteredLocations" :key="location.id" :value="location.id">
             {{ getLocationName(location.id) }}
           </option>
@@ -41,30 +41,30 @@
       </label>
 
       <label>
-        Horgaszat kezdete
+        Horgászat kezdete
         <input v-model="newCatchLog.fishing_start" type="date" required />
       </label>
 
       <label>
-        Horgaszat vege
+        Horgászat vege
         <input v-model="newCatchLog.fishing_end" type="date" required />
       </label>
 
       <label>
-        Megjegyzes
+        Megjegyzés
         <input v-model="newCatchLog.comment" type="text" placeholder="Opcionális" />
       </label>
 
       <button type="submit" class="primary-btn" :disabled="savingLog">
-        {{ savingLog ? "Mentes..." : "Fogasi naplo mentese" }}
+        {{ savingLog ? "Mentés..." : "Fogási napló mentese" }}
       </button>
     </form>
 
     <form v-if="isLoggedIn && showCreateForm" class="create-form" @submit.prevent="createCatch">
       <label>
-        Fogasi naplo
+        Fogási napló
         <select v-model.number="newCatch.catchLogId" required>
-          <option disabled :value="null">Valassz naplot</option>
+          <option disabled :value="null">Válassz naplót</option>
           <option v-for="log in userCatchLogs" :key="log.id" :value="log.id">
             {{ getCatchLogLabel(log) }}
           </option>
@@ -74,7 +74,7 @@
       <label>
         Halfaj
         <select v-model.number="newCatch.specieId" required>
-          <option disabled :value="null">Valassz halfajt</option>
+          <option disabled :value="null">Válassz halfajt</option>
           <option v-for="item in species" :key="item.id" :value="item.id">
             {{ item.fish_name }}
           </option>
@@ -84,7 +84,7 @@
       <label>
         Csali
         <select v-model.number="newCatch.lureId" required>
-          <option disabled :value="null">Valassz csalit</option>
+          <option disabled :value="null">Válassz csalit</option>
           <option v-for="item in lures" :key="item.id" :value="item.id">
             {{ item.lure }}
           </option>
@@ -92,7 +92,7 @@
       </label>
 
       <label>
-        Suly (kg)
+        Súly (kg)
         <input v-model.number="newCatch.weight" type="number" step="0.01" min="0" required />
       </label>
 
@@ -102,34 +102,34 @@
       </label>
 
       <label>
-        Idopont
+        Időpont
         <input v-model="newCatch.catchTime" type="datetime-local" required />
       </label>
 
       <button type="submit" class="primary-btn" :disabled="saving || userCatchLogs.length === 0">
-        {{ saving ? "Mentes..." : "Fogas mentese" }}
+        {{ saving ? "Mentés..." : "Fogás mentése" }}
       </button>
       <p v-if="userCatchLogs.length === 0" class="status-text">
-        Elobb hozz letre fogasi naplot, mert ehhez kell kapcsolni a fogast.
+        Előbb hozz letre fogási naplót, mert ehhez kell kapcsolni a fogást.
       </p>
     </form>
 
-    <p v-if="isLoggedIn && loading" class="status-text">Betoltes...</p>
-    <p v-else-if="isLoggedIn && catches.length === 0" class="status-text">Nincs rogzitett fogasod.</p>
+    <p v-if="isLoggedIn && loading" class="status-text">Betöltes...</p>
+    <p v-else-if="isLoggedIn && catches.length === 0" class="status-text">Nincs rögzitett fogasod.</p>
 
     <div v-if="isLoggedIn && catches.length > 0" class="grid">
       <div class="card" v-for="c in catches" :key="c.id">
-        <h3>Fogas #{{ c.id }}</h3>
+        <h3>Fogás #{{ c.id }}</h3>
         <p>Halfaj: {{ getFishName(c.specieId) }}</p>
-        <p>Viz: {{ getLocationNameByCatchLogId(c.catchLogId) }}</p>
-        <p>Suly: {{ c.weight }} kg</p>
+        <p>Víz: {{ getLocationNameByCatchLogId(c.catchLogId) }}</p>
+        <p>Súly: {{ c.weight }} kg</p>
         <p>Hossz: {{ c.length }} cm</p>
         <p>Csali: {{ getLureName(c.lureId) }}</p>
-        <p>Idopont: {{ formatCatchTime(c.catchTime) }}</p>
+        <p>Időpont: {{ formatCatchTime(c.catchTime) }}</p>
 
         <div class="card-actions">
           <button type="button" class="secondary-btn" @click="startEdit(c)">
-            Fogas modositasa
+            Fogás módositasa
           </button>
         </div>
 
@@ -139,9 +139,9 @@
           @submit.prevent="updateCatch(c.id)"
         >
           <label>
-            Fogasi naplo
+            Fogási napló
             <select v-model.number="editCatch.catchLogId" required>
-              <option disabled :value="null">Valassz naplot</option>
+              <option disabled :value="null">Valássz naplót</option>
               <option v-for="log in userCatchLogs" :key="log.id" :value="log.id">
                 {{ getCatchLogLabel(log) }}
               </option>
@@ -151,7 +151,7 @@
           <label>
             Halfaj
             <select v-model.number="editCatch.specieId" required>
-              <option disabled :value="null">Valassz halfajt</option>
+              <option disabled :value="null">Valássz halfajt</option>
               <option v-for="item in species" :key="item.id" :value="item.id">
                 {{ item.fish_name }}
               </option>
@@ -161,7 +161,7 @@
           <label>
             Csali
             <select v-model.number="editCatch.lureId" required>
-              <option disabled :value="null">Valassz csalit</option>
+              <option disabled :value="null">Valássz csalit</option>
               <option v-for="item in lures" :key="item.id" :value="item.id">
                 {{ item.lure }}
               </option>
@@ -169,7 +169,7 @@
           </label>
 
           <label>
-            Suly (kg)
+            Súly (kg)
             <input v-model.number="editCatch.weight" type="number" step="0.01" min="0" required />
           </label>
 
@@ -179,7 +179,7 @@
           </label>
 
           <label>
-            Idopont
+            Időpont
             <input v-model="editCatch.catchTime" type="datetime-local" required />
           </label>
 
@@ -188,7 +188,7 @@
               {{ updating ? "Mentes..." : "Valtozasok mentese" }}
             </button>
             <button type="button" class="secondary-btn" @click="cancelEdit">
-              Megse
+              Mégsem
             </button>
           </div>
         </form>

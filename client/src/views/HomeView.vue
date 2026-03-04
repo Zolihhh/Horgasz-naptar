@@ -1,10 +1,10 @@
 <template>
   <section class="home-wrap">
     <header class="hero">
-      <p class="eyebrow">Horgasz Naptar</p>
-      <h1>Atlathato kezeles a fogasokhoz es idojarashoz</h1>
+      <p class="eyebrow">Horgász Naptár</p>
+      <h1>Átlatható kezeles a fogásokhoz és az időjáráshoz</h1>
       <p class="hero-text">
-        Egy feluleten kovetheted a fogasi adatokat, helyszineket es a kovetkezo napok varhato idojarasat.
+        Egy felületen követheted a fogási adatokat, helyszíneket és a kővetkező napok várható időjárásat.
       </p>
     </header>
 

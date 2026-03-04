@@ -5,7 +5,7 @@
         <div class="astro" v-if="todaySummary">
           <span>{{ formatClock(todaySummary.sunrise) }} Napkelte</span>
           <span>{{ formatClock(todaySummary.sunset) }} Napnyugta</span>
-          <span>{{ round(todaySummary.cloudCover) }}% Felho</span>
+          <span>{{ round(todaySummary.cloudCover) }}% Felhő</span>
         </div>
 
         <div class="search-pill">
@@ -13,7 +13,7 @@
           <input
             v-model.trim="searchTerm"
             type="text"
-            placeholder="Kereses varosra..."
+            placeholder="Keresés városra..."
             :disabled="loading"
             @input="syncSelectionWithFilter"
           />
@@ -26,14 +26,14 @@
             :class="{ active: metricMode === 'temperature' }"
             @click="metricMode = 'temperature'"
           >
-            Homerseklet
+            Hőmérséklet
           </button>
           <button
             type="button"
             :class="{ active: metricMode === 'precipitation' }"
             @click="metricMode = 'precipitation'"
           >
-            Csapadek
+            Csapadék
           </button>
         </div>
       </div>
@@ -44,13 +44,13 @@
             {{ city.label }}
           </option>
         </select>
-        <button type="button" class="ghost-btn" :disabled="loading" @click="resetSearch">Kereses torlese</button>
-        <button type="button" class="ghost-btn" :disabled="loading" @click="fetchForecast">Frissites</button>
+        <button type="button" class="ghost-btn" :disabled="loading" @click="resetSearch">Keresés törlése</button>
+        <button type="button" class="ghost-btn" :disabled="loading" @click="fetchForecast">Frissítes</button>
       </div>
 
       <p v-if="loading" class="state">Betoltes...</p>
       <p v-else-if="error" class="state error">{{ error }}</p>
-      <p v-else-if="!filteredCities.length" class="state">Nincs talalat a keresesre.</p>
+      <p v-else-if="!filteredCities.length" class="state">Nincs találat a keresésre.</p>
 
       <div v-else-if="dailyForecast.length" class="content-row">
         <article class="current-card">
@@ -70,7 +70,7 @@
             </div>
           </div>
 
-          <p class="wind-current">Szel: {{ round(currentDay.windMax) }} km/h</p>
+          <p class="wind-current">Szél: {{ round(currentDay.windMax) }} km/h</p>
         </article>
 
         <div class="forecast-row">
@@ -84,7 +84,7 @@
             </template>
             <template v-else>
               <p class="mini-main">{{ round(day.precipitation) }} mm</p>
-              <p class="mini-sub">szel {{ round(day.windMax) }} km/h</p>
+              <p class="mini-sub">szél {{ round(day.windMax) }} km/h</p>
             </template>
           </article>
         </div>
@@ -103,11 +103,11 @@ const WEATHER_VISUALS = {
     icon: 'https://openweathermap.org/img/wn/01d@2x.png'
   },
   cloud: {
-    label: 'Felhos',
+    label: 'Felhős',
     icon: 'https://openweathermap.org/img/wn/03d@2x.png'
   },
   rain: {
-    label: 'Esos',
+    label: 'Esős',
     icon: 'https://openweathermap.org/img/wn/10d@2x.png'
   },
   snow: {
@@ -119,7 +119,7 @@ const WEATHER_VISUALS = {
     icon: 'https://openweathermap.org/img/wn/11d@2x.png'
   },
   fog: {
-    label: 'Kodos',
+    label: 'Ködös',
     icon: 'https://openweathermap.org/img/wn/50d@2x.png'
   }
 }
