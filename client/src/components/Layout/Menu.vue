@@ -1,9 +1,9 @@
 <template>
   <nav class="menu">
     <div class="menu-links">
-      <RouterLink to="/">Fooldal</RouterLink>
-      <RouterLink to="/weather">Idojaras</RouterLink>
-      <RouterLink to="/catches">Fogasok</RouterLink>
+      <RouterLink to="/">Főoldal</RouterLink>
+      <RouterLink to="/weather">Időjaras</RouterLink>
+      <RouterLink to="/catches">Fogások</RouterLink>
     </div>
 
     <div class="menu-auth">
@@ -18,21 +18,21 @@
             class="menu-dropdown-link"
             @click="closeUserMenu"
           >
-            Osszes felhasznalo
+            Összes felhasznalo
           </RouterLink>
           <RouterLink
             to="/profile"
             class="menu-dropdown-link"
             @click="closeUserMenu"
           >
-            Sajat adatok
+            Saját adatok
           </RouterLink>
           <button type="button" class="menu-dropdown-link menu-dropdown-btn" @click="logoutHandler">
-            Kijelentkezes
+            Kijelentkezés
           </button>
         </div>
       </div>
-      <RouterLink v-else to="/login" class="menu-logout">Bejelentkezes</RouterLink>
+      <RouterLink v-else to="/login" class="menu-logout">Bejelentkezés</RouterLink>
     </div>
   </nav>
 </template>
