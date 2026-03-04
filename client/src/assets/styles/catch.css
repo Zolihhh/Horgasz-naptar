@@ -27,7 +27,7 @@
 
 .catch-view .page-head p {
   margin: 6px 0 0;
-  color: #d6e6ee;
+  color: #ffffff;
 }
 
 .catch-view .top-actions {
@@ -59,7 +59,7 @@
   flex-direction: column;
   gap: 6px;
   font-size: 0.95rem;
-  color: #eef7fb;
+  color: #ffffff;
 }
 
 .catch-view .create-form input,
@@ -70,7 +70,18 @@
   border-radius: 8px;
   padding: 8px 10px;
   background: rgba(5, 14, 20, 0.56);
-  color: #fff;
+  color: #ffffff;
+}
+
+.catch-view .create-form input::placeholder,
+.catch-view .edit-form input::placeholder {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.catch-view .create-form select option,
+.catch-view .edit-form select option {
+  color: #ffffff;
+  background: #0d1f2a;
 }
 
 .catch-view .create-form input:focus,
@@ -90,7 +101,7 @@
     rgba(10, 31, 44, 0.88),
     rgba(16, 54, 73, 0.78)
   );
-  color: #fff;
+  color: #ffffff;
   font-weight: 600;
   letter-spacing: 0.01em;
   padding: 9px 14px;
@@ -118,7 +129,7 @@
   border: 1px solid rgba(194, 224, 236, 0.45);
   border-radius: 10px;
   background: rgba(8, 23, 32, 0.68);
-  color: #dceef6;
+  color: #ffffff;
   padding: 8px 12px;
   cursor: pointer;
 }
@@ -130,7 +141,7 @@
 .catch-view .status-text {
   margin: 0 0 12px;
   font-size: 1.05rem;
-  color: #e7f2f8;
+  color: #ffffff;
 }
 
 .catch-view .error-text {
@@ -158,11 +169,12 @@
 
 .catch-view .card h3 {
   margin: 0 0 8px;
+  color: #ffffff;
 }
 
 .catch-view .card p {
   margin: 6px 0;
-  color: #e4f0f6;
+  color: #ffffff;
 }
 
 .catch-view .card-actions {
@@ -181,7 +193,7 @@
   display: grid;
   gap: 4px;
   font-size: 0.9rem;
-  color: #eef7fb;
+  color: #ffffff;
 }
 
 .catch-view .inline-actions {
