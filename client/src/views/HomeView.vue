@@ -1,10 +1,10 @@
-<template>
-  <section class="home-wrap">
+﻿<template>
+  <section class="home-wrap home-view">
     <header class="hero">
       <p class="eyebrow">Horgász Naptár</p>
-      <h1>Átlatható kezeles a fogásokhoz és az időjáráshoz</h1>
+      <h1>Átlátható kezelés a fogásokhoz és az időjáráshoz</h1>
       <p class="hero-text">
-        Egy felületen követheted a fogási adatokat, helyszíneket és a kővetkező napok várható időjárásat.
+        Egy felületen követheted a fogási adatokat, helyszíneket és a következő napok várható időjárását.
       </p>
     </header>
 
@@ -53,7 +53,7 @@
           <span class="visually-hidden">Next</span>
         </button>
       </div>
-      <p v-else class="feature-empty">Nincs megjelenitheto halkep.</p>
+      <p v-else class="feature-empty">Nincs megjeleníthető halkép.</p>
     </section>
   </section>
 </template>
@@ -100,101 +100,13 @@ export default {
     },
     getFishHint(name) {
       const key = (name || "").toLowerCase();
-      if (key.includes("ponty")) return "Nepszeru bekes hal, melegebb vizekben aktiv.";
-      if (key.includes("csuka")) return "Ragadozo hal, gyakran a parti novenyzetnel all.";
-      if (key.includes("harcsa")) return "Nagy testu ragadozo, inkabb este mozog.";
-      if (key.includes("sullo")) return "Erzekeny ragadozo, tisztabb vizben eredmenyes.";
-      if (key.includes("balin")) return "Gyors ragadozo, felszin kozeleben tamad.";
-      return "Magyar vizekben gyakran fogott, ertekes halfaj.";
+      if (key.includes("ponty")) return "Népszerű békés hal, melegebb vizekben aktív.";
+      if (key.includes("csuka")) return "Ragadozó hal, gyakran a parti növényzetnél áll.";
+      if (key.includes("harcsa")) return "Nagy testű ragadozó, inkább este mozog.";
+      if (key.includes("süllő")) return "Érzékeny ragadozó, tisztább vízben eredményes.";
+      if (key.includes("balin")) return "Gyors ragadozó, felszín közelében támad.";
+      return "Magyar vizekben gyakran fogott, értékes halfaj.";
     },
   },
 };
 </script>
-
-<style scoped>
-.home-wrap {
-  max-width: 1150px;
-  margin: 0 auto;
-  padding: 28px 20px 40px;
-  color: #ffffff;
-}
-
-.hero {
-  border-radius: 20px;
-  border: 1px solid rgba(210, 232, 241, 0.22);
-  background: linear-gradient(130deg, rgba(7, 21, 30, 0.82), rgba(16, 45, 61, 0.58));
-  backdrop-filter: blur(8px);
-  padding: clamp(22px, 4.5vw, 42px);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
-}
-
-.eyebrow {
-  margin: 0 0 10px;
-  text-transform: uppercase;
-  letter-spacing: 0.14em;
-  font-size: 0.75rem;
-  color: #bad7e4;
-}
-
-.hero h1 {
-  margin: 0;
-  max-width: 18ch;
-  font-size: clamp(1.9rem, 4vw, 3rem);
-  line-height: 1.12;
-  color: #ffffff;
-}
-
-.hero-text {
-  margin: 14px 0 0;
-  max-width: 62ch;
-  color: #d8e6ee;
-}
-
-.features {
-  margin-top: 16px;
-}
-
-.feature-card {
-  border: 1px solid rgba(202, 227, 238, 0.2);
-  background: linear-gradient(145deg, rgba(8, 17, 25, 0.78), rgba(11, 34, 47, 0.62));
-  backdrop-filter: blur(7px);
-  padding: 16px;
-  border-radius: 14px;
-  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.2);
-}
-
-.fish-card {
-  padding: 0;
-  overflow: hidden;
-  max-width: 420px;
-  margin: 0 auto;
-}
-
-.fish-image {
-  width: 100%;
-  height: 170px;
-  object-fit: cover;
-  display: block;
-  background: rgba(9, 21, 28, 0.8);
-}
-
-.fish-content {
-  padding: 14px 16px 16px;
-}
-
-.feature-card h2 {
-  margin: 0 0 6px;
-  font-size: 1.15rem;
-  color: #ffffff;
-}
-
-.feature-card p {
-  margin: 0;
-  color: #d6e6ee;
-}
-
-.feature-empty {
-  margin: 0;
-  color: #d6e6ee;
-}
-</style>

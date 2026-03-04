@@ -1,1 +1,4 @@
 @import './my.css';
+@import './styles/catch.css';
+@import './styles/views.css';
+@import './styles/weather.css';

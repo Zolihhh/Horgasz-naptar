@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <section class="login-page">
     <UserLogin @logIn="loginHandler" @register="registerHandler" />
   </section>
@@ -21,7 +21,7 @@ export default {
         await this.login(user);
         this.$router.push("/");
       } catch (error) {
-        console.log("Bejelentkezesi hiba");
+        console.log("Bejelentkezési hiba");
       }
     },
     async registerHandler({ user, done }) {
@@ -30,7 +30,7 @@ export default {
         done(true);
       } catch (error) {
         done(false);
-        console.log("Regisztracios hiba");
+        console.log("Regisztrációs hiba");
       }
     },
   },
