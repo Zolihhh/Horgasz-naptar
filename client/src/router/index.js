@@ -2,6 +2,7 @@
 import {createRouter,createWebHistory} from 'vue-router'
 
 import HomeView from '../views/HomeView.vue'
+import LoginView from '../views/LoginView.vue'
 import WeatherView from '../views/WeatherView.vue'
 import CatchView from '../views/CatchView.vue'
 import ProfileView from '../views/ProfileView.vue'
@@ -23,6 +24,7 @@ const onlyAdminGuard = () => {
 
 const routes=[
 {path:'/',component:HomeView},
+{path:'/login',component:LoginView},
 {path:'/weather',component:WeatherView},
 {path:'/catches',component:CatchView},
 {path:'/profile',component:ProfileView},

@@ -1,19 +1,20 @@
-﻿<template>
-  <div class="mb-3">
-    <label v-if="label" class="form-label" :for="labelId">{{ label }}: </label>
-    <div class="input-group">
+<template>
+  <div class="password-field">
+    <label v-if="label" class="field-label" :for="labelId">{{ label }}:</label>
+
+    <div class="password-row" :class="{ 'password-row-invalid': showRequiredError || !!serverErrors?.password }">
       <input
         :id="labelId"
         :ref="inputRef"
         :type="showPassword ? 'text' : 'password'"
-        class="form-control"
-        :class="{ 'is-invalid': showRequiredError }"
+        class="password-input"
         :value="modelValue"
         @input="$emit('update:modelValue', $event.target.value)"
         required
       />
+
       <button
-        class="btn btn-outline-secondary ms-1 toggle-visibility-btn"
+        class="toggle-visibility-btn"
         type="button"
         @click="showPassword = !showPassword"
         :aria-label="showPassword ? 'Jelszo elrejtese' : 'Jelszo megjelenitese'"
@@ -51,13 +52,13 @@
           />
         </svg>
       </button>
+    </div>
 
-      <div v-if="showRequiredError" class="invalid-feedback d-block">
-        {{ passwordErrorMessage || "A jelszo kotelezo" }}
-      </div>
-      <div v-if="serverErrors?.password" class="invalid-feedback d-block">
-        {{ serverErrors.password[0] }}
-      </div>
+    <div v-if="showRequiredError" class="field-error">
+      {{ passwordErrorMessage || "A jelszo kotelezo" }}
+    </div>
+    <div v-if="serverErrors?.password" class="field-error">
+      {{ serverErrors.password[0] }}
     </div>
   </div>
 </template>
@@ -82,22 +83,67 @@ export default {
 </script>
 
 <style scoped>
+.password-field {
+  margin: 0 0 0.95rem;
+}
+
+.field-label {
+  display: block;
+  margin-bottom: 0.55rem;
+  color: #e6f4ff;
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+.password-row {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.password-input {
+  flex: 1;
+  height: 42px;
+  border-radius: 8px;
+  border: 1px solid rgba(122, 197, 237, 0.28);
+  background: linear-gradient(90deg, rgba(6, 18, 31, 0.95), rgba(4, 13, 24, 0.9));
+  color: #f4f9ff;
+  padding: 0 0.85rem;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.password-input:focus {
+  border-color: rgba(131, 219, 255, 0.92);
+  box-shadow: 0 0 0 3px rgba(72, 163, 211, 0.24);
+}
+
 .toggle-visibility-btn {
-  min-width: 46px;
-  border: 1px solid rgba(101, 186, 229, 0.75);
-  background: rgba(7, 12, 18, 0.82);
-  color: #eef7ff;
+  width: 52px;
+  min-width: 52px;
+  height: 42px;
+  border: 1px solid rgba(109, 193, 236, 0.86);
+  background: linear-gradient(90deg, rgba(3, 12, 23, 0.96), rgba(6, 19, 34, 0.95));
+  color: #eef9ff;
   border-radius: 10px;
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06),
-    0 0 14px rgba(76, 170, 220, 0.18);
+  box-shadow: inset 0 0 0 1px rgba(203, 242, 255, 0.08), 0 0 14px rgba(42, 147, 204, 0.24);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .toggle-visibility-btn:hover,
 .toggle-visibility-btn:focus {
-  background: rgba(11, 18, 27, 0.95);
-  color: #ffffff;
-  border-color: rgba(123, 206, 246, 0.9);
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.09),
-    0 0 18px rgba(89, 189, 238, 0.3);
+  border-color: rgba(145, 223, 255, 0.95);
+  box-shadow: inset 0 0 0 1px rgba(227, 250, 255, 0.12), 0 0 20px rgba(88, 188, 238, 0.36);
+}
+
+.password-row-invalid .password-input,
+.password-row-invalid .toggle-visibility-btn {
+  border-color: rgba(255, 120, 120, 0.75);
+}
+
+.field-error {
+  margin-top: 0.35rem;
+  color: #ff9d9d;
+  font-size: 0.88rem;
 }
 </style>

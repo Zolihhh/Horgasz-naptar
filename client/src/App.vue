@@ -33,7 +33,7 @@
             </button>
           </div>
         </div>
-        <span v-else class="menu-user">Nincs bejelentkezve</span>
+        <RouterLink v-else to="/login" class="menu-logout">Bejelentkezes</RouterLink>
       </div>
     </nav>
 
