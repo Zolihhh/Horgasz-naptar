@@ -1,61 +1,58 @@
-<template>
+<!-- <template>
 
-<header class="hero-header">
+    <header class="hero-header">
 
-<div class="hero-overlay">
+        <div class="hero-overlay">
 
-<h1>🎣 Horgász Napló</h1>
+            <h1>🎣 Horgász Napló</h1>
 
-<p>Rögzítsd a fogásaid és kövesd a horgászatodat</p>
+            <p>Rögzítsd a fogásaid és kövesd a horgászatodat</p>
 
-</div>
+        </div>
 
-</header>
+    </header>
 
-</template>
+</template> -->
 
 
 <style scoped>
+.hero-header {
 
-.hero-header{
+    height: 220px;
 
-height:220px;
+    background-image: url("https://images.unsplash.com/photo-1504274066651-8d31a536b11a"
+        );
 
-background-image:url(
-"https://images.unsplash.com/photo-1504274066651-8d31a536b11a"
-);
+    background-size: cover;
+    background-position: center;
 
-background-size:cover;
-background-position:center;
-
-display:flex;
-align-items:center;
-justify-content:center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
 }
 
 
 
-.hero-overlay{
+.hero-overlay {
 
-background:rgba(0,0,0,0.55);
+    background: rgba(0, 0, 0, 0.55);
 
-padding:30px 50px;
+    padding: 30px 50px;
 
-border-radius:12px;
+    border-radius: 12px;
 
-color:white;
+    color: white;
 
-text-align:center;
-
-}
-
-
-
-.hero-overlay h1{
-
-font-size:36px;
+    text-align: center;
 
 }
 
+
+
+.hero-overlay h1 {
+
+    font-size: 36px;
+
+}
 </style>
