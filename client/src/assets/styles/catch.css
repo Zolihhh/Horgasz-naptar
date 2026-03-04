@@ -133,6 +133,10 @@
   color: #e7f2f8;
 }
 
+.catch-view .error-text {
+  color: #ffd6d6;
+}
+
 .catch-view .grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));

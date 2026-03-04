@@ -52,7 +52,7 @@
 
         <label>
           Súly (kg)
-          <input v-model.number="editCatch.weight" type="number" step="0.01" min="0" required />
+          <input v-model.number="editCatch.weight" type="number" step="0.01" min="0" max="9.99" required />
         </label>
 
         <label>

@@ -15,6 +15,7 @@
         {{ showCreateForm ? "Űrlap bezárása" : "Új fogás rögzítése" }}
       </button>
     </div>
+    <p v-if="actionError" class="status-text error-text">{{ actionError }}</p>
 
     <CatchLogForm
       v-if="isLoggedIn && showCreateLogForm"
@@ -120,6 +121,7 @@ export default {
       saving: false,
       savingLog: false,
       updating: false,
+      actionError: "",
       fishCatchStore: useFishCatchStore(),
       specieStore: useSpecieStore(),
       lureStore: useLureStore(),
@@ -162,6 +164,7 @@ export default {
   methods: {
     async fetchMyCatches() {
       this.loading = true;
+      this.actionError = "";
       try {
         await Promise.all([
           this.fishCatchStore.getMyCatches(),
@@ -210,6 +213,7 @@ export default {
       }
     },
     toggleCreateForm() {
+      this.actionError = "";
       this.showCreateForm = !this.showCreateForm;
       if (this.showCreateForm) {
         this.showCreateLogForm = false;
@@ -218,6 +222,7 @@ export default {
       }
     },
     toggleCreateLogForm() {
+      this.actionError = "";
       this.showCreateLogForm = !this.showCreateLogForm;
       if (this.showCreateLogForm) {
         this.showCreateForm = false;
@@ -258,7 +263,24 @@ export default {
     },
     async createCatchLog() {
       if (!this.currentUserId) return;
+      const isDuplicateLog = this.userCatchLogs.some((log) => {
+        return (
+          Number(log.locationid) === Number(this.newCatchLog.locationid) &&
+          String(log.fishing_start) === String(this.newCatchLog.fishing_start) &&
+          String(log.fishing_end) === String(this.newCatchLog.fishing_end)
+        );
+      });
+      if (isDuplicateLog) {
+        this.actionError = "Ehhez a vízhez és időszakhoz már létezik fogási napló.";
+        console.error("[CatchView][createCatchLog] Duplikált napló", {
+          payload: this.newCatchLog,
+          userId: this.currentUserId,
+        });
+        return;
+      }
+
       this.savingLog = true;
+      this.actionError = "";
       try {
         const payload = {
           ...this.newCatchLog,
@@ -272,20 +294,33 @@ export default {
           this.prefillCreateForm(createdLogId);
         }
       } catch (error) {
-        // Hibakezelés az axios interceptorban történik
+        this.actionError = this.getErrorMessage(error, "A fogási napló mentése nem sikerült.");
       } finally {
         this.savingLog = false;
       }
     },
     async createCatch() {
       if (this.userCatchLogs.length === 0) return;
+      if (Number(this.newCatch.weight) > 9.99) {
+        this.actionError = "A súly mező legnagyobb értéke 9.99 kg lehet.";
+        console.error("[CatchView][createCatch] Súly túl nagy", {
+          weight: this.newCatch.weight,
+          payload: this.newCatch,
+        });
+        return;
+      }
       this.saving = true;
+      this.actionError = "";
       try {
-        await this.fishCatchStore.create(this.newCatch);
+        const payload = {
+          ...this.newCatch,
+          catchTime: this.toMysqlDateTime(this.newCatch.catchTime),
+        };
+        await this.fishCatchStore.create(payload);
         this.showCreateForm = false;
         await this.fetchMyCatches();
       } catch (error) {
-        // Hibakezelés az axios interceptorban történik
+        this.actionError = this.getErrorMessage(error, "A fogás mentése nem sikerült.");
       } finally {
         this.saving = false;
       }
@@ -307,13 +342,26 @@ export default {
       this.editCatch = emptyCatch();
     },
     async updateCatch(id) {
+      if (Number(this.editCatch.weight) > 9.99) {
+        this.actionError = "A súly mező legnagyobb értéke 9.99 kg lehet.";
+        console.error("[CatchView][updateCatch] Súly túl nagy", {
+          id,
+          weight: this.editCatch.weight,
+          payload: this.editCatch,
+        });
+        return;
+      }
       this.updating = true;
       try {
-        await this.fishCatchStore.update(id, this.editCatch);
+        const payload = {
+          ...this.editCatch,
+          catchTime: this.toMysqlDateTime(this.editCatch.catchTime),
+        };
+        await this.fishCatchStore.update(id, payload);
         this.cancelEdit();
         await this.fetchMyCatches();
       } catch (error) {
-        // Hibakezelés az axios interceptorban történik
+        this.actionError = this.getErrorMessage(error, "A fogás módosítása nem sikerült.");
       } finally {
         this.updating = false;
       }
@@ -332,6 +380,15 @@ export default {
       return new Date(date.getTime() - date.getTimezoneOffset() * 60000)
         .toISOString()
         .slice(0, 10);
+    },
+    toMysqlDateTime(value) {
+      if (!value) return "";
+      const normalized = String(value).trim();
+      // datetime-local returns YYYY-MM-DDTHH:mm, backend/db expects SQL datetime.
+      if (normalized.includes("T")) {
+        return `${normalized.replace("T", " ")}:00`;
+      }
+      return normalized;
     },
     getFishName(specieId) {
       return this.speciesById[specieId] || `Ismeretlen halfaj (#${specieId})`;
@@ -356,6 +413,50 @@ export default {
       const date = new Date(value);
       if (Number.isNaN(date.getTime())) return value;
       return date.toLocaleString("hu-HU");
+    },
+    getErrorMessage(error, fallback) {
+      console.error("[CatchView] API hiba", {
+        message: error?.message,
+        status: error?.response?.status,
+        data: error?.response?.data,
+        error,
+      });
+      const responseData = error?.response?.data;
+      const message = responseData?.message;
+      if (typeof message === "string" && message.includes("Duplicate entry")) {
+        return "Ehhez a vízhez és időszakhoz már létezik fogási napló.";
+      }
+      if (typeof message === "string" && message.includes("fish_catches_catchlogid_foreign")) {
+        return "A kiválasztott fogási napló már nem létezik vagy nem elérhető.";
+      }
+      if (typeof message === "string" && message.includes("fish_catches_specieid_foreign")) {
+        return "A kiválasztott halfaj már nem létezik.";
+      }
+      if (typeof message === "string" && message.includes("fish_catches_lureid_foreign")) {
+        return "A kiválasztott csali már nem létezik.";
+      }
+      if (typeof message === "string" && message.includes("Out of range value for column 'weight'")) {
+        return "A súly mező legnagyobb értéke 9.99 kg lehet.";
+      }
+      if (typeof message === "string" && message.includes("Integrity constraint violation")) {
+        return "Az adatok ütköznek adatbázis szabállyal (kapcsolódó rekord hiányzik vagy duplikált).";
+      }
+      if (typeof message === "string" && message.trim()) {
+        return message;
+      }
+
+      const errors = responseData?.errors;
+      if (errors && typeof errors === "object") {
+        const firstError = Object.values(errors)?.[0];
+        if (Array.isArray(firstError) && firstError[0]) {
+          return String(firstError[0]);
+        }
+        if (typeof firstError === "string") {
+          return firstError;
+        }
+      }
+
+      return fallback;
     },
   },
 };

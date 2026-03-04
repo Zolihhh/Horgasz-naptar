@@ -24,6 +24,10 @@ apiClient.interceptors.request.use(
     return config;
   },
   (error) => {
+    console.error("[axios][request] hiba", {
+      message: error?.message,
+      error,
+    });
     return Promise.reject(error);
   },
 );
@@ -35,6 +39,14 @@ apiClient.interceptors.response.use(
   (response) => response.data,
   //Ha hiba: akkor kezeli a hibát és visszaküld egy Promies.reject(error)-t
   (error) => {
+    console.error("[axios][response] hiba", {
+      url: error?.config?.url,
+      method: error?.config?.method,
+      status: error?.response?.status,
+      data: error?.response?.data,
+      message: error?.message,
+      error,
+    });
         
     const toastStore = useToastStore();
     // Ha a szerver válaszolt
