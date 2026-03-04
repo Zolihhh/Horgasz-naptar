@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <div class="fishing-log">
 
     <!-- Cím -->
@@ -190,4 +190,4 @@ button:hover {
   color: white;
 }
 
-</style>
+</style> -->
