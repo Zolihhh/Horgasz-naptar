@@ -438,6 +438,9 @@ export default {
       if (typeof message === "string" && message.includes("Out of range value for column 'weight'")) {
         return "A súly mező legnagyobb értéke 9.99 kg lehet.";
       }
+      if (typeof message === "string" && message.includes("Out of range value for column 'length'")) {
+        return "A megadott hossz túl nagy az adatbázis mezőhöz. Adj meg kisebb értéket.";
+      }
       if (typeof message === "string" && message.includes("Integrity constraint violation")) {
         return "Az adatok ütköznek adatbázis szabállyal (kapcsolódó rekord hiányzik vagy duplikált).";
       }
