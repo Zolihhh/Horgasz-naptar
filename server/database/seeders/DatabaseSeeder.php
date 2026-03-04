@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
         DB::statement('DELETE FROM catch_logs');
         DB::statement('DELETE FROM fish_catches');
         DB::statement('DELETE FROM locations');
+        DB::statement('DELETE FROM cities');
         DB::statement('DELETE FROM lures');
         DB::statement('DELETE FROM species');
 
@@ -33,6 +34,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             LureSeeder::class,
             SpecieSeeder::class,
+            CityCsvSeeder::class,
             LocationSeeder::class,
             CatchLogSeeder::class,
             FishCatchSeeder::class,

@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import { useLocationStore } from '@/stores/locationStore'
+import { useCityStore } from '@/stores/cityStore'
 import { useWeatherForecast } from '@/composables/useWeatherForecast'
 import WeatherTopBar from '@/components/Weather/WeatherTopBar.vue'
 import WeatherCityPicker from '@/components/Weather/WeatherCityPicker.vue'
@@ -72,7 +72,7 @@ export default {
       metricMode: 'temperature',
       loading: false,
       error: '',
-      locationStore: useLocationStore()
+      cityStore: useCityStore()
     }
   },
   computed: {
@@ -103,7 +103,7 @@ export default {
     }
   },
   async mounted() {
-    await this.loadLocations()
+    await this.loadCities()
   },
   methods: {
     round(value) {
@@ -140,19 +140,19 @@ export default {
         this.selectedCity = this.cities[0].name
       }
     },
-    async loadLocations() {
+    async loadCities() {
       this.loading = true
       this.error = ''
 
       try {
-        await this.locationStore.getAll()
-        const rows = Array.isArray(this.locationStore.items) ? this.locationStore.items : []
+        await this.cityStore.getAll()
+        const rows = Array.isArray(this.cityStore.items) ? this.cityStore.items : []
         this.cities = rows
-          .map((row) => weatherTools.normalizeLocation(row))
+          .map((row) => weatherTools.normalizeCity(row))
           .filter(Boolean)
 
         if (!this.cities.length) {
-          throw new Error('A locations tábla üres vagy hiányos adatokat tartalmaz.')
+          throw new Error('A cities tábla üres vagy hiányos adatokat tartalmaz.')
         }
 
         this.selectedCity = this.cities[0].name
@@ -160,7 +160,7 @@ export default {
       } catch (err) {
         this.cities = []
         this.dailyForecast = []
-        this.error = err?.message || 'Hiba történt a helyszínek lekérésénél.'
+        this.error = err?.message || 'Hiba történt a városok lekérésénél.'
       } finally {
         this.loading = false
       }

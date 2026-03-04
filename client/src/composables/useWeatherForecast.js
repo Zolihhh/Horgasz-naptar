@@ -59,13 +59,8 @@ export function useWeatherForecast() {
     return WEATHER_VISUALS.cloud
   }
 
-  function normalizeLocation(raw) {
-    const name =
-      raw.FishingLakeName ||
-      raw.fishingLakeName ||
-      raw.location ||
-      raw.name ||
-      ''
+  function normalizeCity(raw) {
+    const name = raw.name || raw.city || ''
     const latitude = Number(raw.latitude)
     const longitude = Number(raw.longitude)
 
@@ -80,6 +75,11 @@ export function useWeatherForecast() {
       latitude,
       longitude
     }
+  }
+
+  // Backward-compatible alias for legacy callers.
+  function normalizeLocation(raw) {
+    return normalizeCity(raw)
   }
 
   async function fetchForecastForLocation(location) {
@@ -126,6 +126,7 @@ export function useWeatherForecast() {
     round,
     formatShortDate,
     formatClock,
+    normalizeCity,
     normalizeLocation,
     fetchForecastForLocation
   }

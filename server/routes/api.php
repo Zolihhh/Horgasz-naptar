@@ -8,6 +8,7 @@ use App\Http\Controllers\SpecieController;
 use App\Http\Controllers\CatchLogController;
 use App\Http\Controllers\FishCatchController;
 use App\Http\Controllers\LocationController;
+use App\Http\Controllers\CityController;
 use App\Http\Controllers\LureController;
  
 // Route::get('/user', function (Request $request) {
@@ -29,6 +30,9 @@ Route::get('/locations', [LocationController::class, 'index']);
 // Route::get('/location', [LocationController::class, 'post']);
 // Route::get('/location', [LocationController::class, 'show']);
 Route::post('/locations', [LocationController::class, 'store']);
+
+// CITIES
+Route::get('/cities', [CityController::class, 'index']);
 // Route::get('/location', [LocationController::class, 'update']);
 //Route::get('/location', [LocationController::class, 'destroy']);
  
