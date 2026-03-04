@@ -1,7 +1,7 @@
 <template>
   <footer class="site-footer">
     <div class="footer-inner">
-      <p class="brand">Horgasz Naptar</p>
+      <p class="brand">Horgász Naptár</p>
       <p class="meta">&copy; {{ year }} Minden jog fenntartva.</p>
     </div>
   </footer>

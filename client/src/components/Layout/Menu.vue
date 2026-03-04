@@ -18,7 +18,7 @@
             class="menu-dropdown-link"
             @click="closeUserMenu"
           >
-            Összes felhasznalo
+            Összes felhasznaló
           </RouterLink>
           <RouterLink
             to="/profile"
