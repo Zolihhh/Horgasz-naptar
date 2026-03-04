@@ -115,7 +115,7 @@
     </form>
 
     <p v-if="isLoggedIn && loading" class="status-text">Betöltes...</p>
-    <p v-else-if="isLoggedIn && catches.length === 0" class="status-text">Nincs rögzitett fogasod.</p>
+    <p v-else-if="isLoggedIn && catches.length === 0" class="status-text">Nincs rögzitett fogásod.</p>
 
     <div v-if="isLoggedIn && catches.length > 0" class="grid">
       <div class="card" v-for="c in catches" :key="c.id">
