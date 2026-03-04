@@ -119,7 +119,7 @@
 
     <div v-if="isLoggedIn && catches.length > 0" class="grid">
       <div class="card" v-for="c in catches" :key="c.id">
-        <h3>Fogás #{{ c.id }}</h3>
+        <h3>Fogás</h3>
         <p>Halfaj: {{ getFishName(c.specieId) }}</p>
         <p>Víz: {{ getLocationNameByCatchLogId(c.catchLogId) }}</p>
         <p>Súly: {{ c.weight }} kg</p>
@@ -632,6 +632,7 @@ export default {
 
 .card h3 {
   margin: 0 0 8px;
+  color: #e4f0f6;
 }
 
 .card p {
