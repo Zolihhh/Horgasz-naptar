@@ -9,9 +9,6 @@
         {{ city.label }}
       </option>
     </select>
-    <button type="button" class="ghost-btn" :disabled="loading" @click="$emit('reset-search')">
-      Keresés törlése
-    </button>
     <button type="button" class="ghost-btn" :disabled="loading" @click="$emit('refresh')">
       Frissítés
     </button>
