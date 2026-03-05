@@ -1,25 +1,32 @@
 <template>
-  <nav class="menu">
-    <div class="menu-links">
+  <nav class="menu d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between">
+    <div class="menu-links d-flex flex-nowrap align-items-center gap-2 gap-md-4">
       <RouterLink to="/">Főoldal</RouterLink>
-      <RouterLink to="/weather">Időjaras</RouterLink>
+      <RouterLink to="/weather">Időjárás</RouterLink>
       <RouterLink to="/catches">Fogások</RouterLink>
     </div>
 
-    <div class="menu-auth">
-      <div v-if="isLoggedIn" class="user-menu">
-        <button type="button" class="menu-user menu-user-btn" @click="toggleUserMenu">
+    <div class="menu-auth d-flex align-items-center gap-2 position-relative w-auto align-self-end align-self-md-auto justify-content-md-end">
+      <div v-if="isLoggedIn" ref="userMenu" class="user-menu">
+        <button
+          type="button"
+          class="menu-user menu-user-btn"
+          :aria-expanded="isUserMenuOpen ? 'true' : 'false'"
+          @click="toggleUserMenu"
+        >
           {{ userName }}
         </button>
-        <div v-if="userMenuOpen" class="menu-dropdown">
+
+        <div v-if="isUserMenuOpen" class="menu-dropdown">
           <RouterLink
             v-if="isAdmin"
             to="/users"
             class="menu-dropdown-link"
             @click="closeUserMenu"
           >
-            Összes felhasznaló
+            Összes felhasználó
           </RouterLink>
+
           <RouterLink
             to="/profile"
             class="menu-dropdown-link"
@@ -27,11 +34,17 @@
           >
             Saját adatok
           </RouterLink>
-          <button type="button" class="menu-dropdown-link menu-dropdown-btn" @click="logoutHandler">
+
+          <button
+            type="button"
+            class="menu-dropdown-link menu-dropdown-btn"
+            @click="logoutHandler"
+          >
             Kijelentkezés
           </button>
         </div>
       </div>
+
       <RouterLink v-else to="/login" class="menu-logout">Bejelentkezés</RouterLink>
     </div>
   </nav>
@@ -43,42 +56,44 @@ import { useUserLoginLogoutStore } from "@/stores/userLoginLogoutStore";
 
 export default {
   name: "MenuBar",
+  data() {
+    return {
+      isUserMenuOpen: false,
+    };
+  },
   computed: {
     ...mapState(useUserLoginLogoutStore, ["isLoggedIn", "userName", "role"]),
     isAdmin() {
       return this.role === 1;
     },
   },
-  data() {
-    return {
-      userMenuOpen: false,
-    };
-  },
-  watch: {
-    isLoggedIn(newValue) {
-      if (!newValue) {
-        this.userMenuOpen = false;
-      }
-    },
-    $route() {
-      this.userMenuOpen = false;
-    },
-  },
   methods: {
     ...mapActions(useUserLoginLogoutStore, ["logout"]),
     toggleUserMenu() {
-      this.userMenuOpen = !this.userMenuOpen;
+      this.isUserMenuOpen = !this.isUserMenuOpen;
     },
     closeUserMenu() {
-      this.userMenuOpen = false;
+      this.isUserMenuOpen = false;
     },
-    async logoutHandler() {
-      try {
-        await this.logout();
-      } catch (error) {
-        console.log("Kijelentkezesi hiba");
+    onDocumentClick(event) {
+      if (!this.isUserMenuOpen) return;
+      if (this.$refs.userMenu && !this.$refs.userMenu.contains(event.target)) {
+        this.closeUserMenu();
       }
     },
+    logoutHandler() {
+      this.closeUserMenu();
+      this.logout().catch(() => {
+        console.log("Kijelentkezési hiba");
+      });
+      this.$router.replace("/login");
+    },
+  },
+  mounted() {
+    document.addEventListener("click", this.onDocumentClick);
+  },
+  beforeUnmount() {
+    document.removeEventListener("click", this.onDocumentClick);
   },
 };
 </script>
@@ -87,10 +102,6 @@ export default {
 .menu {
   position: relative;
   z-index: 1000;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
   padding: 14px 20px;
   background: rgba(0, 0, 0, 0.58);
   backdrop-filter: blur(6px);
@@ -99,16 +110,11 @@ export default {
 }
 
 .menu-links {
-  display: flex;
-  align-items: center;
-  gap: 20px;
+  min-width: 0;
 }
 
 .menu-auth {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  position: relative;
+  min-width: 0;
 }
 
 .user-menu {
@@ -121,7 +127,7 @@ export default {
 
 .menu-dropdown {
   position: absolute;
-  top: calc(100% + 6px);
+  top: calc(100% + 8px);
   right: 0;
   min-width: 170px;
   border: 1px solid rgba(180, 210, 224, 0.28);
@@ -140,6 +146,7 @@ export default {
   border-radius: 7px;
   color: #eaf6fb;
   text-decoration: none;
+  background: transparent;
 }
 
 .menu-dropdown-link:hover {
@@ -184,16 +191,5 @@ export default {
 .menu a.router-link-active {
   color: #d9eef9;
   text-shadow: 0 0 12px rgba(180, 226, 245, 0.3);
-}
-
-@media (max-width: 760px) {
-  .menu {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .menu-links {
-    flex-wrap: wrap;
-  }
 }
 </style>

@@ -17,7 +17,7 @@
         class="toggle-visibility-btn"
         type="button"
         @click="showPassword = !showPassword"
-        :aria-label="showPassword ? 'Jelszo elrejtese' : 'Jelszo megjelenitese'"
+        :aria-label="showPassword ? 'Jelszó elrejtése' : 'Jelszó megjelenítése'"
       >
         <svg
           v-if="!showPassword"
@@ -55,7 +55,7 @@
     </div>
 
     <div v-if="showRequiredError" class="field-error">
-      {{ passwordErrorMessage || "A jelszo kotelezo" }}
+      {{ passwordErrorMessage || "A jelszó kötelező" }}
     </div>
     <div v-if="serverErrors?.password" class="field-error">
       {{ serverErrors.password[0] }}
@@ -67,7 +67,7 @@
 export default {
   props: {
     modelValue: { type: String, default: "" },
-    label: { type: String, default: "Jelszo" },
+    label: { type: String, default: "Jelszó" },
     inputRef: { type: String, default: "" },
     labelId: { type: String, default: "" },
     passwordErrorMessage: { type: String, default: "" },

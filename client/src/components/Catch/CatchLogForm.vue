@@ -4,6 +4,7 @@
       Víz keresése
       <input
         :value="locationSearchTerm"
+        class="form-control"
         type="text"
         placeholder="Víz névre szűrés..."
         @input="$emit('update:locationSearchTerm', $event.target.value)"
@@ -12,7 +13,7 @@
 
     <label>
       Víz
-      <select v-model.number="newCatchLog.locationid" required>
+      <select v-model.number="newCatchLog.locationid" class="form-select" required>
         <option disabled :value="null">Válassz vizet</option>
         <option v-for="location in filteredLocations" :key="location.id" :value="location.id">
           {{ getLocationName(location.id) }}
@@ -22,20 +23,20 @@
 
     <label>
       Horgászat kezdete
-      <input v-model="newCatchLog.fishing_start" type="date" required />
+      <input v-model="newCatchLog.fishing_start" class="form-control" type="date" required />
     </label>
 
     <label>
       Horgászat vége
-      <input v-model="newCatchLog.fishing_end" type="date" required />
+      <input v-model="newCatchLog.fishing_end" class="form-control" type="date" required />
     </label>
 
     <label>
       Megjegyzés
-      <input v-model="newCatchLog.comment" type="text" placeholder="Opcionális" />
+      <input v-model="newCatchLog.comment" class="form-control" type="text" placeholder="Opcionális" />
     </label>
 
-    <button type="submit" class="primary-btn" :disabled="savingLog">
+    <button type="submit" class="primary-btn btn" :disabled="savingLog">
       {{ savingLog ? "Mentés..." : "Fogási napló mentése" }}
     </button>
   </form>

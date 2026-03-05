@@ -239,6 +239,36 @@
   padding: 14px;
 }
 
+.users-view .users-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.users-view .users-controls label {
+  color: #e7f2f8;
+}
+
+.users-view .users-controls .form-select {
+  background: rgba(5, 14, 20, 0.56);
+  color: #eaf5fb;
+  border: 1px solid rgba(194, 224, 236, 0.35);
+}
+
+.users-view .users-controls .page-link {
+  background: rgba(5, 14, 20, 0.56);
+  color: #eaf5fb;
+  border-color: rgba(194, 224, 236, 0.28);
+}
+
+.users-view .users-controls .page-item.active .page-link {
+  background: rgba(48, 116, 150, 0.68);
+  border-color: rgba(130, 194, 224, 0.45);
+}
+
 .users-view .empty-state {
   margin: 8px 0;
   color: #e7f2f8;

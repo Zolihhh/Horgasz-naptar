@@ -1,7 +1,7 @@
 <template>
   <div class="login-shell">
     <form class="login-panel" @submit.prevent="handleSubmit" novalidate>
-      <h1 class="login-title">Bejelentkezes</h1>
+      <h1 class="login-title">Bejelentkezés</h1>
 
       <div v-if="registerMode" class="field-block">
         <label for="name" class="field-label">Neved:</label>
@@ -13,7 +13,7 @@
           :class="{ 'field-input-invalid': showNameError }"
           required
         />
-        <div v-if="showNameError" class="field-error">A nev kotelezo</div>
+        <div v-if="showNameError" class="field-error">A név kötelező</div>
       </div>
 
       <div class="field-block">
@@ -26,7 +26,7 @@
           :class="{ 'field-input-invalid': showEmailError }"
           required
         />
-        <div v-if="showEmailError" class="field-error">Az email ures, vagy helytelen</div>
+        <div v-if="showEmailError" class="field-error">Az email üres, vagy helytelen</div>
       </div>
 
       <PasswordField
@@ -34,13 +34,13 @@
         @update:modelValue="onPasswordChange"
         :label="'Jelszavad'"
         :showRequiredError="showPasswordError"
-        :passwordErrorMessage="'A jelszo kotelezo'"
+        :passwordErrorMessage="'A jelszó kötelező'"
       />
 
       <div class="action-row">
         <button type="submit" class="action-btn">Login</button>
         <button type="button" class="action-btn" @click="handleRegisterClick">
-          {{ registerMode ? "Regisztracio kuldese" : "Regisztracio" }}
+          {{ registerMode ? "Regisztráció küldése" : "Regisztráció" }}
         </button>
       </div>
     </form>

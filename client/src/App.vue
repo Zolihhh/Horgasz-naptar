@@ -1,6 +1,7 @@
 <template>
   <div class="app-shell">
     <MenuBar />
+    <HeaderBar v-if="showHeader" />
 
     <main class="app-main">
       <RouterView />
@@ -12,13 +13,20 @@
 
 <script>
 import FooterBar from "@/components/Layout/Footer.vue";
+import HeaderBar from "@/components/Layout/Header.vue";
 import MenuBar from "@/components/Layout/Menu.vue";
 
 export default {
   name: "App",
   components: {
     FooterBar,
+    HeaderBar,
     MenuBar,
+  },
+  computed: {
+    showHeader() {
+      return this.$route.path !== "/";
+    },
   },
 };
 </script>
@@ -63,4 +71,5 @@ body {
 .app-main {
   flex: 1;
 }
+
 </style>

@@ -25,8 +25,9 @@
       <p v-else-if="error" class="state error">{{ error }}</p>
       <p v-else-if="!filteredCities.length" class="state">Nincs találat a keresésre.</p>
 
-      <div v-else-if="dailyForecast.length" class="content-row">
+      <div v-else-if="dailyForecast.length" class="content-row row g-4 align-items-end">
         <WeatherCurrentCard
+          class="col-12 col-xl-auto"
           :current-day="currentDay"
           :current-display-temp="currentDisplayTemp"
           :selected-city="selectedCity"
@@ -35,6 +36,7 @@
         />
 
         <WeatherForecastRow
+          class="col-12 col-xl"
           :daily-forecast="dailyForecast"
           :metric-mode="metricMode"
           :round="round"

@@ -75,7 +75,7 @@ export const useUserLoginLogoutStore = defineStore("userLoginLogout", {
         this.error = null;
         await service.register(data);
         const toastStore = useToastStore();
-        toastStore.messages.push("Sikeres regisztracio");
+        toastStore.messages.push("Sikeres regisztráció");
         toastStore.show("Success");
         return true;
       } catch (err) {
@@ -86,26 +86,25 @@ export const useUserLoginLogoutStore = defineStore("userLoginLogout", {
       }
     },
     async logout() {
-      try {
-        this.error = null;
-        this.loading = true;
-        const response = await service.logout();
-        this.item = null;
-        // Törlés localStorage-ból
-        localStorage.removeItem("user_data");
-        const toastStore = useToastStore();
-        toastStore.messages.push("Sikeres kijelenkezés");
-        toastStore.show("Success");
+      this.error = null;
+      this.loading = true;
+      // Optimista kijelentkeztetés: az UI azonnal lépjen ki.
+      this.item = null;
+      localStorage.removeItem("user_data");
 
-        return true;
+      try {
+        await service.logout();
       } catch (err) {
+        // Ha a backend logout hibázik, a lokális session már törölve van.
         this.error = err;
-        this.item = null;
-        throw err;
-        return false;
       } finally {
+        const toastStore = useToastStore();
+        toastStore.messages.push("Sikeres kijelentkezés");
+        toastStore.show("Success");
         this.loading = false;
       }
+
+      return true;
     },
     async getMeRefresh() {
       try {
@@ -163,3 +162,4 @@ export const useUserLoginLogoutStore = defineStore("userLoginLogout", {
     },
   },
 });
+

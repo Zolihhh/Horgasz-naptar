@@ -103,6 +103,8 @@ const router = createRouter({
   ],
 });
 
+const DYNAMIC_IMPORT_RELOAD_KEY = "dynamic-import-reload-path";
+
 router.beforeEach((to, from, next) => {
   const titleResolver = to.meta?.title;
   document.title = `Horgász Naptár - ${typeof titleResolver === "function" ? titleResolver(to) : "Oldal"}`;
@@ -122,6 +124,31 @@ router.beforeEach((to, from, next) => {
       next("/");
     }
   }
+});
+
+router.afterEach(() => {
+  sessionStorage.removeItem(DYNAMIC_IMPORT_RELOAD_KEY);
+});
+
+router.onError((error, to) => {
+  const message = String(error?.message || "");
+  const isDynamicImportError =
+    message.includes("Failed to fetch dynamically imported module") ||
+    message.includes("Importing a module script failed");
+
+  if (!isDynamicImportError) {
+    return;
+  }
+
+  const targetPath = to?.fullPath || window.location.pathname;
+  const alreadyRetriedPath = sessionStorage.getItem(DYNAMIC_IMPORT_RELOAD_KEY);
+
+  if (alreadyRetriedPath === targetPath) {
+    return;
+  }
+
+  sessionStorage.setItem(DYNAMIC_IMPORT_RELOAD_KEY, targetPath);
+  window.location.assign(targetPath);
 });
 
 export default router;

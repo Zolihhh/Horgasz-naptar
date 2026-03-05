@@ -1,17 +1,12 @@
 ﻿<template>
   <div class="grid-wrap catch-view">
-    <div class="page-head">
-      <h1>Fogások</h1>
-      <p>Saját fogásaid egy helyen</p>
-    </div>
-
     <p v-if="!isLoggedIn" class="status-text">A fogásaid megtekintéséhez jelentkezz be.</p>
 
     <div v-else class="top-actions">
-      <button type="button" class="secondary-btn" @click="toggleCreateLogForm">
+      <button type="button" class="secondary-btn btn" @click="toggleCreateLogForm">
         {{ showCreateLogForm ? "Űrlap bezárása" : "Új fogási napló" }}
       </button>
-      <button type="button" class="primary-btn" @click="toggleCreateForm">
+      <button type="button" class="primary-btn btn" @click="toggleCreateForm">
         {{ showCreateForm ? "Űrlap bezárása" : "Új fogás rögzítése" }}
       </button>
     </div>

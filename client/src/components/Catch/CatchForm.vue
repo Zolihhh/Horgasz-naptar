@@ -2,7 +2,7 @@
   <form class="create-form" @submit.prevent="$emit('submit')">
     <label>
       Fogási napló
-      <select v-model.number="newCatch.catchLogId" required>
+      <select v-model.number="newCatch.catchLogId" class="form-select" required>
         <option disabled :value="null">Válassz naplót</option>
         <option v-for="log in userCatchLogs" :key="log.id" :value="log.id">
           {{ getCatchLogLabel(log) }}
@@ -12,7 +12,7 @@
 
     <label>
       Halfaj
-      <select v-model.number="newCatch.specieId" required>
+      <select v-model.number="newCatch.specieId" class="form-select" required>
         <option disabled :value="null">Válassz halfajt</option>
         <option v-for="item in species" :key="item.id" :value="item.id">
           {{ item.fish_name }}
@@ -22,7 +22,7 @@
 
     <label>
       Csali
-      <select v-model.number="newCatch.lureId" required>
+      <select v-model.number="newCatch.lureId" class="form-select" required>
         <option disabled :value="null">Válassz csalit</option>
         <option v-for="item in lures" :key="item.id" :value="item.id">
           {{ item.lure }}
@@ -32,20 +32,20 @@
 
     <label>
       Súly (kg)
-      <input v-model.number="newCatch.weight" type="number" step="0.01" min="0" max="9.99" required />
+      <input v-model.number="newCatch.weight" class="form-control" type="number" step="0.01" min="0" max="9.99" required />
     </label>
 
     <label>
       Hossz (cm)
-      <input v-model.number="newCatch.length" type="number" step="0.1" min="0" required />
+      <input v-model.number="newCatch.length" class="form-control" type="number" step="0.1" min="0" required />
     </label>
 
     <label>
       Időpont
-      <input v-model="newCatch.catchTime" type="datetime-local" required />
+      <input v-model="newCatch.catchTime" class="form-control" type="datetime-local" required />
     </label>
 
-    <button type="submit" class="primary-btn" :disabled="saving || userCatchLogs.length === 0">
+    <button type="submit" class="primary-btn btn" :disabled="saving || userCatchLogs.length === 0">
       {{ saving ? "Mentés..." : "Fogás mentése" }}
     </button>
     <p v-if="userCatchLogs.length === 0" class="status-text">

@@ -1,17 +1,22 @@
 <template>
   <div class="d-flex align-items-center p-0 ms-2">
-    <label class="me-2" for="select">
+    <label class="me-2" for="select-per-page">
       {{ label }}
     </label>
+
     <select
-      id="select"
-      v-model="selectedPerPage"
+      id="select-per-page"
+      v-model.number="selectedPerPage"
       class="form-select form-select-sm"
       style="width: auto"
     >
-      <option :value="1000000">All</option>
-      <option v-for="(p, index) in selectedPerPageList" :key="index" :value="p">
-        {{ p }}
+      <option v-if="includeAllOption" :value="allValue">{{ allLabel }}</option>
+      <option
+        v-for="(item, index) in normalizedOptions"
+        :key="index"
+        :value="item"
+      >
+        {{ item }}
       </option>
     </select>
   </div>
@@ -21,30 +26,58 @@
 export default {
   name: "SetSelectedPerPage",
   props: {
-    useCollectionStore: { type: Function, required: true },
+    useCollectionStore: { type: Function, default: null },
     label: { type: String, default: "Sor/oldal:" },
+    modelValue: { type: Number, default: null },
+    options: {
+      type: Array,
+      default: () => [10, 20, 50],
+    },
+    includeAllOption: { type: Boolean, default: true },
+    allValue: { type: Number, default: 1000000 },
+    allLabel: { type: String, default: "Összes" },
   },
   data() {
     return {
       store: null,
-      selectedPerPage: 1000000,
-      selectedPerPageList: [],
+      selectedPerPage: this.modelValue ?? 10,
     };
   },
+  computed: {
+    normalizedOptions() {
+      if (this.store?.selectedPerPageList?.length) {
+        return this.store.selectedPerPageList;
+      }
+      return this.options;
+    },
+  },
   watch: {
+    modelValue(value) {
+      if (value !== null && value !== this.selectedPerPage) {
+        this.selectedPerPage = value;
+      }
+    },
     selectedPerPage(value) {
-      this.store.setSelectedPerPage(+value);
+      const parsedValue = Number(value) || 10;
+
+      if (this.store?.setSelectedPerPage) {
+        this.store.setSelectedPerPage(parsedValue);
+      }
+
+      this.$emit("update:modelValue", parsedValue);
+      this.$emit("change", parsedValue);
     },
   },
   created() {
-    // Itt példányosítjuk a kapott store-t
     if (this.useCollectionStore) {
       this.store = this.useCollectionStore();
-      this.selectedPerPageList = this.store.selectedPerPageList;
-      this.selectedPerPage = this.store.selectedPerPageList[0];
+
+      if (this.store?.selectedPerPageList?.length) {
+        this.selectedPerPage = this.store.selectedPerPageList[0];
+      }
+    } else if (this.modelValue === null) {
+      this.selectedPerPage = this.options[0] ?? 10;
     }
   },
 };
 </script>
-
-<style></style>
