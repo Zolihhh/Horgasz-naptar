@@ -59,6 +59,7 @@
 </template>
 
 <script>
+import { Carousel } from "bootstrap";
 import { useSpecieStore } from "@/stores/specieStore";
 
 const API_BASE = (import.meta.env.VITE_API_URL || "").replace(/\/api\/?$/, "");
@@ -69,6 +70,7 @@ export default {
     return {
       featuredSpecies: [],
       specieStore: useSpecieStore(),
+      carouselInstance: null,
     };
   },
   computed: {
@@ -83,8 +85,34 @@ export default {
   },
   async mounted() {
     await this.fetchFeaturedSpecies();
+    this.$nextTick(() => {
+      this.initCarousel();
+    });
+  },
+  beforeUnmount() {
+    if (this.carouselInstance) {
+      this.carouselInstance.dispose();
+      this.carouselInstance = null;
+    }
   },
   methods: {
+    initCarousel() {
+      const el = document.getElementById("fishCardsCarousel");
+      if (!el) return;
+
+      if (this.carouselInstance) {
+        this.carouselInstance.dispose();
+      }
+
+      this.carouselInstance = new Carousel(el, {
+        interval: 5000,
+        pause: false,
+        ride: "carousel",
+        wrap: true,
+      });
+
+      this.carouselInstance.cycle();
+    },
     async fetchFeaturedSpecies() {
       try {
         await this.specieStore.getAll();
