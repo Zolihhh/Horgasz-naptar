@@ -7,7 +7,7 @@
 <script>
 import { mapActions } from "pinia";
 import { useUserLoginLogoutStore } from "@/stores/userLoginLogoutStore";
-import UserLogin from "@/components/User/UserLogin.vue";
+import { UserLogin } from "@/components/Forms";
 
 export default {
   name: "LoginView",

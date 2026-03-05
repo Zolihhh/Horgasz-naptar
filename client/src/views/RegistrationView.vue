@@ -11,7 +11,7 @@
 <script>
 import { mapActions, mapState } from "pinia";
 import { useUserStore } from "@/stores/userStore";
-import UserRegistration from '@/components/User/UserRegistration.vue';
+import { UserRegistration } from '@/components/Forms';
 
 export default {
   name: 'RegistrationView',

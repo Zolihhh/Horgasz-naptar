@@ -66,8 +66,7 @@ import { useSpecieStore } from "@/stores/specieStore";
 import { useLureStore } from "@/stores/lureStore";
 import { useCatchLogStore } from "@/stores/catchLogStore";
 import { useLocationStore } from "@/stores/locationStore";
-import CatchLogForm from "@/components/Catch/CatchLogForm.vue";
-import CatchForm from "@/components/Catch/CatchForm.vue";
+import { CatchForm, CatchLogForm } from "@/components/Forms";
 import CatchCardList from "@/components/Catch/CatchCardList.vue";
 
 function emptyCatch() {
