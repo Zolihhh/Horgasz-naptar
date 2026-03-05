@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from "vue-router";
+﻿import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "@/views/HomeView.vue";
 import { useUserLoginLogoutStore } from "@/stores/userLoginLogoutStore";
 import { useToastStore } from "@/stores/toastStore";
@@ -80,6 +80,7 @@ const router = createRouter({
       meta: {
         title: () => "Bejelentkezés",
         breadcrumb: "Bejelentkezés",
+        hideHeader: true,
       },
     },
     {
@@ -152,3 +153,6 @@ router.onError((error, to) => {
 });
 
 export default router;
+
+
+

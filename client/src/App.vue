@@ -25,7 +25,10 @@ export default {
   },
   computed: {
     showHeader() {
-      return this.$route.path !== "/";
+      if (this.$route.path === "/") {
+        return false;
+      }
+      return this.$route?.meta?.hideHeader !== true;
     },
   },
 };

@@ -1,13 +1,13 @@
 ﻿<template>
   <div class="login-shell">
     <form class="login-panel" @submit.prevent="handleSubmit" novalidate>
-      <h1 class="login-title">Bejelentkezés</h1>
+      <h1 class="login-title">{{ registerMode ? "Regisztráció" : "Bejelentkezés" }}</h1>
 
       <p v-if="loginError" class="field-error field-error-box">{{ loginError }}</p>
       <p v-else-if="registerMode && serverMessage" class="field-error field-error-box">{{ serverMessage }}</p>
 
       <div v-if="registerMode" class="field-block">
-        <label for="name" class="field-label">Neved:</label>
+        <label for="name" class="field-label">Név:</label>
         <input
           id="name"
           v-model="user.name"
@@ -21,7 +21,7 @@
       </div>
 
       <div class="field-block">
-        <label for="email" class="field-label">Email címed:</label>
+        <label for="email" class="field-label">Email cím:</label>
         <input
           id="email"
           v-model="user.email"
@@ -37,16 +37,18 @@
       <PasswordField
         :modelValue="user.password"
         @update:modelValue="onPasswordChange"
-        :label="'Jelszavad'"
+        :label="'Jelszó'"
         :showRequiredError="showPasswordError"
         :passwordErrorMessage="passwordRequiredMessage"
         :serverErrors="serverErrors"
       />
 
       <div class="action-row">
-        <button type="submit" class="action-btn">Belépés</button>
-        <button type="button" class="action-btn" @click="handleRegisterClick">
-          {{ registerMode ? "Regisztráció küldése" : "Regisztráció" }}
+        <button type="submit" class="action-btn">
+          {{ registerMode ? "Regisztráció küldése" : "Belépés" }}
+        </button>
+        <button type="button" class="action-btn" @click="handleSecondaryAction">
+          {{ registerMode ? "Vissza a bejelentkezéshez" : "Regisztráció" }}
         </button>
       </div>
     </form>
@@ -145,6 +147,11 @@ export default {
   },
   methods: {
     handleSubmit() {
+      if (this.registerMode) {
+        this.submitRegister();
+        return;
+      }
+
       this.submitted = true;
       this.clearServerErrors();
 
@@ -157,14 +164,20 @@ export default {
         password: this.passwordValue,
       });
     },
-    handleRegisterClick() {
+    handleSecondaryAction() {
       if (!this.registerMode) {
         this.registerMode = true;
         this.submitted = false;
         this.clearServerErrors();
+        this.clearLoginError();
         return;
       }
 
+      this.registerMode = false;
+      this.submitted = false;
+      this.clearServerErrors();
+    },
+    submitRegister() {
       this.submitted = true;
       this.clearLoginError();
 
