@@ -1,9 +1,10 @@
-<template>
+﻿<template>
   <nav class="menu d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between">
     <div class="menu-links d-flex flex-nowrap align-items-center gap-2 gap-md-4">
       <RouterLink to="/">Főoldal</RouterLink>
       <RouterLink to="/weather">Időjárás</RouterLink>
       <RouterLink to="/catches">Fogások</RouterLink>
+      <RouterLink to="/about">Rólunk</RouterLink>
     </div>
 
     <div class="menu-auth d-flex align-items-center gap-2 position-relative w-auto align-self-end align-self-md-auto justify-content-md-end">

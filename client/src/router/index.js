@@ -29,6 +29,7 @@ const router = createRouter({
       meta: {
         title: () => "Rólunk",
         breadcrumb: "Rólunk",
+        hideHeader: true,
       },
     },
     {
