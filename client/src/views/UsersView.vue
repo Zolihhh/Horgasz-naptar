@@ -5,7 +5,7 @@
         <h1>{{ pageTitle }}</h1>
         <div class="count-wrap">
           <i v-if="loading" class="bi bi-hourglass-split"></i>
-          <p>({{ filteredItems.length }})</p>
+          <p>({{ sortedItems.length }})</p>
         </div>
       </div>
 
@@ -20,7 +20,7 @@
     </header>
 
     <div class="users-table-card">
-      <div v-if="filteredItems.length > 0" class="users-controls">
+      <div v-if="sortedItems.length > 0" class="users-controls">
         <SetSelectedPerPage
           v-model="selectedPerPage"
           label="Sor/oldal:"
@@ -40,12 +40,15 @@
         :items="paginatedItems"
         :columns="tableColumns"
         :useCollectionStore="useCollectionStore"
+        :sort-column="sortColumnLocal"
+        :sort-direction="sortDirectionLocal"
         :cButtonVisible="false"
-        :uButtonVisible="false"
+        :uButtonVisible="true"
         :dButtonVisible="true"
         :pButtonVisible="false"
         @sort="sortHandler"
         @delete="openDeleteConfirm"
+        @update="openEditModal"
       />
 
       <p v-else class="empty-state">Nincs találat</p>
@@ -60,31 +63,83 @@
       @cancel="cancelDelete"
       @confirm="confirmDelete"
     />
+
+    <Modal
+      ref="editUserModal"
+      title="Felhasználó módosítása"
+      yes="Mentés"
+      no="Mégse"
+      @yesEvent="saveEditedUser"
+    >
+      <div class="row g-3 users-edit-modal">
+        <div v-if="editError" class="col-12">
+          <div class="alert alert-danger py-2 mb-0">{{ editError }}</div>
+        </div>
+
+        <div class="col-12">
+          <label for="edit-name" class="form-label">Név</label>
+          <input
+            id="edit-name"
+            v-model.trim="editUser.name"
+            type="text"
+            class="form-control"
+            minlength="2"
+            required
+          />
+        </div>
+
+        <div class="col-12">
+          <label for="edit-email" class="form-label">Email</label>
+          <input
+            id="edit-email"
+            v-model.trim="editUser.email"
+            type="email"
+            class="form-control"
+            required
+          />
+        </div>
+
+        <div class="col-12">
+          <label for="edit-role" class="form-label">Szerepkör</label>
+          <select
+            id="edit-role"
+            v-model.number="editUser.role"
+            class="form-select"
+            :disabled="isEditingOwnAdmin"
+            required
+          >
+            <option :value="1">Admin</option>
+            <option :value="2">Horgász</option>
+          </select>
+          <div v-if="isEditingOwnAdmin" class="form-text text-info-emphasis mt-1">
+            A saját admin szerepkör nem módosítható.
+          </div>
+        </div>
+      </div>
+    </Modal>
   </section>
 </template>
 
 <script>
 import { mapActions, mapState } from "pinia";
 import { useUserStore } from "@/stores/userStore";
-import { useSearchStore } from "@/stores/searchStore";
+import { useUserLoginLogoutStore } from "@/stores/userLoginLogoutStore";
 import GenericTable from "@/components/Table/GenericTable.vue";
 import Pagination from "@/components/Pagination/Pagination.vue";
 import SetSelectedPerPage from "@/components/Pagination/SetSelectedPerPage.vue";
 import ConfirmModal from "@/components/Confirm/ConfirmModal.vue";
+import Modal from "@/components/Modal/Modal.vue";
 
 export default {
   name: "UsersView",
   components: {
     ConfirmModal,
     GenericTable,
+    Modal,
     Pagination,
     SetSelectedPerPage,
   },
   watch: {
-    searchWord() {
-      this.getAllSortSearch(this.sortColumn, this.sortDirection);
-      this.currentPage = 1;
-    },
     filteredItems() {
       this.ensureValidPage();
     },
@@ -98,10 +153,24 @@ export default {
       searchTerm: "",
       currentPage: 1,
       selectedPerPage: 10,
+      sortColumnLocal: "id",
+      sortDirectionLocal: "asc",
       isDeleteConfirmOpen: false,
       pendingDeleteId: null,
+      editError: "",
+      editUser: {
+        id: null,
+        name: "",
+        email: "",
+        role: 2,
+      },
+      editUserOriginal: {
+        name: "",
+        email: "",
+        role: 2,
+      },
       tableColumns: [
-        { key: "id", label: "ID", debug: import.meta.env.VITE_DEBUG_MODE },
+        { key: "id", label: "ID", debug: 2 },
         { key: "name", label: "User név", debug: 2 },
         { key: "email", label: "Email", debug: 2 },
         { key: "role", label: "Szerepkör", debug: 2 },
@@ -110,27 +179,19 @@ export default {
     };
   },
   computed: {
-    ...mapState(useUserStore, [
-      "items",
-      "loading",
-      "getItemsLength",
-      "sortColumn",
-      "sortDirection",
-    ]),
-    ...mapState(useSearchStore, ["searchWord"]),
+    ...mapState(useUserStore, ["items", "loading"]),
+    ...mapState(useUserLoginLogoutStore, ["item"]),
+    isEditingOwnAdmin() {
+      return Number(this.item?.id) === Number(this.editUser.id) && Number(this.item?.role) === 1;
+    },
     filteredItems() {
       const term = this.searchTerm.toLowerCase();
-      if (!term) return this.items;
+      if (!term) {
+        return this.items;
+      }
 
       return this.items.filter((item) => {
-        const roleText =
-          item.role === 1
-            ? "admin"
-            : item.role === 2
-              ? "tanár"
-              : item.role === 3
-                ? "diák"
-                : "";
+        const roleText = Number(item.role) === 1 ? "admin" : "horgász";
 
         return (
           String(item.name || "").toLowerCase().includes(term) ||
@@ -140,21 +201,43 @@ export default {
         );
       });
     },
+    sortedItems() {
+      const list = [...this.filteredItems];
+      const key = this.sortColumnLocal;
+      const directionMultiplier = this.sortDirectionLocal === "asc" ? 1 : -1;
+
+      return list.sort((a, b) => {
+        let valueA = a?.[key];
+        let valueB = b?.[key];
+
+        if (key === "id" || key === "role") {
+          valueA = Number(valueA || 0);
+          valueB = Number(valueB || 0);
+          return (valueA - valueB) * directionMultiplier;
+        }
+
+        valueA = String(valueA || "").toLowerCase();
+        valueB = String(valueB || "").toLowerCase();
+        return valueA.localeCompare(valueB, "hu") * directionMultiplier;
+      });
+    },
     effectivePerPage() {
       if (this.selectedPerPage >= 1000000) {
-        return Math.max(1, this.filteredItems.length);
+        return Math.max(1, this.sortedItems.length);
       }
       return Math.max(1, Number(this.selectedPerPage) || 10);
     },
     lastPage() {
-      return Math.max(1, Math.ceil(this.filteredItems.length / this.effectivePerPage));
+      return Math.max(1, Math.ceil(this.sortedItems.length / this.effectivePerPage));
     },
     paginatedItems() {
-      if (!this.filteredItems.length) return [];
+      if (!this.sortedItems.length) {
+        return [];
+      }
 
       const start = (this.currentPage - 1) * this.effectivePerPage;
       const end = start + this.effectivePerPage;
-      return this.filteredItems.slice(start, end);
+      return this.sortedItems.slice(start, end);
     },
     deleteMessage() {
       if (!this.pendingDeleteId) {
@@ -173,11 +256,15 @@ export default {
     ...mapActions(useUserStore, {
       deleteUser: "delete",
       getAll: "getAll",
-      getAllSortSearch: "getAllSortSearch",
+      updateUser: "update",
     }),
-    ...mapActions(useSearchStore, ["resetSearchWord"]),
     sortHandler(column) {
-      this.getAllSortSearch(column);
+      if (this.sortColumnLocal === column) {
+        this.sortDirectionLocal = this.sortDirectionLocal === "asc" ? "desc" : "asc";
+      } else {
+        this.sortColumnLocal = column;
+        this.sortDirectionLocal = "asc";
+      }
       this.currentPage = 1;
     },
     changePage(page) {
@@ -206,6 +293,91 @@ export default {
         this.ensureValidPage();
       }
     },
+    openEditModal(id) {
+      const user = this.items.find((item) => item.id === id);
+      if (!user) {
+        return;
+      }
+
+      this.editUser = {
+        id: user.id,
+        name: String(user.name || ""),
+        email: String(user.email || ""),
+        role: Number(user.role) === 1 ? 1 : 2,
+      };
+      this.editUserOriginal = {
+        name: String(user.name || ""),
+        email: String(user.email || ""),
+        role: Number(user.role) === 1 ? 1 : 2,
+      };
+      this.editError = "";
+
+      this.$nextTick(() => {
+        this.$refs.editUserModal?.show();
+      });
+    },
+    async saveEditedUser(done) {
+      if (!this.editUser.id) {
+        this.editError = "Hiányzó felhasználó azonosító.";
+        done(false);
+        return;
+      }
+
+      this.editError = "";
+      const payload = {};
+
+      const nextName = String(this.editUser.name || "").trim();
+      const nextEmail = String(this.editUser.email || "").trim();
+      const nextRole = Number(this.editUser.role || 2);
+
+      const prevName = String(this.editUserOriginal.name || "").trim();
+      const prevEmail = String(this.editUserOriginal.email || "").trim();
+      const prevRole = Number(this.editUserOriginal.role || 2);
+
+      if (nextName !== prevName) {
+        payload.name = nextName;
+      }
+      if (nextEmail !== prevEmail) {
+        payload.email = nextEmail;
+      }
+      if (!this.isEditingOwnAdmin && nextRole !== prevRole) {
+        payload.role = nextRole;
+      }
+
+      if (Object.keys(payload).length === 0) {
+        done(true);
+        return;
+      }
+
+      try {
+        await this.updateUser(this.editUser.id, payload);
+        await this.getAll();
+        done(true);
+      } catch (error) {
+        this.editError = this.getErrorMessage(error, "A módosítás nem sikerült.");
+        done(false);
+      }
+    },
+    getErrorMessage(error, fallback) {
+      const responseData = error?.response?.data;
+      const message = responseData?.message;
+      if (typeof message === "string" && message.trim()) {
+        return message;
+      }
+
+      const errors = responseData?.errors;
+      if (errors && typeof errors === "object") {
+        const firstError = Object.values(errors)?.[0];
+        if (Array.isArray(firstError) && firstError[0]) {
+          return String(firstError[0]);
+        }
+        if (typeof firstError === "string") {
+          return firstError;
+        }
+      }
+
+      return fallback;
+    },
     ensureValidPage() {
       if (this.currentPage < 1) {
         this.currentPage = 1;
@@ -216,7 +388,6 @@ export default {
     },
   },
   async mounted() {
-    this.resetSearchWord();
     await this.getAll();
     this.ensureValidPage();
   },

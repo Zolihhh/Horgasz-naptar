@@ -1,7 +1,10 @@
-<template>
+﻿<template>
   <div class="login-shell">
     <form class="login-panel" @submit.prevent="handleSubmit" novalidate>
       <h1 class="login-title">Bejelentkezés</h1>
+
+      <p v-if="loginError" class="field-error field-error-box">{{ loginError }}</p>
+      <p v-else-if="registerMode && serverMessage" class="field-error field-error-box">{{ serverMessage }}</p>
 
       <div v-if="registerMode" class="field-block">
         <label for="name" class="field-label">Neved:</label>
@@ -12,12 +15,13 @@
           class="field-input"
           :class="{ 'field-input-invalid': showNameError }"
           required
+          @input="onNameInput"
         />
-        <div v-if="showNameError" class="field-error">A név kötelező</div>
+        <div v-if="showNameError" class="field-error">{{ nameErrorMessage }}</div>
       </div>
 
       <div class="field-block">
-        <label for="email" class="field-label">Email cimed:</label>
+        <label for="email" class="field-label">Email címed:</label>
         <input
           id="email"
           v-model="user.email"
@@ -25,8 +29,9 @@
           class="field-input"
           :class="{ 'field-input-invalid': showEmailError }"
           required
+          @input="onEmailInput"
         />
-        <div v-if="showEmailError" class="field-error">Az email üres, vagy helytelen</div>
+        <div v-if="showEmailError" class="field-error">{{ emailErrorMessage }}</div>
       </div>
 
       <PasswordField
@@ -34,11 +39,12 @@
         @update:modelValue="onPasswordChange"
         :label="'Jelszavad'"
         :showRequiredError="showPasswordError"
-        :passwordErrorMessage="'A jelszó kötelező'"
+        :passwordErrorMessage="passwordRequiredMessage"
+        :serverErrors="serverErrors"
       />
 
       <div class="action-row">
-        <button type="submit" class="action-btn">Login</button>
+        <button type="submit" class="action-btn">Belépés</button>
         <button type="button" class="action-btn" @click="handleRegisterClick">
           {{ registerMode ? "Regisztráció küldése" : "Regisztráció" }}
         </button>
@@ -64,60 +70,170 @@ export default {
       },
       submitted: false,
       registerMode: false,
+      serverErrors: {},
+      serverMessage: "",
+      loginError: "",
     };
   },
   computed: {
-    showNameError() {
-      return this.registerMode && this.submitted && !this.user.name.trim();
+    trimmedName() {
+      return String(this.user.name || "").trim();
+    },
+    trimmedEmail() {
+      return String(this.user.email || "").trim();
+    },
+    passwordValue() {
+      return String(this.user.password || "");
     },
     isEmailValid() {
-      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.user.email);
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.trimmedEmail);
+    },
+    isNameValid() {
+      return this.trimmedName.length >= 2;
+    },
+    isPasswordValidForRegister() {
+      return this.passwordValue.length >= 4;
+    },
+    showNameError() {
+      if (!this.registerMode) {
+        return false;
+      }
+      return (this.submitted && !this.isNameValid) || !!this.serverErrors.name;
     },
     showEmailError() {
-      return this.submitted && !this.isEmailValid;
+      return (this.submitted && !this.isEmailValid) || !!this.serverErrors.email;
     },
     showPasswordError() {
-      return this.submitted && (!this.user.password || this.user.password.trim() === "");
+      if (!this.submitted) {
+        return false;
+      }
+
+      if (!this.passwordValue) {
+        return true;
+      }
+
+      if (this.registerMode && !this.isPasswordValidForRegister) {
+        return true;
+      }
+
+      return false;
+    },
+    nameErrorMessage() {
+      if (this.serverErrors.name?.[0]) {
+        return this.serverErrors.name[0];
+      }
+      if (!this.trimmedName) {
+        return "A név kötelező.";
+      }
+      return "A név legalább 2 karakter legyen.";
+    },
+    emailErrorMessage() {
+      if (this.serverErrors.email?.[0]) {
+        return this.serverErrors.email[0];
+      }
+      return "Az email üres vagy helytelen.";
+    },
+    passwordRequiredMessage() {
+      if (!this.passwordValue) {
+        return "A jelszó kötelező.";
+      }
+      if (this.registerMode && !this.isPasswordValidForRegister) {
+        return "A jelszó legalább 4 karakter legyen.";
+      }
+      return "A jelszó kötelező.";
     },
   },
   methods: {
-    onPasswordChange(value) {
-      this.user.password = value;
-    },
     handleSubmit() {
       this.submitted = true;
+      this.clearServerErrors();
+
       if (this.showEmailError || this.showPasswordError) {
         return;
       }
-      this.$emit("logIn", this.user);
+
+      this.$emit("logIn", {
+        email: this.trimmedEmail,
+        password: this.passwordValue,
+      });
     },
     handleRegisterClick() {
       if (!this.registerMode) {
         this.registerMode = true;
         this.submitted = false;
+        this.clearServerErrors();
         return;
       }
 
       this.submitted = true;
+      this.clearLoginError();
+
       if (this.showNameError || this.showEmailError || this.showPasswordError) {
         return;
       }
 
       this.$emit("register", {
         user: {
-          name: this.user.name.trim(),
-          email: this.user.email.trim(),
-          password: this.user.password,
+          name: this.trimmedName,
+          email: this.trimmedEmail,
+          password: this.passwordValue,
         },
         done: (success) => {
           if (!success) {
             return;
           }
+
           this.registerMode = false;
           this.submitted = false;
-          this.user.name = "";
+          this.clearServerErrors();
+          this.user = {
+            name: "",
+            email: "",
+            password: "",
+          };
         },
       });
+    },
+    onNameInput() {
+      this.clearFieldError("name");
+      this.clearLoginError();
+      this.serverMessage = "";
+    },
+    onEmailInput() {
+      this.clearFieldError("email");
+      this.clearLoginError();
+      this.serverMessage = "";
+    },
+    onPasswordChange(value) {
+      this.user.password = value;
+      this.clearFieldError("password");
+      this.clearLoginError();
+      this.serverMessage = "";
+    },
+    clearFieldError(field) {
+      if (!this.serverErrors[field]) {
+        return;
+      }
+      const next = { ...this.serverErrors };
+      delete next[field];
+      this.serverErrors = next;
+    },
+    setServerErrors(errors = {}, message = "") {
+      this.serverErrors = errors && typeof errors === "object" ? errors : {};
+      this.serverMessage = message || "";
+      this.registerMode = true;
+      this.submitted = true;
+      this.clearLoginError();
+    },
+    clearServerErrors() {
+      this.serverErrors = {};
+      this.serverMessage = "";
+    },
+    setLoginError(message = "") {
+      this.loginError = message || "Bejelentkezési hiba.";
+    },
+    clearLoginError() {
+      this.loginError = "";
     },
   },
 };
@@ -186,6 +302,14 @@ export default {
   margin-top: 0.35rem;
   color: #ff9d9d;
   font-size: 0.88rem;
+}
+
+.field-error-box {
+  margin: 0 0 0.95rem;
+  padding: 0.55rem 0.7rem;
+  border: 1px solid rgba(255, 140, 140, 0.6);
+  border-radius: 8px;
+  background: rgba(120, 20, 28, 0.22);
 }
 
 .action-row {

@@ -1,6 +1,10 @@
 ﻿<template>
   <section class="login-page">
-    <UserLogin @logIn="loginHandler" @register="registerHandler" />
+    <UserLogin
+      ref="userLoginForm"
+      @logIn="loginHandler"
+      @register="registerHandler"
+    />
   </section>
 </template>
 
@@ -19,18 +23,36 @@ export default {
     async loginHandler(user) {
       try {
         await this.login(user);
+        this.$refs.userLoginForm?.clearLoginError();
         this.$router.push("/");
       } catch (error) {
-        console.log("Bejelentkezési hiba");
+        const message =
+          error?.response?.data?.message || "Hibás email vagy jelszó.";
+        this.$refs.userLoginForm?.setLoginError(message);
       }
     },
     async registerHandler({ user, done }) {
       try {
         await this.register(user);
+        this.$refs.userLoginForm?.clearServerErrors();
         done(true);
       } catch (error) {
+        const status = error?.response?.status;
+        const data = error?.response?.data || {};
+
+        if (status === 422) {
+          this.$refs.userLoginForm?.setServerErrors(
+            data.errors || {},
+            data.message || "Ellenőrizd a mezőket.",
+          );
+        } else {
+          this.$refs.userLoginForm?.setServerErrors(
+            {},
+            data.message || "Regisztrációs hiba történt.",
+          );
+        }
+
         done(false);
-        console.log("Regisztrációs hiba");
       }
     },
   },

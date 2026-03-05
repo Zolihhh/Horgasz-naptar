@@ -38,7 +38,7 @@ class UserController extends Controller
         // email + jelszó ellenőrzés
         if (!$user || !Hash::check($password, $user->password)) {
             return response()->json([
-                'message' => 'invalid email or password'
+                'message' => 'Hibás email vagy jelszó.'
             ], 401);
         }
 
@@ -147,7 +147,15 @@ class UserController extends Controller
     public function store(StoreUserRequest $request)
     {
         try {
-            $row = User::create($request->all());
+            $payload = $request->validated();
+            $payload['role'] = (int)($payload['role'] ?? 2);
+            $payload['idNumber'] = (string)($payload['idNumber'] ?? '');
+            $payload['city'] = (string)($payload['city'] ?? '');
+            $payload['street'] = (string)($payload['street'] ?? '');
+            $payload['houseNumber'] = (string)($payload['houseNumber'] ?? '');
+            $payload['postCode'] = (string)($payload['postCode'] ?? '');
+
+            $row = User::create($payload);
 
             $data = [
                 'message' => 'ok',
@@ -218,7 +226,7 @@ class UserController extends Controller
             $userToUpdate = $row;
             $this->authorize('updateAdmin', $userToUpdate);
 
-            $row->update($request->all());
+            $row->update($request->validated());
 
             $data = [
                 'message' => 'OK',

@@ -7,27 +7,30 @@
       <thead class="table-dark sticky-top" style="z-index: 10; top: 0">
         <tr class="align-middle text-center">
           <th>Műveletek</th>
-          <template v-for="col in columns">
-            <th
-              class="my-pointer"
-              v-if="col.debug >= 1"
-              :key="col.key"
-              @click="$emit('sort', col.key)"
-              :class="{ 'my-debug': col.debug == 1 }"
-            >
-              <div
-                class="d-flex align-items-center justify-content-center text-nowrap"
+          <th
+            v-for="col in visibleColumns"
+            :key="col.key"
+            class="my-pointer"
+            @click="$emit('sort', col.key)"
+            :class="{ 'my-debug': col.debug == 1 }"
+          >
+            <div class="d-flex align-items-center justify-content-center text-nowrap">
+              <span>{{ col.label }}</span>
+              <span
+                :class="{ invisible: effectiveSortColumn !== col.key }"
+                class="ms-1"
               >
-                <span>{{ col.label }}</span>
-                <span
-                  :class="{ invisible: sortColumn !== col.key }"
-                  class="ms-1"
-                >
-                  {{ sortDirection === "asc" ? "▲" : "▼" }}
-                </span>
-              </div>
-            </th>
-          </template>
+                <i
+                  class="bi"
+                  :class="
+                    effectiveSortDirection === 'asc'
+                      ? 'bi-caret-up-fill'
+                      : 'bi-caret-down-fill'
+                  "
+                ></i>
+              </span>
+            </div>
+          </th>
         </tr>
       </thead>
       <tbody class="table-group-divider">
@@ -49,17 +52,14 @@
               :dButtonVisible="dButtonVisible"
               :pButtonVisible="pButtonVisible"
             />
-            
           </td>
-          <template v-for="col in columns">
-            <td
-              v-if="col.debug >= 1"
-              :key="col.key"
-              :class="{ 'my-debug': col.debug == 1 }"
-            >
-              {{ item[col.key] }}
-            </td>
-          </template>
+          <td
+            v-for="col in visibleColumns"
+            :key="`${item.id}-${col.key}`"
+            :class="{ 'my-debug': col.debug == 1 }"
+          >
+            {{ item[col.key] }}
+          </td>
         </tr>
       </tbody>
     </table>
@@ -73,13 +73,14 @@ export default {
   name: "GenericTable",
   props: {
     items: { type: Array, required: true },
-    columns: { type: Array, required: true }, // Pl: [{key: 'name', label: 'Név', debug: false}]
+    columns: { type: Array, required: true },
     useCollectionStore: { type: Function, required: true },
+    sortColumn: { type: String, default: "" },
+    sortDirection: { type: String, default: "" },
     cButtonVisible: { type: Boolean, default: true },
     uButtonVisible: { type: Boolean, default: true },
     dButtonVisible: { type: Boolean, default: true },
     pButtonVisible: { type: Boolean, default: false },
-
   },
   components: {
     ButtonsCrud,
@@ -87,7 +88,7 @@ export default {
   data() {
     return {
       selectedId: null,
-      store: null, // Itt tároljuk a példányosított store-t
+      store: null,
     };
   },
   created() {
@@ -96,11 +97,19 @@ export default {
     }
   },
   computed: {
-    // Ezeket a store-ból húzzuk be reaktívan
-    sortColumn() {
+    visibleColumns() {
+      return this.columns.filter((col) => col && col.debug >= 1);
+    },
+    effectiveSortColumn() {
+      if (this.sortColumn) {
+        return this.sortColumn;
+      }
       return this.store ? this.store.sortColumn : "";
     },
-    sortDirection() {
+    effectiveSortDirection() {
+      if (this.sortDirection) {
+        return this.sortDirection;
+      }
       return this.store ? this.store.sortDirection : "asc";
     },
   },
@@ -113,22 +122,14 @@ export default {
 </script>
 
 <style scoped>
-/* Ez a titkos szósz a sticky fejléc stabilizálásához */
 .my-table-container {
   border: 1px solid #dee2e6;
   border-radius: 4px;
 }
 
-/* Megakadályozza, hogy görgetéskor "átlátszanak" a betűk a fekete fejléc alatt */
-/* .sticky-top th {
-  background-color: #212529 !important;
-  box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.15);
-} */
-
-/* Ha a táblázat keskenyebb mint a képernyő, de középre akarod tenni */
 .table {
   margin-left: auto;
   margin-right: auto;
-  width: auto !important; /* Csak akkor, ha nem akarod, hogy kifeszüljön */
+  width: auto !important;
 }
 </style>
