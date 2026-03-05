@@ -23,7 +23,6 @@
         <h2>Kinek szól?</h2>
         <ul>
           <li>Horgászoknak, akik szeretnék nyomon követni a fogásaikat.</li>
-          <li>Adminoknak, akik kezelik a felhasználókat és adatokat.</li>
           <li>Mindenkinek, aki egyszerű és gyors felületet keres.</li>
         </ul>
       </article>
