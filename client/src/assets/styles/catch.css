@@ -154,6 +154,11 @@
   gap: 16px;
 }
 
+.catch-view .log-grid {
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  align-items: start;
+}
+
 .catch-view .card {
   border: 1px solid rgba(202, 227, 238, 0.2);
   background: linear-gradient(
@@ -168,6 +173,44 @@
 }
 
 .catch-view .card h3 {
+  margin: 0 0 8px;
+  color: #ffffff;
+}
+
+.catch-view .log-card {
+  display: grid;
+  gap: 12px;
+}
+
+.catch-view .log-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.catch-view .log-head p {
+  margin: 6px 0 0;
+}
+
+.catch-view .log-content {
+  border-top: 1px solid rgba(202, 227, 238, 0.2);
+  padding-top: 12px;
+}
+
+.catch-view .catch-list {
+  display: grid;
+  gap: 12px;
+}
+
+.catch-view .catch-item {
+  border: 1px solid rgba(202, 227, 238, 0.16);
+  border-radius: 10px;
+  padding: 12px;
+  background: rgba(8, 17, 25, 0.48);
+}
+
+.catch-view .catch-item h4 {
   margin: 0 0 8px;
   color: #ffffff;
 }

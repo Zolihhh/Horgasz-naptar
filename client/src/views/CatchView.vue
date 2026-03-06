@@ -35,11 +35,13 @@
     />
 
     <p v-if="isLoggedIn && loading" class="status-text">Betöltés...</p>
-    <p v-else-if="isLoggedIn && catches.length === 0" class="status-text">Nincs rögzített fogásod.</p>
+    <p v-else-if="isLoggedIn && userCatchLogs.length === 0" class="status-text">
+      Nincs még fogási naplód.
+    </p>
 
     <CatchCardList
-      v-if="isLoggedIn && catches.length > 0"
-      :catches="catches"
+      v-if="isLoggedIn && userCatchLogs.length > 0"
+      :catch-logs="catchLogsWithCatches"
       :editing-catch-id="editingCatchId"
       :edit-catch="editCatch"
       :user-catch-logs="userCatchLogs"
@@ -134,6 +136,26 @@ export default {
       return this.locations.filter((location) =>
         this.getLocationName(location.id).toLowerCase().includes(term),
       );
+    },
+    catchLogsWithCatches() {
+      const catchesByLogId = this.catches.reduce((acc, catchItem) => {
+        if (!acc[catchItem.catchLogId]) {
+          acc[catchItem.catchLogId] = [];
+        }
+        acc[catchItem.catchLogId].push(catchItem);
+        return acc;
+      }, {});
+
+      return this.userCatchLogs
+        .map((log) => ({
+          ...log,
+          catches: catchesByLogId[log.id] || [],
+        }))
+        .sort((a, b) => {
+          const dateA = new Date(a.fishing_start || 0).getTime();
+          const dateB = new Date(b.fishing_start || 0).getTime();
+          return dateB - dateA;
+        });
     },
   },
   watch: {
