@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests;
 
-use App\Models\CatchLog;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateCatchLogRequest extends FormRequest
@@ -22,42 +21,22 @@ class UpdateCatchLogRequest extends FormRequest
      */
     public function rules(): array
     {
-        $id = $this->route('id');
         return [
-            'locationId' => [
-                'required',
-                'integer',
-                'exists:locations,id'
-            ],
-
-            'lureId' => [
-                'required',
-                'integer',
-                'exists:lures,id'
-            ],
-
-            'userId' => [
-                'required',
-                'integer',
-                'exist:users,id'
-            ],
-        
-            'comment' => [
-                'required',
-                'string',
-                'min1',
-                'max250'
-            ],
+            'locationid' => ['required', 'integer', 'exists:locations,id'],
+            'fishing_start' => ['required', 'date'],
+            'fishing_end' => ['required', 'date', 'after_or_equal:fishing_start'],
+            'comment' => ['nullable', 'string', 'max:1000'],
         ];
     }
-    
-        public function messages(): array
+
+    public function messages(): array
     {
         return [
-            'locationId.required' => 'A hely megadása kötelező!',
-            'lureId.required' => 'A csali megadása kötelező!',
-            'userId.required' => 'A horgász megadása kötelező!',
-            'comment.required' => 'A megjegyzés megadása kötelező!',
+            'locationid.required' => 'A hely megadása kötelező.',
+            'locationid.exists' => 'A megadott hely nem létezik.',
+            'fishing_start.required' => 'A horgászat kezdete kötelező.',
+            'fishing_end.required' => 'A horgászat vége kötelező.',
+            'fishing_end.after_or_equal' => 'A horgászat vége nem lehet korábbi, mint a kezdete.',
         ];
     }
 }

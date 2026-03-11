@@ -21,18 +21,10 @@
             </div>
 
             <div class="modal-footer confirm-footer">
-              <button
-                type="button"
-                class="btn modal-btn-cancel"
-                @click="$emit('cancel')"
-              >
+              <button type="button" class="btn modal-btn-cancel px-4" @click="$emit('cancel')">
                 {{ cancel }}
               </button>
-              <button
-                type="button"
-                class="btn modal-btn-save"
-                @click="$emit('confirm')"
-              >
+              <button type="button" class="btn modal-btn-save px-4" @click="$emit('confirm')">
                 {{ confirm }}
               </button>
             </div>
@@ -78,7 +70,7 @@ export default {
 
 .confirm-content {
   border: 1px solid rgba(194, 224, 236, 0.28);
-  border-radius: 14px;
+  border-radius: 24px;
   background:
     radial-gradient(circle at 88% 10%, rgba(56, 139, 182, 0.16), transparent 42%),
     radial-gradient(circle at 18% 86%, rgba(43, 106, 136, 0.12), transparent 44%),
@@ -113,7 +105,7 @@ export default {
 
 .modal-btn-cancel {
   border: 1px solid rgba(194, 224, 236, 0.52);
-  border-radius: 10px;
+  border-radius: 999px;
   background: rgba(5, 14, 20, 0.6);
   color: #eaf6fb;
   font-weight: 600;
@@ -126,7 +118,7 @@ export default {
 
 .modal-btn-save {
   border: 1px solid rgba(248, 181, 181, 0.45);
-  border-radius: 10px;
+  border-radius: 999px;
   background: linear-gradient(145deg, rgba(145, 33, 41, 0.93), rgba(171, 49, 58, 0.9));
   color: #fff;
   font-weight: 700;

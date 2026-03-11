@@ -33,7 +33,6 @@ export const useFishCatchStore = defineStore("fishCatch", {
       try {
         const response = await service.create(payload);
         this.item = response?.data ?? null;
-        await this.getMyCatches();
         return response;
       } catch (err) {
         this.error = err;
@@ -48,7 +47,20 @@ export const useFishCatchStore = defineStore("fishCatch", {
       try {
         const response = await service.update(id, payload);
         this.item = response?.data ?? null;
-        await this.getMyCatches();
+        return response;
+      } catch (err) {
+        this.error = err;
+        throw err;
+      } finally {
+        this.loading = false;
+      }
+    },
+    async delete(id) {
+      this.loading = true;
+      this.error = null;
+      try {
+        const response = await service.delete(id);
+        this.item = response?.data ?? null;
         return response;
       } catch (err) {
         this.error = err;

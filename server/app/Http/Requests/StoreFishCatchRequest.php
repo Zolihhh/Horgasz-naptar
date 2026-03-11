@@ -22,13 +22,13 @@ class StoreFishCatchRequest extends FormRequest
      */
     public function rules(): array
     {
-       return [
-            'catchLogId'  => 'required|integer|exists:catch_logs,id',
-            'specieId'    => 'required|integer|exists:species,id',
-            'weight'      => 'required|numeric|min:0',
-            'length'      => 'required|numeric|min:0',
-            'lureId'      => 'required|integer|exists:lures,id',
-            'catchTime'   => 'required|date',
+        return [
+            'catchLogId' => ['required', 'integer', 'exists:catch_logs,id'],
+            'specieId' => ['required', 'integer', 'exists:species,id'],
+            'weight' => ['required', 'numeric', 'min:0', 'max:50', 'decimal:0,2'],
+            'length' => ['required', 'numeric', 'min:0', 'max:999.9', 'decimal:0,1'],
+            'lureId' => ['required', 'integer', 'exists:lures,id'],
+            'catchTime' => ['required', 'date'],
         ];
     }
 }

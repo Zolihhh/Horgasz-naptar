@@ -30,11 +30,16 @@ Route::get('/lures', [LureController::class, 'index']);
 Route::post('/lures', [LureController::class, 'store']);
 
 // CATCH LOG
-Route::get('/catchlogs', [CatchLogController::class, 'index']);
-Route::get('/catchlogs/{id}', [CatchLogController::class, 'show']);
-Route::post('/catchlogs', [CatchLogController::class, 'store']);
-Route::patch('/catchlogs/{id}', [CatchLogController::class, 'update']);
-Route::delete('/catchlogs/{id}', [CatchLogController::class, 'destroy']);
+Route::get('/catchlogs', [CatchLogController::class, 'index'])
+    ->middleware(['auth:sanctum', 'ability:catchlogs:get']);
+Route::get('/catchlogs/{id}', [CatchLogController::class, 'show'])
+    ->middleware(['auth:sanctum', 'ability:catchlogs:get']);
+Route::post('/catchlogs', [CatchLogController::class, 'store'])
+    ->middleware(['auth:sanctum', 'ability:catchlogs:post']);
+Route::patch('/catchlogs/{id}', [CatchLogController::class, 'update'])
+    ->middleware(['auth:sanctum', 'ability:catchlogs:patch']);
+Route::delete('/catchlogs/{id}', [CatchLogController::class, 'destroy'])
+    ->middleware(['auth:sanctum', 'ability:catchlogs:delete']);
 
 // FISH CATCH
 Route::get('/fishcatches', [FishCatchController::class, 'index'])

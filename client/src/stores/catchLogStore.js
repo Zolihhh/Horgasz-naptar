@@ -33,7 +33,20 @@ export const useCatchLogStore = defineStore("catchLog", {
       try {
         const response = await service.create(payload);
         this.item = response?.data ?? null;
-        await this.getAll();
+        return response;
+      } catch (err) {
+        this.error = err;
+        throw err;
+      } finally {
+        this.loading = false;
+      }
+    },
+    async delete(id) {
+      this.loading = true;
+      this.error = null;
+      try {
+        const response = await service.delete(id);
+        this.item = response?.data ?? null;
         return response;
       } catch (err) {
         this.error = err;

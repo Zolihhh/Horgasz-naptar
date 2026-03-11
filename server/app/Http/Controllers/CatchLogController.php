@@ -2,69 +2,65 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\UpdateCatchLogRequest;
 use App\Models\CatchLog as CurrentModel;
-use App\Models\FishCatch;
 use App\Http\Requests\StoreCatchLogRequest as StoreCurrentModelRequest;
-use App\Http\Requests\UpdateCatchLogRequest as UpdateCurrentModelReques;
-use Illuminate\Database\QueryException;
+use App\Http\Requests\UpdateCatchLogRequest as UpdateCurrentModelRequest;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
 class CatchLogController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    private function myCatchLogsQuery(int $userId): Builder
     {
-        return $this->apiResponse(
-            function () {
-                return CurrentModel::all();
-            }
-        );
+        return CurrentModel::query()
+            ->where('userid', $userId);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-public function store(StoreCurrentModelRequest $request)
-{
- return $this->apiResponse(
-            function () use ($request) {
-                return CurrentModel::create($request->validated());
-            }
-        );
-}
-
-    /**
-     * Display the specified resource.
-     */
-public function show(int $id)
+    public function index(Request $request)
     {
-      return $this->apiResponse(function () use ($id) {
-            return CurrentModel::findOrFail($id);
+        return $this->apiResponse(function () use ($request) {
+            return $this->myCatchLogsQuery($request->user()->id)
+                ->orderByDesc('fishing_start')
+                ->orderByDesc('id')
+                ->get();
         });
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateCurrentModelReques $request, int $id)
+    public function store(StoreCurrentModelRequest $request)
     {
-      return $this->apiResponse(function () use ($request, $id) {
-            $row = CurrentModel::findOrFail($id);
-            $row->update($request->validated());
+        return $this->apiResponse(function () use ($request) {
+            $validated = $request->validated();
+            $validated['userid'] = $request->user()->id;
+
+            return CurrentModel::create($validated);
+        });
+    }
+
+    public function show(Request $request, int $id)
+    {
+        return $this->apiResponse(function () use ($request, $id) {
+            return $this->myCatchLogsQuery($request->user()->id)->findOrFail($id);
+        });
+    }
+
+    public function update(UpdateCurrentModelRequest $request, int $id)
+    {
+        return $this->apiResponse(function () use ($request, $id) {
+            $row = $this->myCatchLogsQuery($request->user()->id)->findOrFail($id);
+            $validated = $request->validated();
+            $validated['userid'] = $request->user()->id;
+            $row->update($validated);
+
             return $row;
         });
     }
-    
-    public function destroy(int $id,  )
+
+    public function destroy(Request $request, int $id)
     {
-        
-     return $this->apiResponse(function () use ($id) {
-            CurrentModel::findOrFail($id)->delete();
+        return $this->apiResponse(function () use ($request, $id) {
+            $this->myCatchLogsQuery($request->user()->id)->findOrFail($id)->delete();
+
             return ['id' => $id];
-            
         });
-     }
+    }
 }

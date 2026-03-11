@@ -48,6 +48,8 @@
       :species="species"
       :lures="lures"
       :updating="updating"
+      :deleting-catch-id="deletingCatchId"
+      :deleting-catch-log-id="deletingCatchLogId"
       :get-fish-name="getFishName"
       :get-location-name-by-catch-log-id="getLocationNameByCatchLogId"
       :get-lure-name="getLureName"
@@ -56,6 +58,18 @@
       @start-edit="startEdit"
       @update-catch="updateCatch"
       @cancel-edit="cancelEdit"
+      @request-delete-catch="requestDeleteCatch"
+      @request-delete-log="requestDeleteCatchLog"
+    />
+
+    <ConfirmModal
+      :is-open-confirm-modal="isConfirmOpen"
+      :title="confirmTitle"
+      :message="confirmMessage"
+      cancel="Mégsem"
+      confirm="Igen, törlés"
+      @cancel="closeConfirmModal"
+      @confirm="confirmDelete"
     />
   </div>
 </template>
@@ -70,6 +84,7 @@ import { useCatchLogStore } from "@/stores/catchLogStore";
 import { useLocationStore } from "@/stores/locationStore";
 import { CatchForm, CatchLogForm } from "@/components/Forms";
 import CatchCardList from "@/components/Catch/CatchCardList.vue";
+import ConfirmModal from "@/components/Confirm/ConfirmModal.vue";
 
 function emptyCatch() {
   return {
@@ -88,6 +103,7 @@ export default {
     CatchLogForm,
     CatchForm,
     CatchCardList,
+    ConfirmModal,
   },
   data() {
     return {
@@ -104,7 +120,6 @@ export default {
       showCreateLogForm: false,
       newCatch: emptyCatch(),
       newCatchLog: {
-        userid: null,
         locationid: null,
         fishing_start: "",
         fishing_end: "",
@@ -117,7 +132,14 @@ export default {
       saving: false,
       savingLog: false,
       updating: false,
+      deletingCatchId: null,
+      deletingCatchLogId: null,
       actionError: "",
+      isConfirmOpen: false,
+      confirmTitle: "",
+      confirmMessage: "",
+      confirmType: "",
+      confirmId: null,
       fishCatchStore: useFishCatchStore(),
       specieStore: useSpecieStore(),
       lureStore: useLureStore(),
@@ -269,7 +291,6 @@ export default {
       tomorrowDate.setDate(tomorrowDate.getDate() + 1);
 
       this.newCatchLog = {
-        userid: this.currentUserId,
         locationid: this.locations[0]?.id ?? null,
         fishing_start: today,
         fishing_end: this.toLocalDateInput(tomorrowDate),
@@ -298,10 +319,7 @@ export default {
       this.savingLog = true;
       this.actionError = "";
       try {
-        const payload = {
-          ...this.newCatchLog,
-          userid: this.currentUserId,
-        };
+        const payload = { ...this.newCatchLog };
         await this.catchLogStore.create(payload);
         const createdLogId = this.catchLogStore.item?.id ?? null;
         this.showCreateLogForm = false;
@@ -317,10 +335,18 @@ export default {
     },
     async createCatch() {
       if (this.userCatchLogs.length === 0) return;
-      if (Number(this.newCatch.weight) > 9.99) {
-        this.actionError = "A súly mező legnagyobb értéke 9.99 kg lehet.";
+      if (Number(this.newCatch.weight) > 50) {
+        this.actionError = "A súly mező legnagyobb értéke 50 kg lehet.";
         console.error("[CatchView][createCatch] Súly túl nagy", {
           weight: this.newCatch.weight,
+          payload: this.newCatch,
+        });
+        return;
+      }
+      if (Number(this.newCatch.length) > 999.9) {
+        this.actionError = "A hossz mező legnagyobb értéke 999.9 cm lehet.";
+        console.error("[CatchView][createCatch] Hossz túl nagy", {
+          length: this.newCatch.length,
           payload: this.newCatch,
         });
         return;
@@ -358,11 +384,20 @@ export default {
       this.editCatch = emptyCatch();
     },
     async updateCatch(id) {
-      if (Number(this.editCatch.weight) > 9.99) {
-        this.actionError = "A súly mező legnagyobb értéke 9.99 kg lehet.";
+      if (Number(this.editCatch.weight) > 50) {
+        this.actionError = "A súly mező legnagyobb értéke 50 kg lehet.";
         console.error("[CatchView][updateCatch] Súly túl nagy", {
           id,
           weight: this.editCatch.weight,
+          payload: this.editCatch,
+        });
+        return;
+      }
+      if (Number(this.editCatch.length) > 999.9) {
+        this.actionError = "A hossz mező legnagyobb értéke 999.9 cm lehet.";
+        console.error("[CatchView][updateCatch] Hossz túl nagy", {
+          id,
+          length: this.editCatch.length,
           payload: this.editCatch,
         });
         return;
@@ -380,6 +415,71 @@ export default {
         this.actionError = this.getErrorMessage(error, "A fogás módosítása nem sikerült.");
       } finally {
         this.updating = false;
+      }
+    },
+    requestDeleteCatch(catchItem) {
+      this.confirmType = "catch";
+      this.confirmId = catchItem?.id ?? null;
+      this.confirmTitle = "Fogás törlése";
+      this.confirmMessage = "Biztosan törölni szeretnéd ezt a fogást?";
+      this.isConfirmOpen = true;
+      this.actionError = "";
+    },
+    requestDeleteCatchLog(catchLog) {
+      this.confirmType = "catchLog";
+      this.confirmId = catchLog?.id ?? null;
+      this.confirmTitle = "Fogási napló törlése";
+      this.confirmMessage = "A napló törlésével a hozzá tartozó fogások is törlődnek. Folytatod?";
+      this.isConfirmOpen = true;
+      this.actionError = "";
+    },
+    closeConfirmModal() {
+      this.isConfirmOpen = false;
+      this.confirmType = "";
+      this.confirmId = null;
+      this.confirmTitle = "";
+      this.confirmMessage = "";
+    },
+    async confirmDelete() {
+      if (!this.confirmId) {
+        this.closeConfirmModal();
+        return;
+      }
+
+      if (this.confirmType === "catch") {
+        await this.deleteCatch(this.confirmId);
+      } else if (this.confirmType === "catchLog") {
+        await this.deleteCatchLog(this.confirmId);
+      }
+
+      this.closeConfirmModal();
+    },
+    async deleteCatch(id) {
+      this.deletingCatchId = id;
+      this.actionError = "";
+      try {
+        await this.fishCatchStore.delete(id);
+        if (this.editingCatchId === id) {
+          this.cancelEdit();
+        }
+        await this.fetchMyCatches();
+      } catch (error) {
+        this.actionError = this.getErrorMessage(error, "A fogás törlése nem sikerült.");
+      } finally {
+        this.deletingCatchId = null;
+      }
+    },
+    async deleteCatchLog(id) {
+      this.deletingCatchLogId = id;
+      this.actionError = "";
+      try {
+        await this.catchLogStore.delete(id);
+        this.cancelEdit();
+        await this.fetchMyCatches();
+      } catch (error) {
+        this.actionError = this.getErrorMessage(error, "A fogási napló törlése nem sikerült.");
+      } finally {
+        this.deletingCatchLogId = null;
       }
     },
     toLocalDateTimeInput(value) {
@@ -452,7 +552,7 @@ export default {
         return "A kiválasztott csali már nem létezik.";
       }
       if (typeof message === "string" && message.includes("Out of range value for column 'weight'")) {
-        return "A súly mező legnagyobb értéke 9.99 kg lehet.";
+        return "A súly mező legnagyobb értéke 50 kg lehet.";
       }
       if (typeof message === "string" && message.includes("Out of range value for column 'length'")) {
         return "A megadott hossz túl nagy az adatbázis mezőhöz. Adj meg kisebb értéket.";

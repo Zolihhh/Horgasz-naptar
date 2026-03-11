@@ -19,15 +19,13 @@ class StoreCatchLogRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
-  public function rules(): array
-{
-    return [
-        'userid' => 'required|integer|exists:users,id',
-        'locationid'    => 'required|integer|exists:locations,id',
-        'comment'       => 'nullable|string',
-        'fishing_start' => 'required|date',
-        'fishing_end'   => 'required|date|after:fishing_start',
-    ];
-
+    public function rules(): array
+    {
+        return [
+            'locationid' => ['required', 'integer', 'exists:locations,id'],
+            'comment' => ['nullable', 'string', 'max:1000'],
+            'fishing_start' => ['required', 'date'],
+            'fishing_end' => ['required', 'date', 'after_or_equal:fishing_start'],
+        ];
     }
 }

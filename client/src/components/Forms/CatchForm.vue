@@ -32,12 +32,20 @@
 
     <label>
       Súly (kg)
-      <input v-model.number="newCatch.weight" class="form-control" type="number" step="0.01" min="0" max="9.99" required />
+      <input v-model.number="newCatch.weight" class="form-control" type="number" step="0.01" min="0" max="50" required />
     </label>
 
     <label>
       Hossz (cm)
-      <input v-model.number="newCatch.length" class="form-control" type="number" step="0.1" min="0" required />
+      <input
+        v-model.number="newCatch.length"
+        class="form-control"
+        type="number"
+        step="0.1"
+        min="0"
+        max="999.9"
+        required
+      />
     </label>
 
     <label>
