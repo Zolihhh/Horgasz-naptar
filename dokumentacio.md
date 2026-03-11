@@ -1,4 +1,4 @@
-# Horgasz Naptar - Vizsgara Szant Projektbemutato
+# Horgasz Naptar
 
 ## 1. Projektcim es rovid bemutatas
 **Projekt neve:** Horgasz Naptar  
