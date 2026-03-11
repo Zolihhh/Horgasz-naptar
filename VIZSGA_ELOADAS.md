@@ -96,9 +96,8 @@ Kapcsolatok:
 4. Dupla API frissitesek csokkentese a store logikaban
 5. Torles funkcio bevezetese fogasra es naplora is
 6. Megerosito modal (Bootstrap alapu) bevezetese
-7. Sulyhatar 9.99-rol 50 kg-ra emelve
-8. DB mezomeret igazitas (`fish_catches.weight` -> `decimal(5,2)`)
-9. Hossz mezopontossag igazitas (`fish_catches.length` -> `decimal(5,1)`)
+7. DB mezomeret igazitas (`fish_catches.weight` -> `decimal(5,2)`)
+8. Hossz mezopontossag igazitas (`fish_catches.length` -> `decimal(5,1)`)
 
 ## 8. Minosegbiztositas es teszteles
 ### Backend
@@ -118,31 +117,3 @@ Kapcsolatok:
 3. Biztonsagosabb API (auth + ability + sajat adatok szurese)
 4. Jo skalahatosag (modularis komponensek, store-ok, migraciok)
 5. Konnyen tovabbfejlesztheto
-
-## 10. Bemutato forgatokonyv (vizsgan eloadhato menet)
-1. Projekt celjanak rovid bemutatasa (30-60 mp)
-2. Bejelentkezes es szerepkorok ismertetese
-3. Fogasi naplo letrehozasa
-4. Fogas rogzitese egy naplohoz
-5. Fogas modositas es torles bemutatasa
-6. Naplo torles bemutatasa megerosito modalon keresztul
-7. Idojaras oldal bemutatasa (varosvalasztas, napi adatok)
-8. Kodszint: route vedelem + request validacio + sajat adatok szurese
-9. Teszteles bemutatasa (parancsok es eredmeny)
-10. Zaro osszegzes es tovabbfejlesztesi otletek
-
-## 11. Tovabbfejlesztesi lehetosegek
-1. Kepfeltoltes fogashoz
-2. Statisztikai panel (atlag suly, top helyszin, havi trendek)
-3. Szerveroldali lapozas nagy adatmennyisegre
-4. Export (PDF/CSV)
-5. E2E automatizalt tesztek bovitese
-
-## 12. Osszegzes (amit erdemes a vizsgan kiemelni)
-Ez a projekt nem csak UI szinten keszult el, hanem teljes, valos full-stack alkalmazas lett:
-- adatintegritas migraciokkal,
-- jogosultsagkezeles tokennel es abilitykkel,
-- validalt adatbevitel,
-- felhasznaloi szemszogbol hasznalhato, Bootstrap alapu felulet.
-
-A fejlesztes soran a hangsuly a **biztonsagon, stabilitason es hasznalhatosagon** volt.
