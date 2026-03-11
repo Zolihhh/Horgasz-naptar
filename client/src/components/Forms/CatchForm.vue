@@ -32,7 +32,7 @@
 
     <label>
       Súly (kg)
-      <input v-model.number="newCatch.weight" class="form-control" type="number" step="0.01" min="0" max="50" required />
+      <input v-model.number="newCatch.weight" class="form-control" type="number" step="0.01" min="0" max="100" required />
     </label>
 
     <label>

@@ -335,8 +335,8 @@ export default {
     },
     async createCatch() {
       if (this.userCatchLogs.length === 0) return;
-      if (Number(this.newCatch.weight) > 50) {
-        this.actionError = "A súly mező legnagyobb értéke 50 kg lehet.";
+      if (Number(this.newCatch.weight) > 100) {
+        this.actionError = "A súly mező legnagyobb értéke 100 kg lehet.";
         console.error("[CatchView][createCatch] Súly túl nagy", {
           weight: this.newCatch.weight,
           payload: this.newCatch,
@@ -384,8 +384,8 @@ export default {
       this.editCatch = emptyCatch();
     },
     async updateCatch(id) {
-      if (Number(this.editCatch.weight) > 50) {
-        this.actionError = "A súly mező legnagyobb értéke 50 kg lehet.";
+      if (Number(this.editCatch.weight) > 100) {
+        this.actionError = "A súly mező legnagyobb értéke 100 kg lehet.";
         console.error("[CatchView][updateCatch] Súly túl nagy", {
           id,
           weight: this.editCatch.weight,
@@ -552,7 +552,7 @@ export default {
         return "A kiválasztott csali már nem létezik.";
       }
       if (typeof message === "string" && message.includes("Out of range value for column 'weight'")) {
-        return "A súly mező legnagyobb értéke 50 kg lehet.";
+        return "A súly mező legnagyobb értéke 100 kg lehet.";
       }
       if (typeof message === "string" && message.includes("Out of range value for column 'length'")) {
         return "A megadott hossz túl nagy az adatbázis mezőhöz. Adj meg kisebb értéket.";

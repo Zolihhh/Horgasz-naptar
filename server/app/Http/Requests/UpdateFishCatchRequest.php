@@ -25,7 +25,7 @@ class UpdateFishCatchRequest extends FormRequest
             'specieId' => ['required', 'integer', 'exists:species,id'],
             'lureId' => ['required', 'integer', 'exists:lures,id'],
             'catchLogId' => ['required', 'integer', 'exists:catch_logs,id'],
-            'weight' => ['required', 'numeric', 'min:0', 'max:50', 'decimal:0,2'],
+            'weight' => ['required', 'numeric', 'min:0', 'max:100', 'decimal:0,2'],
             'length' => ['required', 'numeric', 'min:0', 'max:999.9', 'decimal:0,1'],
             'catchTime' => ['required', 'date'],
         ];
@@ -34,15 +34,15 @@ class UpdateFishCatchRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'specieId.required' => 'A halfaj megadása kötelező.',
-            'specieId.exists' => 'A megadott halfaj nem létezik.',
-            'lureId.required' => 'A csali megadása kötelező.',
-            'lureId.exists' => 'A megadott csali nem létezik.',
-            'catchLogId.required' => 'A fogási napló megadása kötelező.',
-            'catchLogId.exists' => 'A megadott fogási napló nem létezik.',
-            'weight.max' => 'A súly legnagyobb értéke 50 kg lehet.',
-            'weight.decimal' => 'A súly legfeljebb 2 tizedes lehet.',
-            'length.max' => 'A hossz legnagyobb értéke 999.9 cm lehet.',
+            'specieId.required' => 'A halfaj megadĂˇsa kĂ¶telezĹ‘.',
+            'specieId.exists' => 'A megadott halfaj nem lĂ©tezik.',
+            'lureId.required' => 'A csali megadĂˇsa kĂ¶telezĹ‘.',
+            'lureId.exists' => 'A megadott csali nem lĂ©tezik.',
+            'catchLogId.required' => 'A fogĂˇsi naplĂł megadĂˇsa kĂ¶telezĹ‘.',
+            'catchLogId.exists' => 'A megadott fogĂˇsi naplĂł nem lĂ©tezik.',
+            'weight.max' => 'A sĂşly legnagyobb Ă©rtĂ©ke 100 kg lehet.',
+            'weight.decimal' => 'A sĂşly legfeljebb 2 tizedes lehet.',
+            'length.max' => 'A hossz legnagyobb Ă©rtĂ©ke 999.9 cm lehet.',
             'length.decimal' => 'A hossz legfeljebb 1 tizedes lehet.',
         ];
     }

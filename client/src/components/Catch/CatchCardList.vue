@@ -97,7 +97,7 @@
                   type="number"
                   step="0.01"
                   min="0"
-                  max="50"
+                  max="100"
                   required
                 />
               </label>
