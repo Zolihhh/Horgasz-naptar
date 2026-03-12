@@ -528,7 +528,13 @@ export default {
       if (!value) return "-";
       const date = new Date(value);
       if (Number.isNaN(date.getTime())) return value;
-      return date.toLocaleString("hu-HU");
+      return date.toLocaleString("hu-HU", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+      });
     },
     getErrorMessage(error, fallback) {
       console.error("[CatchView] API hiba", {
