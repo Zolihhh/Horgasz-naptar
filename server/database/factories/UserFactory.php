@@ -29,7 +29,7 @@ class UserFactory extends Factory
 
         return [
             'name' => 'Horgasz' . $current,
-            'email' => 'horgasz' . $current . "@minta.hu",
+            'email' => 'horgasz' . $current . "@example.hu",
             'password' => Hash::make('123'),
             'role' => 2,
             'idNumber' => strtoupper($this->faker->bothify('??######')),
