@@ -77,7 +77,6 @@ export function useWeatherForecast() {
     }
   }
 
-  // Backward-compatible alias for legacy callers.
   function normalizeLocation(raw) {
     return normalizeCity(raw)
   }
