@@ -343,8 +343,8 @@ export default {
         });
         return;
       }
-      if (Number(this.newCatch.length) > 999.9) {
-        this.actionError = "A hossz mező legnagyobb értéke 999.9 cm lehet.";
+      if (Number(this.newCatch.length) > 200) {
+        this.actionError = "A hossz mező legnagyobb értéke 200 cm lehet.";
         console.error("[CatchView][createCatch] Hossz túl nagy", {
           length: this.newCatch.length,
           payload: this.newCatch,
@@ -393,8 +393,8 @@ export default {
         });
         return;
       }
-      if (Number(this.editCatch.length) > 999.9) {
-        this.actionError = "A hossz mező legnagyobb értéke 999.9 cm lehet.";
+      if (Number(this.editCatch.length) > 200) {
+        this.actionError = "A hossz mező legnagyobb értéke 200 cm lehet.";
         console.error("[CatchView][updateCatch] Hossz túl nagy", {
           id,
           length: this.editCatch.length,
@@ -561,7 +561,7 @@ export default {
         return "A súly mező legnagyobb értéke 100 kg lehet.";
       }
       if (typeof message === "string" && message.includes("Out of range value for column 'length'")) {
-        return "A megadott hossz túl nagy az adatbázis mezőhöz. Adj meg kisebb értéket.";
+        return "A hossz mező legnagyobb értéke 200 cm lehet.";
       }
       if (typeof message === "string" && message.includes("Integrity constraint violation")) {
         return "Az adatok ütköznek adatbázis szabállyal (kapcsolódó rekord hiányzik vagy duplikált).";

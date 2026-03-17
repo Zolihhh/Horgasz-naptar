@@ -26,7 +26,7 @@ class UpdateFishCatchRequest extends FormRequest
             'lureId' => ['required', 'integer', 'exists:lures,id'],
             'catchLogId' => ['required', 'integer', 'exists:catch_logs,id'],
             'weight' => ['required', 'numeric', 'min:0', 'max:100', 'decimal:0,2'],
-            'length' => ['required', 'numeric', 'min:0', 'max:999.9', 'decimal:0,1'],
+            'length' => ['required', 'numeric', 'min:0', 'max:200', 'decimal:0,1'],
             'catchTime' => ['required', 'date'],
         ];
     }
@@ -42,7 +42,7 @@ class UpdateFishCatchRequest extends FormRequest
             'catchLogId.exists' => 'A megadott fogĂˇsi naplĂł nem lĂ©tezik.',
             'weight.max' => 'A sĂşly legnagyobb Ă©rtĂ©ke 100 kg lehet.',
             'weight.decimal' => 'A sĂşly legfeljebb 2 tizedes lehet.',
-            'length.max' => 'A hossz legnagyobb Ă©rtĂ©ke 999.9 cm lehet.',
+            'length.max' => 'A hossz legnagyobb Ă©rtĂ©ke 200 cm lehet.',
             'length.decimal' => 'A hossz legfeljebb 1 tizedes lehet.',
         ];
     }
