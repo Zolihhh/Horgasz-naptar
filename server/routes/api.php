@@ -27,7 +27,13 @@ Route::get('/cities', [CityController::class, 'index']);
 
 // LURE
 Route::get('/lures', [LureController::class, 'index']);
-Route::post('/lures', [LureController::class, 'store']);
+Route::get('/lures/{id}', [LureController::class, 'show']);
+Route::post('/lures', [LureController::class, 'store'])
+    ->middleware(['auth:sanctum', 'ability:lures:post']);
+Route::patch('/lures/{id}', [LureController::class, 'update'])
+    ->middleware(['auth:sanctum', 'ability:lures:patch']);
+Route::delete('/lures/{id}', [LureController::class, 'destroy'])
+    ->middleware(['auth:sanctum', 'ability:lures:delete']);
 
 // CATCH LOG
 Route::get('/catchlogs', [CatchLogController::class, 'index'])

@@ -29,6 +29,15 @@
           </RouterLink>
 
           <RouterLink
+            v-if="isAdmin"
+            to="/lures"
+            class="menu-dropdown-link"
+            @click="closeUserMenu"
+          >
+            Csalik kezelése
+          </RouterLink>
+
+          <RouterLink
             to="/profile"
             class="menu-dropdown-link"
             @click="closeUserMenu"
