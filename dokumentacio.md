@@ -117,3 +117,83 @@ Kapcsolatok:
 3. Biztonsagosabb API (auth + ability + sajat adatok szurese)
 4. Jo skalahatosag (modularis komponensek, store-ok, migraciok)
 5. Konnyen tovabbfejlesztheto
+
+
+
+# A program leírása
+
+## Időjárás api működése
+1. Az időjárás api adatainak lehívását megvalósító jskönyvtár
+  - composables/useWeatherForecast.js
+    - fetchForecastForLocation() függvény állítja elő a nekünk szüséges adatokat
+2. az időjárás űrlap
+  - WeatherView.vue
+  - A nai időjárás kártyák komponens: 
+```vue
+ <WeatherForecastRow
+          class="col-12 col-xl"
+          :daily-forecast="dailyForecast"
+          :metric-mode="metricMode"
+          :round="round"
+          :format-short-date="formatShortDate"
+        />
+```
+
+Ebben akomponensben a daily-forecast paraméter tartalmazza az adatokat, amit a fetchForecast() függvény tölt fel
+
+```js
+
+async fetchForecast() {
+  this.loading = true
+  this.error = ''
+
+  try {
+    const cityData = this.getSelectedLocation()
+
+    if (!cityData) {
+      throw new Error('A kiválasztott helyszínhez nem találtam koordinátát.')
+    }
+
+    this.dailyForecast = await weatherTools.fetchForecastForLocation(cityData)
+  
+  } catch (err) {
+    this.dailyForecast = []
+    this.error = err?.message || 'Hiba történt az időjárás lekérésénél.'
+  } finally {
+    this.loading = false
+  }
+}
+
+```
+3. A WeatherForecastRow komponens
+```vue
+<template>
+  <div class="forecast-row">
+    <article v-for="day in dailyForecast" :key="day.date" class="mini-card">
+      <p class="mini-day">{{ formatShortDate(day.date) }}</p>
+      <img :src="day.icon" :alt="day.label" class="mini-icon" />
+
+      <template v-if="metricMode === 'temperature'">
+        <p class="mini-main">{{ round((day.tempMin + day.tempMax) / 2) }}&deg;</p>
+        <p class="mini-sub">min {{ round(day.tempMin) }} / max {{ round(day.tempMax) }}</p>
+      </template>
+      <template v-else>
+        <p class="mini-main">{{ round(day.precipitation) }} mm</p>
+        <p class="mini-sub">szél {{ round(day.windMax) }} km/h</p>
+      </template>
+    </article>
+  </div>
+</template>
+
+...
+
+  props: {
+    dailyForecast: {
+      type: Array,
+      required: true
+    },
+
+...
+```
+
+
