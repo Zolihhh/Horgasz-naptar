@@ -9,8 +9,10 @@ class Location extends Model
 {
     /** @use HasFactory<\Database\Factories\LocationFactory> */
     use HasFactory;
-        protected $fillable = [
+    protected $fillable = [
         'waterAreaCode',
-        'fishingLakeName'
+        'latitude',
+        'longitude',
+        'FishingLakeName',
     ];
 }

@@ -38,6 +38,24 @@
           </RouterLink>
 
           <RouterLink
+            v-if="isAdmin"
+            to="/species"
+            class="menu-dropdown-link"
+            @click="closeUserMenu"
+          >
+            Halfajok kezelése
+          </RouterLink>
+
+          <RouterLink
+            v-if="isAdmin"
+            to="/locations"
+            class="menu-dropdown-link"
+            @click="closeUserMenu"
+          >
+            Helyszínek kezelése
+          </RouterLink>
+
+          <RouterLink
             to="/profile"
             class="menu-dropdown-link"
             @click="closeUserMenu"

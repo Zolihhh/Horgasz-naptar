@@ -86,6 +86,28 @@ const router = createRouter({
       },
     },
     {
+      path: "/species",
+      name: "species",
+      component: () => import("@/views/SpeciesView.vue"),
+      beforeEnter: [checkIfNotLogged],
+      meta: {
+        title: () => "Halfajok",
+        breadcrumb: "Halfajok",
+        roles: [1],
+      },
+    },
+    {
+      path: "/locations",
+      name: "locations",
+      component: () => import("@/views/LocationsView.vue"),
+      beforeEnter: [checkIfNotLogged],
+      meta: {
+        title: () => "Helyszínek",
+        breadcrumb: "Helyszínek",
+        roles: [1],
+      },
+    },
+    {
       path: "/login",
       name: "login",
       component: () => import("@/views/LoginView.vue"),

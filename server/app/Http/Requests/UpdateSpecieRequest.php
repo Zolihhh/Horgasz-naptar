@@ -37,22 +37,19 @@ class UpdateSpecieRequest extends FormRequest
         ];
     }
 
-    /**
-     * Egyedi hibaüzenetek.
-     */
     public function messages(): array
     {
         return [
-            'fish_name.required' => 'A halfaj neve kötelező!',
-            'fish_name.string' => 'A halfaj neve szöveg kell legyen!',
-            'fish_name.min' => 'A halfaj neve legalább 2 karakter!',
-            'fish_name.max' => 'A halfaj neve maximum 100 karakter lehet!',
-            'fish_name.unique' => 'Már létezik ilyen nevű halfaj!',
-            'photo.required' => 'A kép megadása kötelező!',
-            'photo.string' => 'A kép elérési útja szöveg kell legyen!',
-            'photo.max' => 'A kép elérési útja túl hosszú!',
-            'description.string' => 'A leírás szöveg kell legyen!',
-            'description.max' => 'A leírás maximum 255 karakter lehet!',
+            'fish_name.required' => 'A halfaj neve kötelező.',
+            'fish_name.string' => 'A halfaj neve csak szöveg lehet.',
+            'fish_name.min' => 'A halfaj neve legalább 2 karakter legyen.',
+            'fish_name.max' => 'A halfaj neve legfeljebb 100 karakter lehet.',
+            'fish_name.unique' => 'Ez a halfaj már létezik.',
+            'photo.required' => 'A kép megadása kötelező.',
+            'photo.string' => 'A kép neve csak szöveg lehet.',
+            'photo.max' => 'A kép neve legfeljebb 255 karakter lehet.',
+            'description.string' => 'A leírás csak szöveg lehet.',
+            'description.max' => 'A leírás legfeljebb 255 karakter lehet.',
         ];
     }
 }

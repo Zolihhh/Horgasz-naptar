@@ -22,9 +22,25 @@ class StoreSpecieRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'fish_name' => 'nullable|string',
-            'photo' => 'nullable|string',
-            'description' => 'nullable|string|max:255',
+            'fish_name' => ['required', 'string', 'min:2', 'max:100', 'unique:species,fish_name'],
+            'photo' => ['required', 'string', 'max:255'],
+            'description' => ['nullable', 'string', 'max:255'],
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'fish_name.required' => 'A halfaj neve kötelező.',
+            'fish_name.string' => 'A halfaj neve csak szöveg lehet.',
+            'fish_name.min' => 'A halfaj neve legalább 2 karakter legyen.',
+            'fish_name.max' => 'A halfaj neve legfeljebb 100 karakter lehet.',
+            'fish_name.unique' => 'Ez a halfaj már létezik.',
+            'photo.required' => 'A kép megadása kötelező.',
+            'photo.string' => 'A kép neve csak szöveg lehet.',
+            'photo.max' => 'A kép neve legfeljebb 255 karakter lehet.',
+            'description.string' => 'A leírás csak szöveg lehet.',
+            'description.max' => 'A leírás legfeljebb 255 karakter lehet.',
         ];
     }
 }

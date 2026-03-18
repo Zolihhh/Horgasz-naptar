@@ -15,12 +15,24 @@ Route::get('/x', function () {
 
 // SPECIE
 Route::get('/species', [SpecieController::class, 'index']);
-Route::post('/species', [SpecieController::class, 'store']);
+Route::get('/species/{id}', [SpecieController::class, 'show']);
+Route::post('/species', [SpecieController::class, 'store'])
+    ->middleware(['auth:sanctum', 'ability:species:post']);
+Route::patch('/species/{id}', [SpecieController::class, 'update'])
+    ->middleware(['auth:sanctum', 'ability:species:patch']);
+Route::delete('/species/{id}', [SpecieController::class, 'destroy'])
+    ->middleware(['auth:sanctum', 'ability:species:delete']);
 Route::get('/species/photo/{filename}', [SpecieController::class, 'photo']);
 
 // LOCATION
 Route::get('/locations', [LocationController::class, 'index']);
-Route::post('/locations', [LocationController::class, 'store']);
+Route::get('/locations/{id}', [LocationController::class, 'show']);
+Route::post('/locations', [LocationController::class, 'store'])
+    ->middleware(['auth:sanctum', 'ability:locations:post']);
+Route::patch('/locations/{id}', [LocationController::class, 'update'])
+    ->middleware(['auth:sanctum', 'ability:locations:patch']);
+Route::delete('/locations/{id}', [LocationController::class, 'destroy'])
+    ->middleware(['auth:sanctum', 'ability:locations:delete']);
 
 // CITIES
 Route::get('/cities', [CityController::class, 'index']);
