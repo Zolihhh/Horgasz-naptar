@@ -21,7 +21,7 @@
 
     <div class="users-table-card">
       <div class="users-toolbar">
-        <button type="button" class="btn primary-btn" @click="openCreateModal">
+        <button type="button" class="btn primary-btn create-lure-btn" @click="openCreateModal">
           Új csali
         </button>
 
@@ -404,5 +404,15 @@ export default {
   justify-content: space-between;
   gap: 1rem;
   flex-wrap: wrap;
+}
+
+.create-lure-btn {
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.create-lure-btn:hover,
+.create-lure-btn:focus {
+  color: #ffffff;
 }
 </style>

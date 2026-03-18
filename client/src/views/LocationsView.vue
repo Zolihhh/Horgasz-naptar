@@ -21,7 +21,7 @@
 
     <div class="users-table-card">
       <div class="users-toolbar">
-        <button type="button" class="btn primary-btn" @click="openCreateModal">
+        <button type="button" class="btn primary-btn create-location-btn" @click="openCreateModal">
           Új helyszín
         </button>
 
@@ -519,5 +519,15 @@ export default {
   justify-content: space-between;
   gap: 1rem;
   flex-wrap: wrap;
+}
+
+.create-location-btn {
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.create-location-btn:hover,
+.create-location-btn:focus {
+  color: #ffffff;
 }
 </style>

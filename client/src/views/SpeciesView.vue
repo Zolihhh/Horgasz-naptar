@@ -21,7 +21,7 @@
 
     <div class="users-table-card">
       <div class="users-toolbar">
-        <button type="button" class="btn primary-btn" @click="openCreateModal">
+        <button type="button" class="btn primary-btn create-specie-btn" @click="openCreateModal">
           Új halfaj
         </button>
 
@@ -477,5 +477,15 @@ export default {
   justify-content: space-between;
   gap: 1rem;
   flex-wrap: wrap;
+}
+
+.create-specie-btn {
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.create-specie-btn:hover,
+.create-specie-btn:focus {
+  color: #ffffff;
 }
 </style>
