@@ -1,9 +1,9 @@
 <?php
 
 namespace App\Http\Requests;
-use Illuminate\Validation\Rule;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateLureRequest extends FormRequest
 {
@@ -23,21 +23,26 @@ class UpdateLureRequest extends FormRequest
     public function rules(): array
     {
         $id = $this->route('id');
+
         return [
-            'Lure' => [
+            'lure' => [
                 'required',
                 'string',
-                'min2',
-                'max75',
-                Rule::unique('Lures', 'Lure')->ignore($id),
+                'min:2',
+                'max:75',
+                Rule::unique('lures', 'lure')->ignore($id),
             ],
         ];
     }
 
-        public function messages(): array
+    public function messages(): array
     {
         return [
-            'Lure.required' => 'A csali nevének megadása kötelező!',
+            'lure.required' => 'A csali nevének megadása kötelező.',
+            'lure.string' => 'A csali neve csak szöveg lehet.',
+            'lure.min' => 'A csali neve legalább 2 karakter legyen.',
+            'lure.max' => 'A csali neve legfeljebb 75 karakter lehet.',
+            'lure.unique' => 'Ez a csali már létezik.',
         ];
     }
 }
