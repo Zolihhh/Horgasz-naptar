@@ -23,7 +23,8 @@ class StoreSpecieRequest extends FormRequest
     {
         return [
             'fish_name' => 'nullable|string',
-            'photo' => 'nullable|string'
+            'photo' => 'nullable|string',
+            'description' => 'nullable|string|max:255',
         ];
     }
 }

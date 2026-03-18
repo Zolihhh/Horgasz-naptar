@@ -1,88 +1,88 @@
-id;photo;fish_name
-1;tiszai_ingola.jpg;tiszai ingola
-2;dunai_ingola.jpg;dunai ingola
-3;vágótok.jpg;vágótok
-4;sima_tok.jpg;sima tok
-5;kecsege.jpg;kecsege
-6;sőregtok.jpg;sőregtok
-7;viza.jpg;viza
-8;szibériai_tok.jpg;szibériai tok
-9;angolna.jpg;angolna
-10;dunai_hering.jpg;dunai hering
-11;kövi_csík.jpg;kövi csík
-12;vágó_csík.jpg;vágó csík
-13;kőfúró_csík.jpg;kőfúró csík
-14;lapos_keszeg.jpg;lapos keszeg
-15;dévér_keszeg.jpg;dévér keszeg
-16;bagolykeszeg.jpg;bagolykeszeg
-17;karikakeszeg.jpg;karikakeszeg
-18;sújtásos_küsz.jpg;sújtásos küsz
-19;szélhajtó_küsz.jpg;szélhajtó küsz
-20;állas_küsz.jpg;állas küsz
-21;balin.jpg;balin
-22;márna.jpg;márna
-23;petényi_márna.jpg;petényi márna
-24;ezüstkárász.jpg;ezüstkárász
-25;aranykárász.jpg;aranykárász
-26;paduc.jpg;paduc
-27;amur.jpg;amur
-28;ponty.jpg;ponty
-29;fenékjáró_küllő.jpg;fenékjáró küllő
-30;homoki_küllő.jpg;homoki küllő
-31;felpillantó_küllő.jpg;felpillantó küllő
-32;halványfoltú_küllő.jpg;halványfoltú küllő
-33;fehér_busa.jpg;fehér busa
-34;pettyes_busa.jpg;pettyes busa
-35;kurta_baing.jpg;kurta baing
-36;fejes_domolykó.jpg;fejes domolykó
-37;jászkeszeg.jpg;jászkeszeg
-38;nyúldomolykó.jpg;nyúldomolykó
-39;vaskos_csabak.jpg;vaskos csabak
-40;fekete_amur.jpg;fekete amur
-41;garda.jpg;garda
-42;fürge_cselle.jpg;fürge cselle
-43;kínai_razbóra.jpg;kínai razbóra
-44;szivárványos_ökle.jpg;szivárványos ökle
-45;gyöngyös_koncér.jpg;gyöngyös koncér
-46;leány_koncér.jpg;leány koncér
-47;bodorka.jpg;bodorka
-48;vörösszárnyú_keszeg.jpg;vörösszárnyú keszeg
-49;compó.jpg;compó
-50;szilvaorrú_keszeg.jpg;szilvaorrú keszeg
-51;európai_harcsa.jpg;európai harcsa
-52;afrikai_harcsa.jpg;afrikai harcsa
-53;fekete_törpeharcsa.jpg;fekete törpeharcsa
-54;törpeharcsa.jpg;törpeharcsa
-55;pettyes_harcsa.jpg;pettyes harcsa
-56;törpemaréna.jpg;törpemaréna
-57;nagy_maréna.jpg;nagy maréna
-58;dunai_galóca.jpg;dunai galóca
-59;szivárványos_pisztráng.jpg;szivárványos pisztráng
-60;sebes_pisztráng.jpg;sebes pisztráng
-61;pataki_szajbling.jpg;pataki szajbling
-62;pénzes_pér.jpg;pénzes pér
-63;csuka.jpg;csuka
-64;lápi_póc.jpg;lápi póc
-65;menyhal.jpg;menyhal
-66;szúnyogirtó_fogasponty.jpg;szúnyogirtó fogasponty
-67;szivárványos_guppi.jpg;szivárványos guppi
-68;tüskés_pikó.jpg;tüskés pikó
-69;folyami_géb.jpg;folyami géb
-70;csupasztorkú_géb.jpg;csupasztorkú géb
-71;kessler_géb.jpg;kessler géb
-72;feketeszájú_géb.jpg;feketeszájú géb
-73;szirman_géb.jpg;szirman géb
-74;tarka_géb.jpg;tarka géb
-75;amurgéb.jpg;amurgéb
-76;széles_durbincs.jpg;széles durbincs
-77;vágó_durbincs.jpg;vágó durbincs
-78;selymes_durbincs.jpg;selymes durbincs
-79;csapósügér.jpg;csapósügér
-80;fogassüllő.jpg;fogassüllő
-81;kősüllő.jpg;kősüllő
-82;német_bucó.jpg;német bucó
-83;magyar_bucó.jpg;magyar bucó
-84;naphal.jpg;naphal
-85;pisztrángsügér.jpg;pisztrángsügér
-86;botos_kölönte.jpg;botos kölönte
-87;cifra_kölönte.jpg;cifra kölönte
+id;photo;fish_name;description
+1;tiszai_ingola.jpg;tiszai ingola;Ősi testfelépítésű faj, a folyóvizek különleges ritkasága.
+2;dunai_ingola.jpg;dunai ingola;Ősi testfelépítésű faj, a folyóvizek különleges ritkasága.
+3;vágótok.jpg;vágótok;Tokféle halfaj, nagyobb folyók értékes és különleges hala.
+4;sima_tok.jpg;sima tok;Tokféle halfaj, nagyobb folyók értékes és különleges hala.
+5;kecsege.jpg;kecsege;Magyar vizekben előforduló, értékes és érdekes halfaj.
+6;sőregtok.jpg;sőregtok;Tokféle halfaj, nagyobb folyók értékes és különleges hala.
+7;viza.jpg;viza;Magyar vizekben előforduló, értékes és érdekes halfaj.
+8;szibériai_tok.jpg;szibériai tok;Tokféle halfaj, nagyobb folyók értékes és különleges hala.
+9;angolna.jpg;angolna;Hosszúkás testű halfaj, főként éjszaka aktív.
+10;dunai_hering.jpg;dunai hering;Rajban mozgó halfaj, a nyíltabb vízteret kedveli.
+11;kövi_csík.jpg;kövi csík;Fenék közelében élő kisebb hal, iszapos részeken érzi jól magát.
+12;vágó_csík.jpg;vágó csík;Fenék közelében élő kisebb hal, iszapos részeken érzi jól magát.
+13;kőfúró_csík.jpg;kőfúró csík;Fenék közelében élő kisebb hal, iszapos részeken érzi jól magát.
+14;lapos_keszeg.jpg;lapos keszeg;Békés rajhal, etetett helyen rendszeresen megfogható.
+15;dévér_keszeg.jpg;dévér keszeg;Békés rajhal, etetett helyen rendszeresen megfogható.
+16;bagolykeszeg.jpg;bagolykeszeg;Békés rajhal, etetett helyen rendszeresen megfogható.
+17;karikakeszeg.jpg;karikakeszeg;Békés rajhal, etetett helyen rendszeresen megfogható.
+18;sújtásos_küsz.jpg;sújtásos küsz;Apró rajhal, gyakran a felszín közelében mozog.
+19;szélhajtó_küsz.jpg;szélhajtó küsz;Apró rajhal, gyakran a felszín közelében mozog.
+20;állas_küsz.jpg;állas küsz;Apró rajhal, gyakran a felszín közelében mozog.
+21;balin.jpg;balin;Gyors ragadozó, felszín közelében támad.
+22;márna.jpg;márna;Erős sodrást kedvelő, küzdős folyóvízi halfaj.
+23;petényi_márna.jpg;petényi márna;Erős sodrást kedvelő, küzdős folyóvízi halfaj.
+24;ezüstkárász.jpg;ezüstkárász;Szívós békés hal, állóvizekben és holtágakban is gyakori.
+25;aranykárász.jpg;aranykárász;Szívós békés hal, állóvizekben és holtágakban is gyakori.
+26;paduc.jpg;paduc;Fenék közelében táplálkozó folyóvízi halfaj.
+27;amur.jpg;amur;Erős testű növényevő hal, nyáron különösen aktív.
+28;ponty.jpg;ponty;Népszerű békés hal, melegebb vizekben aktív.
+29;fenékjáró_küllő.jpg;fenékjáró küllő;Kisebb fenékjáró halfaj, homokos vagy kavicsos medret keres.
+30;homoki_küllő.jpg;homoki küllő;Kisebb fenékjáró halfaj, homokos vagy kavicsos medret keres.
+31;felpillantó_küllő.jpg;felpillantó küllő;Kisebb fenékjáró halfaj, homokos vagy kavicsos medret keres.
+32;halványfoltú_küllő.jpg;halványfoltú küllő;Kisebb fenékjáró halfaj, homokos vagy kavicsos medret keres.
+33;fehér_busa.jpg;fehér busa;Magyar vizekben előforduló, értékes és érdekes halfaj.
+34;pettyes_busa.jpg;pettyes busa;Magyar vizekben előforduló, értékes és érdekes halfaj.
+35;kurta_baing.jpg;kurta baing;Ritkább, kisebb testű halfaj, nyugodtabb vízrészekhez kötődik.
+36;fejes_domolykó.jpg;fejes domolykó;Óvatos folyóvízi hal, természetes csalikkal jól fogható.
+37;jászkeszeg.jpg;jászkeszeg;Békés rajhal, etetett helyen rendszeresen megfogható.
+38;nyúldomolykó.jpg;nyúldomolykó;Óvatos folyóvízi hal, természetes csalikkal jól fogható.
+39;vaskos_csabak.jpg;vaskos csabak;Védett kisebb halfaj, tiszta vízhez kötődik.
+40;fekete_amur.jpg;fekete amur;Erős testű növényevő hal, nyáron különösen aktív.
+41;garda.jpg;garda;Rajokban járó ragadozó, nyílt vízen vadászik.
+42;fürge_cselle.jpg;fürge cselle;Apró testű halfaj, hideg és oxigéndús vizet kedvel.
+43;kínai_razbóra.jpg;kínai razbóra;Kis termetű halfaj, sekélyebb vizekben fordul elő.
+44;szivárványos_ökle.jpg;szivárványos ökle;Apró békés hal, növényes részeken talál menedéket.
+45;gyöngyös_koncér.jpg;gyöngyös koncér;Folyóvízi rajhal, sodrásosabb szakaszokon is megjelenik.
+46;leány_koncér.jpg;leány koncér;Folyóvízi rajhal, sodrásosabb szakaszokon is megjelenik.
+47;bodorka.jpg;bodorka;Gyakori békés halfaj, sokféle víztípusban előfordul.
+48;vörösszárnyú_keszeg.jpg;vörösszárnyú keszeg;Békés rajhal, etetett helyen rendszeresen megfogható.
+49;compó.jpg;compó;Iszapos, növényes vizek kedvelt békés hala.
+50;szilvaorrú_keszeg.jpg;szilvaorrú keszeg;Békés rajhal, etetett helyen rendszeresen megfogható.
+51;európai_harcsa.jpg;európai harcsa;Nagy testű ragadozó, inkább este mozog.
+52;afrikai_harcsa.jpg;afrikai harcsa;Meleg vizet kedvelő harcsaféle, intenzív tavakban gyakori.
+53;fekete_törpeharcsa.jpg;fekete törpeharcsa;Szívós harcsaféle, kisebb állóvizekben is jól alkalmazkodik.
+54;törpeharcsa.jpg;törpeharcsa;Szívós harcsaféle, kisebb állóvizekben is jól alkalmazkodik.
+55;pettyes_harcsa.jpg;pettyes harcsa;Mintás testű harcsaféle, melegebb vízben aktívabb.
+56;törpemaréna.jpg;törpemaréna;Hidegebb vízhez kötődő halfaj, mélyebb részeket kedvel.
+57;nagy_maréna.jpg;nagy maréna;Hidegebb vízhez kötődő halfaj, mélyebb részeket kedvel.
+58;dunai_galóca.jpg;dunai galóca;Nagy testű, védett ragadozó, gyors folyású vizet kedvel.
+59;szivárványos_pisztráng.jpg;szivárványos pisztráng;Hideg, oxigéndús vízben élő, óvatos ragadozó.
+60;sebes_pisztráng.jpg;sebes pisztráng;Hideg, oxigéndús vízben élő, óvatos ragadozó.
+61;pataki_szajbling.jpg;pataki szajbling;Hideg vizet kedvelő halfaj, patakok tiszta részein él.
+62;pénzes_pér.jpg;pénzes pér;Tiszta, gyors folyású víz elegáns halfaja.
+63;csuka.jpg;csuka;Ragadozó hal, gyakran a parti növényzetnél áll.
+64;lápi_póc.jpg;lápi póc;Védett kis hal, sűrű növényzet közelében rejtőzik.
+65;menyhal.jpg;menyhal;Hidegkedvelő ragadozó, többnyire a fenék közelében mozog.
+66;szúnyogirtó_fogasponty.jpg;szúnyogirtó fogasponty;Apró termetű halfaj, sekély és melegebb vizekhez alkalmazkodik.
+67;szivárványos_guppi.jpg;szivárványos guppi;Díszhal eredetű faj, melegebb vizekben marad fenn.
+68;tüskés_pikó.jpg;tüskés pikó;Apró ragadozó hal, növényzet közelében lapul meg.
+69;folyami_géb.jpg;folyami géb;Fenékhez kötődő halfaj, kövek és akadók között bújik.
+70;csupasztorkú_géb.jpg;csupasztorkú géb;Fenékhez kötődő halfaj, kövek és akadók között bújik.
+71;kessler_géb.jpg;kessler géb;Fenékhez kötődő halfaj, kövek és akadók között bújik.
+72;feketeszájú_géb.jpg;feketeszájú géb;Fenékhez kötődő halfaj, kövek és akadók között bújik.
+73;szirman_géb.jpg;szirman géb;Fenékhez kötődő halfaj, kövek és akadók között bújik.
+74;tarka_géb.jpg;tarka géb;Fenékhez kötődő halfaj, kövek és akadók között bújik.
+75;amurgéb.jpg;amurgéb;Fenékhez kötődő halfaj, kövek és akadók között bújik.
+76;széles_durbincs.jpg;széles durbincs;Tüskés hátúszójú halfaj, fenékközeli részeken kereshető.
+77;vágó_durbincs.jpg;vágó durbincs;Tüskés hátúszójú halfaj, fenékközeli részeken kereshető.
+78;selymes_durbincs.jpg;selymes durbincs;Tüskés hátúszójú halfaj, fenékközeli részeken kereshető.
+79;csapósügér.jpg;csapósügér;Csapatos ragadozó, kisebb halakra és rovarokra vadászik.
+80;fogassüllő.jpg;fogassüllő;Érzékeny ragadozó, tisztább vízben eredményes.
+81;kősüllő.jpg;kősüllő;Érzékeny ragadozó, tisztább vízben eredményes.
+82;német_bucó.jpg;német bucó;Védett folyóvízi halfaj, köves mederszakaszokat kedvel.
+83;magyar_bucó.jpg;magyar bucó;Védett folyóvízi halfaj, köves mederszakaszokat kedvel.
+84;naphal.jpg;naphal;Kisebb termetű halfaj, sekély meleg vizekben gyakori.
+85;pisztrángsügér.jpg;pisztrángsügér;Hideg, oxigéndús vízben élő, óvatos ragadozó.
+86;botos_kölönte.jpg;botos kölönte;Fenékhez simuló kis hal, hidegebb patakok lakója.
+87;cifra_kölönte.jpg;cifra kölönte;Fenékhez simuló kis hal, hidegebb patakok lakója.

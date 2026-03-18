@@ -60,6 +60,7 @@ class DatabaseTest extends TestCase
             ['species', 'id', 'integer'],
             ['species', 'fish_name', 'string'],
             ['species', 'photo', 'string'],
+            ['species', 'description', 'string'],
         ];
     }
 

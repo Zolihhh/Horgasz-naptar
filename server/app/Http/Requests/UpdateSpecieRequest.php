@@ -25,17 +25,20 @@ class UpdateSpecieRequest extends FormRequest
         $id = $this->route('id');
 
         return [
-            'fish_name' => ['required','string','min:2','max:100',
-                // egyedi, de az aktuális rekordot hagyja
+            'fish_name' => [
+                'required',
+                'string',
+                'min:2',
+                'max:100',
                 Rule::unique('species', 'fish_name')->ignore($id),
             ],
-            'photo' => ['required','string','max:255',
-            ],
+            'photo' => ['required', 'string', 'max:255'],
+            'description' => ['nullable', 'string', 'max:255'],
         ];
     }
 
     /**
-     * Egyedi hibaüzenetek
+     * Egyedi hibaüzenetek.
      */
     public function messages(): array
     {
@@ -48,6 +51,8 @@ class UpdateSpecieRequest extends FormRequest
             'photo.required' => 'A kép megadása kötelező!',
             'photo.string' => 'A kép elérési útja szöveg kell legyen!',
             'photo.max' => 'A kép elérési útja túl hosszú!',
+            'description.string' => 'A leírás szöveg kell legyen!',
+            'description.max' => 'A leírás maximum 255 karakter lehet!',
         ];
     }
 }

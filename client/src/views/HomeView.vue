@@ -36,7 +36,7 @@
                   />
                   <div class="fish-content">
                     <h2>{{ fish.fish_name }}</h2>
-                    <p>{{ getFishHint(fish.fish_name) }}</p>
+                    <p>{{ getFishHint(fish) }}</p>
                   </div>
                 </article>
               </div>
@@ -126,13 +126,10 @@ export default {
       const encoded = encodeURIComponent(photo || "");
       return `${API_BASE}/api/species/photo/${encoded}`;
     },
-    getFishHint(name) {
-      const key = (name || "").toLowerCase();
-      if (key.includes("ponty")) return "Népszerű békés hal, melegebb vizekben aktív.";
-      if (key.includes("csuka")) return "Ragadozó hal, gyakran a parti növényzetnél áll.";
-      if (key.includes("harcsa")) return "Nagy testű ragadozó, inkább este mozog.";
-      if (key.includes("süllő")) return "Érzékeny ragadozó, tisztább vízben eredményes.";
-      if (key.includes("balin")) return "Gyors ragadozó, felszín közelében támad.";
+    getFishHint(fish) {
+      const description = typeof fish?.description === "string" ? fish.description.trim() : "";
+      if (description) return description;
+
       return "Magyar vizekben gyakran fogott, értékes halfaj.";
     },
   },

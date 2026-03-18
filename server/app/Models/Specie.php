@@ -12,8 +12,8 @@ class Specie extends Model
 
     protected $fillable = [
         'fish_name',
-        'photo'
+        'photo',
+        'description',
     ];
     
 }
-

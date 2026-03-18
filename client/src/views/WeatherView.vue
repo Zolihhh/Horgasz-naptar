@@ -182,6 +182,8 @@ export default {
         }
 
         this.dailyForecast = await weatherTools.fetchForecastForLocation(cityData)
+        console.log("gyultemény" , this.dailyForecast);
+        
       } catch (err) {
         this.dailyForecast = []
         this.error = err?.message || 'Hiba történt az időjárás lekérésénél.'

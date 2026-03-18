@@ -21,6 +21,8 @@ class SpeciesTest extends TestCase
         return [
             ['id'],
             ['fish_name'],
+            ['photo'],
+            ['description'],
         ];
     }
 

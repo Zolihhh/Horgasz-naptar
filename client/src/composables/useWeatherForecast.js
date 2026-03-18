@@ -103,9 +103,11 @@ export function useWeatherForecast() {
 
     const daily = weatherResponse.data.daily
     const weatherCodes = daily.weathercode || daily.weather_code || []
-
-    return daily.time.map((date, i) => {
+    // console.log("api",daily.time);
+    const finish= daily.time.map((date, i) => {
       const visual = getWeatherVisual(weatherCodes[i])
+      // console.log("visual", visual);
+      
       return {
         date,
         tempMax: daily.temperature_2m_max[i],
@@ -119,6 +121,9 @@ export function useWeatherForecast() {
         icon: visual.icon
       }
     })
+    // console.log(finish);
+    
+    return finish;
   }
 
   return {
