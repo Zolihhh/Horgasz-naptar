@@ -144,6 +144,22 @@
   color: #ffffff;
 }
 
+.catch-view .loading-state {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  min-height: 160px;
+  font-weight: 600;
+}
+
+.catch-view .loading-spinner {
+  width: 2.4rem;
+  height: 2.4rem;
+  color: #8ed8ff;
+  border-width: 0.28rem;
+}
+
 .catch-view .error-text {
   color: #ffd6d6;
 }

@@ -9,8 +9,12 @@
     </header>
 
     <section class="features">
+      <div v-if="loading" class="feature-loading" role="status" aria-live="polite">
+        <div class="spinner-border feature-spinner" aria-hidden="true"></div>
+        <span>Halfajok betöltése...</span>
+      </div>
       <div
-        v-if="speciesPages.length"
+        v-else-if="speciesPages.length"
         id="fishCardsCarousel"
         class="carousel slide"
         data-bs-ride="carousel"
@@ -69,6 +73,7 @@ export default {
   data() {
     return {
       featuredSpecies: [],
+      loading: false,
       specieStore: useSpecieStore(),
       carouselInstance: null,
     };
@@ -114,12 +119,16 @@ export default {
       this.carouselInstance.cycle();
     },
     async fetchFeaturedSpecies() {
+      this.loading = true;
+
       try {
         await this.specieStore.getAll();
         const species = Array.isArray(this.specieStore.items) ? this.specieStore.items : [];
         this.featuredSpecies = species.filter((row) => row?.photo && row?.fish_name);
       } catch (error) {
         this.featuredSpecies = [];
+      } finally {
+        this.loading = false;
       }
     },
     getFishImageUrl(photo) {
