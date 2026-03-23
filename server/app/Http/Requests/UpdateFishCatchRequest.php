@@ -34,16 +34,27 @@ class UpdateFishCatchRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'specieId.required' => 'A halfaj megadĂˇsa kĂ¶telezĹ‘.',
-            'specieId.exists' => 'A megadott halfaj nem lĂ©tezik.',
-            'lureId.required' => 'A csali megadĂˇsa kĂ¶telezĹ‘.',
-            'lureId.exists' => 'A megadott csali nem lĂ©tezik.',
-            'catchLogId.required' => 'A fogĂˇsi naplĂł megadĂˇsa kĂ¶telezĹ‘.',
-            'catchLogId.exists' => 'A megadott fogĂˇsi naplĂł nem lĂ©tezik.',
-            'weight.max' => 'A sĂşly legnagyobb Ă©rtĂ©ke 100 kg lehet.',
-            'weight.decimal' => 'A sĂşly legfeljebb 2 tizedes lehet.',
-            'length.max' => 'A hossz legnagyobb Ă©rtĂ©ke 200 cm lehet.',
-            'length.decimal' => 'A hossz legfeljebb 1 tizedes lehet.',
+            'catchLogId.required' => 'Válassz fogási naplót.',
+            'catchLogId.integer' => 'A fogási napló azonosítója érvénytelen.',
+            'catchLogId.exists' => 'A kiválasztott fogási napló nem létezik.',
+            'specieId.required' => 'Válassz halfajt.',
+            'specieId.integer' => 'A halfaj azonosítója érvénytelen.',
+            'specieId.exists' => 'A kiválasztott halfaj nem létezik.',
+            'lureId.required' => 'Válassz csalit.',
+            'lureId.integer' => 'A csali azonosítója érvénytelen.',
+            'lureId.exists' => 'A kiválasztott csali nem létezik.',
+            'weight.required' => 'Töltsd ki a súlyt.',
+            'weight.numeric' => 'A súly csak szám lehet.',
+            'weight.min' => 'A súly nem lehet negatív.',
+            'weight.max' => 'A súly legnagyobb értéke 100 kg lehet.',
+            'weight.decimal' => 'A súly legfeljebb 2 tizedesjegyet tartalmazhat.',
+            'length.required' => 'Töltsd ki a hosszt.',
+            'length.numeric' => 'A hossz csak szám lehet.',
+            'length.min' => 'A hossz nem lehet negatív.',
+            'length.max' => 'A hossz legnagyobb értéke 200 cm lehet.',
+            'length.decimal' => 'A hossz legfeljebb 1 tizedesjegyet tartalmazhat.',
+            'catchTime.required' => 'Töltsd ki a fogás időpontját.',
+            'catchTime.date' => 'A fogás időpontja nem megfelelő formátumú.',
         ];
     }
 }

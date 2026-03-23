@@ -2,12 +2,13 @@ import { defineStore } from "pinia";
 import service from "@/api/locationService";
 
 class Item {
-  constructor(id = 0, waterAreaCode = "", latitude = null, longitude = null, FishingLakeName = "") {
+  constructor(id = 0, waterAreaCode = "", latitude = null, longitude = null, FishingLakeName = "", photo = "") {
     this.id = id;
     this.waterAreaCode = waterAreaCode;
     this.latitude = latitude;
     this.longitude = longitude;
     this.FishingLakeName = FishingLakeName;
+    this.photo = photo;
   }
 }
 

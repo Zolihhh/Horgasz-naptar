@@ -31,4 +31,31 @@ class StoreFishCatchRequest extends FormRequest
             'catchTime' => ['required', 'date'],
         ];
     }
+
+    public function messages(): array
+    {
+        return [
+            'catchLogId.required' => 'Válassz fogási naplót.',
+            'catchLogId.integer' => 'A fogási napló azonosítója érvénytelen.',
+            'catchLogId.exists' => 'A kiválasztott fogási napló nem létezik.',
+            'specieId.required' => 'Válassz halfajt.',
+            'specieId.integer' => 'A halfaj azonosítója érvénytelen.',
+            'specieId.exists' => 'A kiválasztott halfaj nem létezik.',
+            'lureId.required' => 'Válassz csalit.',
+            'lureId.integer' => 'A csali azonosítója érvénytelen.',
+            'lureId.exists' => 'A kiválasztott csali nem létezik.',
+            'weight.required' => 'Töltsd ki a súlyt.',
+            'weight.numeric' => 'A súly csak szám lehet.',
+            'weight.min' => 'A súly nem lehet negatív.',
+            'weight.max' => 'A súly legnagyobb értéke 100 kg lehet.',
+            'weight.decimal' => 'A súly legfeljebb 2 tizedesjegyet tartalmazhat.',
+            'length.required' => 'Töltsd ki a hosszt.',
+            'length.numeric' => 'A hossz csak szám lehet.',
+            'length.min' => 'A hossz nem lehet negatív.',
+            'length.max' => 'A hossz legnagyobb értéke 200 cm lehet.',
+            'length.decimal' => 'A hossz legfeljebb 1 tizedesjegyet tartalmazhat.',
+            'catchTime.required' => 'Töltsd ki a fogás időpontját.',
+            'catchTime.date' => 'A fogás időpontja nem megfelelő formátumú.',
+        ];
+    }
 }

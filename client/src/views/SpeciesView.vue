@@ -89,22 +89,34 @@
             v-model.trim="newSpecie.fish_name"
             type="text"
             class="form-control"
+            :class="{ 'is-invalid': !!createFieldErrors.fish_name }"
             minlength="2"
             maxlength="100"
             required
+            @input="handleCreateInput"
           />
+          <div class="invalid-feedback">
+            {{ createFieldErrors.fish_name || "Töltsd ki a halfaj nevét." }}
+          </div>
         </div>
 
         <div class="col-12">
-          <label for="create-photo" class="form-label">Kép fájlnév</label>
+          <label for="create-photo" class="form-label">Kép feltöltése</label>
           <input
             id="create-photo"
-            v-model.trim="newSpecie.photo"
-            type="text"
+            type="file"
             class="form-control"
-            maxlength="255"
+            :class="{ 'is-invalid': !!createFieldErrors.photo }"
+            accept="image/*"
             required
+            @change="onCreatePhotoChange"
           />
+          <div class="invalid-feedback">
+            {{ createFieldErrors.photo || "Tölts fel egy képet a gépről." }}
+          </div>
+          <div v-if="newSpecie.photo" class="form-text text-light-emphasis">
+            Kiválasztott fájl: {{ newSpecie.photo }}
+          </div>
         </div>
 
         <div class="col-12">
@@ -113,9 +125,14 @@
             id="create-description"
             v-model.trim="newSpecie.description"
             class="form-control"
+            :class="{ 'is-invalid': !!createFieldErrors.description }"
             rows="3"
             maxlength="255"
+            @input="handleCreateInput"
           ></textarea>
+          <div v-if="createFieldErrors.description" class="invalid-feedback d-block">
+            {{ createFieldErrors.description }}
+          </div>
         </div>
       </div>
     </Modal>
@@ -139,22 +156,36 @@
             v-model.trim="editSpecie.fish_name"
             type="text"
             class="form-control"
+            :class="{ 'is-invalid': !!editFieldErrors.fish_name }"
             minlength="2"
             maxlength="100"
             required
+            @input="handleEditInput"
           />
+          <div class="invalid-feedback">
+            {{ editFieldErrors.fish_name || "Töltsd ki a halfaj nevét." }}
+          </div>
         </div>
 
         <div class="col-12">
-          <label for="edit-photo" class="form-label">Kép fájlnév</label>
+          <label for="edit-photo" class="form-label">Kép feltöltése</label>
           <input
             id="edit-photo"
-            v-model.trim="editSpecie.photo"
-            type="text"
+            type="file"
             class="form-control"
-            maxlength="255"
-            required
+            :class="{ 'is-invalid': !!editFieldErrors.photo }"
+            accept="image/*"
+            @change="onEditPhotoChange"
           />
+          <div class="invalid-feedback">
+            {{ editFieldErrors.photo || "Tölts fel egy képet a gépről." }}
+          </div>
+          <div v-if="editSpecie.photo" class="form-text text-light-emphasis">
+            Jelenlegi kép: {{ editSpecie.photo }}
+          </div>
+          <div v-if="editSpeciePhotoFile" class="form-text text-light-emphasis">
+            Új fájl: {{ editSpeciePhotoFile.name }}
+          </div>
         </div>
 
         <div class="col-12">
@@ -163,9 +194,14 @@
             id="edit-description"
             v-model.trim="editSpecie.description"
             class="form-control"
+            :class="{ 'is-invalid': !!editFieldErrors.description }"
             rows="3"
             maxlength="255"
+            @input="handleEditInput"
           ></textarea>
+          <div v-if="editFieldErrors.description" class="invalid-feedback d-block">
+            {{ editFieldErrors.description }}
+          </div>
         </div>
       </div>
     </Modal>
@@ -180,6 +216,7 @@ import Pagination from "@/components/Pagination/Pagination.vue";
 import SetSelectedPerPage from "@/components/Pagination/SetSelectedPerPage.vue";
 import ConfirmModal from "@/components/Confirm/ConfirmModal.vue";
 import Modal from "@/components/Modal/Modal.vue";
+import { extractFieldErrors, getApiErrorMessage } from "@/utils/apiValidation";
 
 function emptySpecie() {
   return {
@@ -218,6 +255,18 @@ export default {
       pendingDeleteId: null,
       createError: "",
       editError: "",
+      createFieldErrors: {
+        fish_name: "",
+        photo: "",
+        description: "",
+      },
+      editFieldErrors: {
+        fish_name: "",
+        photo: "",
+        description: "",
+      },
+      newSpeciePhotoFile: null,
+      editSpeciePhotoFile: null,
       newSpecie: emptySpecie(),
       editSpecie: {
         id: null,
@@ -322,31 +371,51 @@ export default {
     },
     openCreateModal() {
       this.newSpecie = emptySpecie();
+      this.newSpeciePhotoFile = null;
       this.createError = "";
+      this.createFieldErrors = {
+        fish_name: "",
+        photo: "",
+        description: "",
+      };
       this.$nextTick(() => {
         this.$refs.createSpecieModal?.show();
       });
     },
+    handleCreateInput() {
+      this.createError = "";
+      this.createFieldErrors = this.validateSpecie(this.newSpecie, this.newSpeciePhotoFile, true);
+    },
+    onCreatePhotoChange(event) {
+      const file = event?.target?.files?.[0] ?? null;
+      this.newSpeciePhotoFile = file;
+      this.newSpecie.photo = file?.name || "";
+      this.createError = "";
+      this.createFieldErrors = this.validateSpecie(this.newSpecie, this.newSpeciePhotoFile, true);
+    },
     async saveCreatedSpecie(done) {
       const payload = {
         fish_name: String(this.newSpecie.fish_name || "").trim(),
-        photo: String(this.newSpecie.photo || "").trim(),
         description: String(this.newSpecie.description || "").trim(),
       };
 
-      if (!payload.fish_name || !payload.photo) {
-        this.createError = "A halfaj neve és a kép fájlneve kötelező.";
+      this.createFieldErrors = this.validateSpecie(payload, this.newSpeciePhotoFile, true);
+      this.createError = "";
+
+      if (Object.values(this.createFieldErrors).some(Boolean)) {
         done(false);
         return;
       }
 
-      this.createError = "";
-
       try {
-        await this.createSpecie(payload);
+        await this.createSpecie(this.buildSpecieFormData(payload, this.newSpeciePhotoFile));
         done(true);
       } catch (error) {
-        this.createError = this.getErrorMessage(error, "A halfaj létrehozása nem sikerült.");
+        const fieldErrors = this.extractSpecieFieldErrors(error);
+        this.createFieldErrors = fieldErrors;
+        this.createError = Object.values(fieldErrors).some(Boolean)
+          ? ""
+          : this.getErrorMessage(error, "A halfaj létrehozása nem sikerült.");
         done(false);
       }
     },
@@ -389,11 +458,27 @@ export default {
         photo: String(specie.photo || ""),
         description: String(specie.description || ""),
       };
+      this.editSpeciePhotoFile = null;
       this.editError = "";
+      this.editFieldErrors = {
+        fish_name: "",
+        photo: "",
+        description: "",
+      };
 
       this.$nextTick(() => {
         this.$refs.editSpecieModal?.show();
       });
+    },
+    handleEditInput() {
+      this.editError = "";
+      this.editFieldErrors = this.validateSpecie(this.editSpecie, this.editSpeciePhotoFile, false);
+    },
+    onEditPhotoChange(event) {
+      const file = event?.target?.files?.[0] ?? null;
+      this.editSpeciePhotoFile = file;
+      this.editError = "";
+      this.editFieldErrors = this.validateSpecie(this.editSpecie, this.editSpeciePhotoFile, false);
     },
     async saveEditedSpecie(done) {
       if (!this.editSpecie.id) {
@@ -408,8 +493,10 @@ export default {
         description: String(this.editSpecie.description || "").trim(),
       };
 
-      if (!payload.fish_name || !payload.photo) {
-        this.editError = "A halfaj neve és a kép fájlneve kötelező.";
+      this.editFieldErrors = this.validateSpecie(payload, this.editSpeciePhotoFile, false);
+      this.editError = "";
+
+      if (Object.values(this.editFieldErrors).some(Boolean)) {
         done(false);
         return;
       }
@@ -418,41 +505,91 @@ export default {
       if (
         payload.fish_name === String(original.fish_name || "").trim() &&
         payload.photo === String(original.photo || "").trim() &&
+        !this.editSpeciePhotoFile &&
         payload.description === String(original.description || "").trim()
       ) {
         done(true);
         return;
       }
 
-      this.editError = "";
-
       try {
-        await this.updateSpecie(this.editSpecie.id, payload);
+        await this.updateSpecie(
+          this.editSpecie.id,
+          this.buildSpecieFormData(payload, this.editSpeciePhotoFile, payload.photo),
+        );
         done(true);
       } catch (error) {
-        this.editError = this.getErrorMessage(error, "A halfaj módosítása nem sikerült.");
+        const fieldErrors = this.extractSpecieFieldErrors(error);
+        this.editFieldErrors = fieldErrors;
+        this.editError = Object.values(fieldErrors).some(Boolean)
+          ? ""
+          : this.getErrorMessage(error, "A halfaj módosítása nem sikerült.");
         done(false);
       }
     },
+    validateSpecie(rawPayload, photoFile, requirePhoto) {
+      const payload = {
+        fish_name: String(rawPayload?.fish_name || "").trim(),
+        description: String(rawPayload?.description || "").trim(),
+      };
+
+      const errors = {
+        fish_name: "",
+        photo: "",
+        description: "",
+      };
+
+      if (!payload.fish_name) {
+        errors.fish_name = "Töltsd ki a halfaj nevét.";
+      } else if (payload.fish_name.length < 2) {
+        errors.fish_name = "A halfaj neve legalább 2 karakter legyen.";
+      } else if (payload.fish_name.length > 100) {
+        errors.fish_name = "A halfaj neve legfeljebb 100 karakter lehet.";
+      }
+
+      if (requirePhoto && !photoFile) {
+        errors.photo = "Tölts fel egy képet a gépről.";
+      } else if (photoFile) {
+        if (!String(photoFile.type || "").startsWith("image/")) {
+          errors.photo = "Csak képfájlt tölthetsz fel.";
+        } else if (photoFile.size > 5 * 1024 * 1024) {
+          errors.photo = "A kép legfeljebb 5 MB lehet.";
+        }
+      } else if (!requirePhoto && !String(rawPayload?.photo || "").trim()) {
+        errors.photo = "Tölts fel egy képet a gépről.";
+      }
+
+      if (payload.description.length > 255) {
+        errors.description = "A leírás legfeljebb 255 karakter lehet.";
+      }
+
+      return errors;
+    },
+    extractSpecieFieldErrors(error) {
+      const fieldErrors = extractFieldErrors(error);
+      return {
+        fish_name: fieldErrors.fish_name || "",
+        photo: fieldErrors.photo || "",
+        description: fieldErrors.description || "",
+      };
+    },
+    buildSpecieFormData(payload, photoFile, existingPhoto = "") {
+      const formData = new FormData();
+      formData.append("fish_name", payload.fish_name);
+      formData.append("description", payload.description || "");
+
+      if (photoFile) {
+        formData.append("photo", photoFile);
+      }
+
+      if (existingPhoto) {
+        formData.append("existing_photo", existingPhoto);
+      }
+
+      return formData;
+    },
     getErrorMessage(error, fallback) {
-      const responseData = error?.response?.data;
-      const message = responseData?.message;
-      if (typeof message === "string" && message.trim()) {
-        return message;
-      }
-
-      const errors = responseData?.errors;
-      if (errors && typeof errors === "object") {
-        const firstError = Object.values(errors)?.[0];
-        if (Array.isArray(firstError) && firstError[0]) {
-          return String(firstError[0]);
-        }
-        if (typeof firstError === "string") {
-          return firstError;
-        }
-      }
-
-      return fallback;
+      return getApiErrorMessage(error, fallback);
     },
     ensureValidPage() {
       if (this.currentPage < 1) {

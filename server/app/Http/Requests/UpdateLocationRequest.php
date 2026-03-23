@@ -43,23 +43,30 @@ class UpdateLocationRequest extends FormRequest
                 'max:80',
                 Rule::unique('locations', 'FishingLakeName')->ignore($id),
             ],
+            'photo' => ['nullable', 'file', 'image', 'max:5120'],
+            'existing_photo' => ['nullable', 'string', 'max:255'],
         ];
     }
 
     public function messages(): array
     {
         return [
-            'waterAreaCode.required' => 'A vízterület kód megadása kötelező.',
+            'waterAreaCode.required' => 'Töltsd ki a vízterület kódját.',
             'waterAreaCode.string' => 'A vízterület kód csak szöveg lehet.',
             'waterAreaCode.max' => 'A vízterület kód legfeljebb 20 karakter lehet.',
             'latitude.numeric' => 'A szélességi fok szám legyen.',
             'latitude.between' => 'A szélességi fok -90 és 90 között lehet.',
             'longitude.numeric' => 'A hosszúsági fok szám legyen.',
             'longitude.between' => 'A hosszúsági fok -180 és 180 között lehet.',
-            'FishingLakeName.required' => 'A horgásztó neve kötelező.',
+            'FishingLakeName.required' => 'Töltsd ki a horgásztó nevét.',
             'FishingLakeName.string' => 'A horgásztó neve csak szöveg lehet.',
             'FishingLakeName.max' => 'A horgásztó neve legfeljebb 80 karakter lehet.',
             'FishingLakeName.unique' => 'Ez a horgásztó már létezik.',
+            'photo.file' => 'A kép feltöltése nem sikerült.',
+            'photo.image' => 'Csak képfájlt tölthetsz fel.',
+            'photo.max' => 'A kép legfeljebb 5 MB lehet.',
+            'existing_photo.string' => 'A meglévő kép neve hibás.',
+            'existing_photo.max' => 'A meglévő kép neve túl hosszú.',
         ];
     }
 }

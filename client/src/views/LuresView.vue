@@ -89,10 +89,15 @@
             v-model.trim="newLure.lure"
             type="text"
             class="form-control"
+            :class="{ 'is-invalid': !!createFieldErrors.lure }"
             minlength="2"
             maxlength="75"
             required
+            @input="handleCreateLureInput"
           />
+          <div class="invalid-feedback">
+            {{ createFieldErrors.lure || getLureValidationMessage(newLure.lure) }}
+          </div>
         </div>
       </div>
     </Modal>
@@ -116,10 +121,15 @@
             v-model.trim="editLure.lure"
             type="text"
             class="form-control"
+            :class="{ 'is-invalid': !!editFieldErrors.lure }"
             minlength="2"
             maxlength="75"
             required
+            @input="handleEditLureInput"
           />
+          <div class="invalid-feedback">
+            {{ editFieldErrors.lure || getLureValidationMessage(editLure.lure) }}
+          </div>
         </div>
       </div>
     </Modal>
@@ -134,6 +144,7 @@ import Pagination from "@/components/Pagination/Pagination.vue";
 import SetSelectedPerPage from "@/components/Pagination/SetSelectedPerPage.vue";
 import ConfirmModal from "@/components/Confirm/ConfirmModal.vue";
 import Modal from "@/components/Modal/Modal.vue";
+import { extractFieldErrors, getApiErrorMessage } from "@/utils/apiValidation";
 
 export default {
   name: "LuresView",
@@ -164,6 +175,12 @@ export default {
       pendingDeleteId: null,
       createError: "",
       editError: "",
+      createFieldErrors: {
+        lure: "",
+      },
+      editFieldErrors: {
+        lure: "",
+      },
       newLure: {
         lure: "",
       },
@@ -267,25 +284,40 @@ export default {
     openCreateModal() {
       this.newLure = { lure: "" };
       this.createError = "";
+      this.createFieldErrors = { lure: "" };
       this.$nextTick(() => {
         this.$refs.createLureModal?.show();
       });
     },
+    handleCreateLureInput() {
+      this.createError = "";
+      this.createFieldErrors = {
+        lure: this.validateLure(this.newLure.lure),
+      };
+    },
     async saveCreatedLure(done) {
       const lure = String(this.newLure.lure || "").trim();
-      if (!lure) {
-        this.createError = "A csali neve kötelező.";
+      const lureError = this.validateLure(lure);
+
+      this.createFieldErrors = { lure: lureError };
+      this.createError = "";
+
+      if (lureError) {
         done(false);
         return;
       }
-
-      this.createError = "";
 
       try {
         await this.createLure({ lure });
         done(true);
       } catch (error) {
-        this.createError = this.getErrorMessage(error, "A csali létrehozása nem sikerült.");
+        const fieldErrors = this.extractLureFieldErrors(error);
+        this.createFieldErrors = {
+          lure: fieldErrors.lure || "",
+        };
+        this.createError = fieldErrors.lure
+          ? ""
+          : this.getErrorMessage(error, "A csali létrehozása nem sikerült.");
         done(false);
       }
     },
@@ -325,10 +357,17 @@ export default {
         lure: String(lure.lure || ""),
       };
       this.editError = "";
+      this.editFieldErrors = { lure: "" };
 
       this.$nextTick(() => {
         this.$refs.editLureModal?.show();
       });
+    },
+    handleEditLureInput() {
+      this.editError = "";
+      this.editFieldErrors = {
+        lure: this.validateLure(this.editLure.lure),
+      };
     },
     async saveEditedLure(done) {
       if (!this.editLure.id) {
@@ -339,9 +378,12 @@ export default {
 
       const nextLure = String(this.editLure.lure || "").trim();
       const prevLure = String(this.editLureOriginal.lure || "").trim();
+      const lureError = this.validateLure(nextLure);
 
-      if (!nextLure) {
-        this.editError = "A csali neve kötelező.";
+      this.editFieldErrors = { lure: lureError };
+      this.editError = "";
+
+      if (lureError) {
         done(false);
         return;
       }
@@ -351,35 +393,44 @@ export default {
         return;
       }
 
-      this.editError = "";
-
       try {
         await this.updateLure(this.editLure.id, { lure: nextLure });
         done(true);
       } catch (error) {
-        this.editError = this.getErrorMessage(error, "A csali módosítása nem sikerült.");
+        const fieldErrors = this.extractLureFieldErrors(error);
+        this.editFieldErrors = {
+          lure: fieldErrors.lure || "",
+        };
+        this.editError = fieldErrors.lure
+          ? ""
+          : this.getErrorMessage(error, "A csali módosítása nem sikerült.");
         done(false);
       }
     },
+    validateLure(value) {
+      const lure = String(value || "").trim();
+      if (!lure) {
+        return "Töltsd ki a csali nevét.";
+      }
+      if (lure.length < 2) {
+        return "A csali neve legalább 2 karakter legyen.";
+      }
+      if (lure.length > 75) {
+        return "A csali neve legfeljebb 75 karakter lehet.";
+      }
+      return "";
+    },
+    getLureValidationMessage(value) {
+      return this.validateLure(value) || "A csali neve 2 és 75 karakter közötti szöveg legyen.";
+    },
+    extractLureFieldErrors(error) {
+      const fieldErrors = extractFieldErrors(error);
+      return {
+        lure: fieldErrors.lure || "",
+      };
+    },
     getErrorMessage(error, fallback) {
-      const responseData = error?.response?.data;
-      const message = responseData?.message;
-      if (typeof message === "string" && message.trim()) {
-        return message;
-      }
-
-      const errors = responseData?.errors;
-      if (errors && typeof errors === "object") {
-        const firstError = Object.values(errors)?.[0];
-        if (Array.isArray(firstError) && firstError[0]) {
-          return String(firstError[0]);
-        }
-        if (typeof firstError === "string") {
-          return firstError;
-        }
-      }
-
-      return fallback;
+      return getApiErrorMessage(error, fallback);
     },
     ensureValidPage() {
       if (this.currentPage < 1) {

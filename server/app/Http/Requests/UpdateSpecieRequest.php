@@ -32,7 +32,8 @@ class UpdateSpecieRequest extends FormRequest
                 'max:100',
                 Rule::unique('species', 'fish_name')->ignore($id),
             ],
-            'photo' => ['required', 'string', 'max:255'],
+            'photo' => ['nullable', 'file', 'image', 'max:5120'],
+            'existing_photo' => ['nullable', 'string', 'max:255'],
             'description' => ['nullable', 'string', 'max:255'],
         ];
     }
@@ -45,9 +46,11 @@ class UpdateSpecieRequest extends FormRequest
             'fish_name.min' => 'A halfaj neve legalább 2 karakter legyen.',
             'fish_name.max' => 'A halfaj neve legfeljebb 100 karakter lehet.',
             'fish_name.unique' => 'Ez a halfaj már létezik.',
-            'photo.required' => 'A kép megadása kötelező.',
-            'photo.string' => 'A kép neve csak szöveg lehet.',
-            'photo.max' => 'A kép neve legfeljebb 255 karakter lehet.',
+            'photo.file' => 'A kép feltöltése nem sikerült.',
+            'photo.image' => 'Csak képfájlt tölthetsz fel.',
+            'photo.max' => 'A kép legfeljebb 5 MB lehet.',
+            'existing_photo.string' => 'A meglévő kép neve hibás.',
+            'existing_photo.max' => 'A meglévő kép neve túl hosszú.',
             'description.string' => 'A leírás csak szöveg lehet.',
             'description.max' => 'A leírás legfeljebb 255 karakter lehet.',
         ];

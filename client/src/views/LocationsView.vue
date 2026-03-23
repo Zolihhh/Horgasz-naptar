@@ -89,9 +89,14 @@
             v-model.trim="newLocation.FishingLakeName"
             type="text"
             class="form-control"
+            :class="{ 'is-invalid': !!createFieldErrors.FishingLakeName }"
             maxlength="80"
             required
+            @input="handleCreateInput"
           />
+          <div class="invalid-feedback">
+            {{ createFieldErrors.FishingLakeName || "Töltsd ki a horgásztó nevét." }}
+          </div>
         </div>
 
         <div class="col-12">
@@ -101,9 +106,14 @@
             v-model.trim="newLocation.waterAreaCode"
             type="text"
             class="form-control"
+            :class="{ 'is-invalid': !!createFieldErrors.waterAreaCode }"
             maxlength="20"
             required
+            @input="handleCreateInput"
           />
+          <div class="invalid-feedback">
+            {{ createFieldErrors.waterAreaCode || "Töltsd ki a vízterület kódját." }}
+          </div>
         </div>
 
         <div class="col-md-6">
@@ -113,10 +123,15 @@
             v-model="newLocation.latitude"
             type="number"
             class="form-control"
+            :class="{ 'is-invalid': !!createFieldErrors.latitude }"
             step="0.000001"
             min="-90"
             max="90"
+            @input="handleCreateInput"
           />
+          <div v-if="createFieldErrors.latitude" class="invalid-feedback d-block">
+            {{ createFieldErrors.latitude }}
+          </div>
         </div>
 
         <div class="col-md-6">
@@ -126,10 +141,15 @@
             v-model="newLocation.longitude"
             type="number"
             class="form-control"
+            :class="{ 'is-invalid': !!createFieldErrors.longitude }"
             step="0.000001"
             min="-180"
             max="180"
+            @input="handleCreateInput"
           />
+          <div v-if="createFieldErrors.longitude" class="invalid-feedback d-block">
+            {{ createFieldErrors.longitude }}
+          </div>
         </div>
       </div>
     </Modal>
@@ -153,9 +173,14 @@
             v-model.trim="editLocation.FishingLakeName"
             type="text"
             class="form-control"
+            :class="{ 'is-invalid': !!editFieldErrors.FishingLakeName }"
             maxlength="80"
             required
+            @input="handleEditInput"
           />
+          <div class="invalid-feedback">
+            {{ editFieldErrors.FishingLakeName || "Töltsd ki a horgásztó nevét." }}
+          </div>
         </div>
 
         <div class="col-12">
@@ -165,9 +190,14 @@
             v-model.trim="editLocation.waterAreaCode"
             type="text"
             class="form-control"
+            :class="{ 'is-invalid': !!editFieldErrors.waterAreaCode }"
             maxlength="20"
             required
+            @input="handleEditInput"
           />
+          <div class="invalid-feedback">
+            {{ editFieldErrors.waterAreaCode || "Töltsd ki a vízterület kódját." }}
+          </div>
         </div>
 
         <div class="col-md-6">
@@ -177,10 +207,15 @@
             v-model="editLocation.latitude"
             type="number"
             class="form-control"
+            :class="{ 'is-invalid': !!editFieldErrors.latitude }"
             step="0.000001"
             min="-90"
             max="90"
+            @input="handleEditInput"
           />
+          <div v-if="editFieldErrors.latitude" class="invalid-feedback d-block">
+            {{ editFieldErrors.latitude }}
+          </div>
         </div>
 
         <div class="col-md-6">
@@ -190,10 +225,15 @@
             v-model="editLocation.longitude"
             type="number"
             class="form-control"
+            :class="{ 'is-invalid': !!editFieldErrors.longitude }"
             step="0.000001"
             min="-180"
             max="180"
+            @input="handleEditInput"
           />
+          <div v-if="editFieldErrors.longitude" class="invalid-feedback d-block">
+            {{ editFieldErrors.longitude }}
+          </div>
         </div>
       </div>
     </Modal>
@@ -208,6 +248,7 @@ import Pagination from "@/components/Pagination/Pagination.vue";
 import SetSelectedPerPage from "@/components/Pagination/SetSelectedPerPage.vue";
 import ConfirmModal from "@/components/Confirm/ConfirmModal.vue";
 import Modal from "@/components/Modal/Modal.vue";
+import { extractFieldErrors, getApiErrorMessage } from "@/utils/apiValidation";
 
 function emptyLocation() {
   return {
@@ -247,6 +288,18 @@ export default {
       pendingDeleteId: null,
       createError: "",
       editError: "",
+      createFieldErrors: {
+        FishingLakeName: "",
+        waterAreaCode: "",
+        latitude: "",
+        longitude: "",
+      },
+      editFieldErrors: {
+        FishingLakeName: "",
+        waterAreaCode: "",
+        latitude: "",
+        longitude: "",
+      },
       newLocation: emptyLocation(),
       editLocation: {
         id: null,
@@ -360,9 +413,23 @@ export default {
     openCreateModal() {
       this.newLocation = emptyLocation();
       this.createError = "";
+      this.createFieldErrors = {
+        FishingLakeName: "",
+        waterAreaCode: "",
+        latitude: "",
+        longitude: "",
+      };
       this.$nextTick(() => {
         this.$refs.createLocationModal?.show();
       });
+    },
+    handleCreateInput() {
+      this.createError = "";
+      this.createFieldErrors = this.validateLocation(this.newLocation);
+    },
+    handleEditInput() {
+      this.editError = "";
+      this.editFieldErrors = this.validateLocation(this.editLocation);
     },
     async saveCreatedLocation(done) {
       const payload = {
@@ -372,19 +439,23 @@ export default {
         longitude: this.normalizeNumber(this.newLocation.longitude),
       };
 
-      if (!payload.FishingLakeName || !payload.waterAreaCode) {
-        this.createError = "A tó neve és a vízterület kód kötelező.";
+      this.createFieldErrors = this.validateLocation(payload);
+      this.createError = "";
+
+      if (Object.values(this.createFieldErrors).some(Boolean)) {
         done(false);
         return;
       }
-
-      this.createError = "";
 
       try {
         await this.createLocation(payload);
         done(true);
       } catch (error) {
-        this.createError = this.getErrorMessage(error, "A helyszín létrehozása nem sikerült.");
+        const fieldErrors = this.extractLocationFieldErrors(error);
+        this.createFieldErrors = fieldErrors;
+        this.createError = Object.values(fieldErrors).some(Boolean)
+          ? ""
+          : this.getErrorMessage(error, "A helyszín létrehozása nem sikerült.");
         done(false);
       }
     },
@@ -430,6 +501,12 @@ export default {
         FishingLakeName: String(location.FishingLakeName || ""),
       };
       this.editError = "";
+      this.editFieldErrors = {
+        FishingLakeName: "",
+        waterAreaCode: "",
+        latitude: "",
+        longitude: "",
+      };
 
       this.$nextTick(() => {
         this.$refs.editLocationModal?.show();
@@ -449,8 +526,10 @@ export default {
         longitude: this.normalizeNumber(this.editLocation.longitude),
       };
 
-      if (!payload.FishingLakeName || !payload.waterAreaCode) {
-        this.editError = "A tó neve és a vízterület kód kötelező.";
+      this.editFieldErrors = this.validateLocation(payload);
+      this.editError = "";
+
+      if (Object.values(this.editFieldErrors).some(Boolean)) {
         done(false);
         return;
       }
@@ -466,35 +545,76 @@ export default {
         return;
       }
 
-      this.editError = "";
-
       try {
         await this.updateLocation(this.editLocation.id, payload);
         done(true);
       } catch (error) {
-        this.editError = this.getErrorMessage(error, "A helyszín módosítása nem sikerült.");
+        const fieldErrors = this.extractLocationFieldErrors(error);
+        this.editFieldErrors = fieldErrors;
+        this.editError = Object.values(fieldErrors).some(Boolean)
+          ? ""
+          : this.getErrorMessage(error, "A helyszín módosítása nem sikerült.");
         done(false);
       }
     },
+    validateLocation(rawPayload) {
+      const payload = {
+        FishingLakeName: String(rawPayload?.FishingLakeName || "").trim(),
+        waterAreaCode: String(rawPayload?.waterAreaCode || "").trim(),
+        latitude: rawPayload?.latitude,
+        longitude: rawPayload?.longitude,
+      };
+
+      const errors = {
+        FishingLakeName: "",
+        waterAreaCode: "",
+        latitude: "",
+        longitude: "",
+      };
+
+      if (!payload.FishingLakeName) {
+        errors.FishingLakeName = "Töltsd ki a horgásztó nevét.";
+      } else if (payload.FishingLakeName.length > 80) {
+        errors.FishingLakeName = "A horgásztó neve legfeljebb 80 karakter lehet.";
+      }
+
+      if (!payload.waterAreaCode) {
+        errors.waterAreaCode = "Töltsd ki a vízterület kódját.";
+      } else if (payload.waterAreaCode.length > 20) {
+        errors.waterAreaCode = "A vízterület kód legfeljebb 20 karakter lehet.";
+      }
+
+      if (payload.latitude !== null && payload.latitude !== "") {
+        const latitude = Number(payload.latitude);
+        if (Number.isNaN(latitude)) {
+          errors.latitude = "A szélességi fok szám legyen.";
+        } else if (latitude < -90 || latitude > 90) {
+          errors.latitude = "A szélességi fok -90 és 90 között lehet.";
+        }
+      }
+
+      if (payload.longitude !== null && payload.longitude !== "") {
+        const longitude = Number(payload.longitude);
+        if (Number.isNaN(longitude)) {
+          errors.longitude = "A hosszúsági fok szám legyen.";
+        } else if (longitude < -180 || longitude > 180) {
+          errors.longitude = "A hosszúsági fok -180 és 180 között lehet.";
+        }
+      }
+
+      return errors;
+    },
+    extractLocationFieldErrors(error) {
+      const fieldErrors = extractFieldErrors(error);
+      return {
+        FishingLakeName: fieldErrors.FishingLakeName || "",
+        waterAreaCode: fieldErrors.waterAreaCode || "",
+        latitude: fieldErrors.latitude || "",
+        longitude: fieldErrors.longitude || "",
+      };
+    },
     getErrorMessage(error, fallback) {
-      const responseData = error?.response?.data;
-      const message = responseData?.message;
-      if (typeof message === "string" && message.trim()) {
-        return message;
-      }
-
-      const errors = responseData?.errors;
-      if (errors && typeof errors === "object") {
-        const firstError = Object.values(errors)?.[0];
-        if (Array.isArray(firstError) && firstError[0]) {
-          return String(firstError[0]);
-        }
-        if (typeof firstError === "string") {
-          return firstError;
-        }
-      }
-
-      return fallback;
+      return getApiErrorMessage(error, fallback);
     },
     ensureValidPage() {
       if (this.currentPage < 1) {

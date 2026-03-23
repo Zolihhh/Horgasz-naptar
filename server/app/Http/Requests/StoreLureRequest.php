@@ -29,7 +29,7 @@ class StoreLureRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'lure.required' => 'A csali nevének megadása kötelező.',
+            'lure.required' => 'Töltsd ki a csali nevét.',
             'lure.string' => 'A csali neve csak szöveg lehet.',
             'lure.min' => 'A csali neve legalább 2 karakter legyen.',
             'lure.max' => 'A csali neve legfeljebb 75 karakter lehet.',

@@ -13,6 +13,12 @@ export default {
     return await apiClient.post(route, data);
   },
   async update(id, data) {
+    if (data instanceof FormData) {
+      if (!data.has("_method")) {
+        data.append("_method", "PATCH");
+      }
+      return await apiClient.post(`${route}/${id}`, data);
+    }
     return await apiClient.patch(`${route}/${id}`, data);
   },
   async delete(id) {

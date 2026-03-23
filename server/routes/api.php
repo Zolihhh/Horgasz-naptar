@@ -27,6 +27,7 @@ Route::get('/species/photo/{filename}', [SpecieController::class, 'photo']);
 // LOCATION
 Route::get('/locations', [LocationController::class, 'index']);
 Route::get('/locations/{id}', [LocationController::class, 'show']);
+Route::get('/locations/photo/{filename}', [LocationController::class, 'photo']);
 Route::post('/locations', [LocationController::class, 'store'])
     ->middleware(['auth:sanctum', 'ability:locations:post']);
 Route::patch('/locations/{id}', [LocationController::class, 'update'])

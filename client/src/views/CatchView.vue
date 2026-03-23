@@ -93,6 +93,7 @@ import { useLocationStore } from "@/stores/locationStore";
 import { CatchForm, CatchLogForm } from "@/components/Forms";
 import CatchCardList from "@/components/Catch/CatchCardList.vue";
 import ConfirmModal from "@/components/Confirm/ConfirmModal.vue";
+import { getApiErrorMessage } from "@/utils/apiValidation";
 
 function emptyCatch() {
   return {
@@ -574,22 +575,7 @@ export default {
       if (typeof message === "string" && message.includes("Integrity constraint violation")) {
         return "Az adatok ütköznek adatbázis szabállyal (kapcsolódó rekord hiányzik vagy duplikált).";
       }
-      if (typeof message === "string" && message.trim()) {
-        return message;
-      }
-
-      const errors = responseData?.errors;
-      if (errors && typeof errors === "object") {
-        const firstError = Object.values(errors)?.[0];
-        if (Array.isArray(firstError) && firstError[0]) {
-          return String(firstError[0]);
-        }
-        if (typeof firstError === "string") {
-          return firstError;
-        }
-      }
-
-      return fallback;
+      return getApiErrorMessage(error, fallback);
     },
   },
 };

@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Concerns\HandlesUploadedImages;
 use App\Http\Requests\StoreSpecieRequest as StoreCurrentModelRequest;
 use App\Http\Requests\UpdateSpecieRequest as UpdateCurrentModelRequest;
 use App\Models\Specie as CurrentModel;
 
 class SpecieController extends Controller
 {
+    use HandlesUploadedImages;
+
     public function index()
     {
         return $this->apiResponse(function () {
@@ -18,7 +21,12 @@ class SpecieController extends Controller
     public function store(StoreCurrentModelRequest $request)
     {
         return $this->apiResponse(function () use ($request) {
-            return CurrentModel::create($request->validated());
+            $payload = $request->validated();
+            $payload['photo'] = $this->storeUploadedImage($request->file('photo'), 'species');
+
+            unset($payload['existing_photo']);
+
+            return CurrentModel::create($payload);
         });
     }
 
@@ -33,28 +41,36 @@ class SpecieController extends Controller
     {
         return $this->apiResponse(function () use ($request, $id) {
             $row = CurrentModel::findOrFail($id);
-            $row->update($request->validated());
-            return $row;
+            $payload = $request->validated();
+
+            if ($request->hasFile('photo')) {
+                $payload['photo'] = $this->storeUploadedImage($request->file('photo'), 'species');
+                $this->deleteManagedImage($row->photo, 'species');
+            } else {
+                $payload['photo'] = $payload['existing_photo'] ?? $row->photo;
+            }
+
+            unset($payload['existing_photo']);
+
+            $row->update($payload);
+
+            return $row->fresh();
         });
     }
 
     public function destroy(int $id)
     {
         return $this->apiResponse(function () use ($id) {
-            CurrentModel::findOrFail($id)->delete();
+            $row = CurrentModel::findOrFail($id);
+            $this->deleteManagedImage($row->photo, 'species');
+            $row->delete();
+
             return ['id' => $id];
         });
     }
 
     public function photo(string $filename)
     {
-        $safeFilename = basename($filename);
-        $path = database_path('images/' . $safeFilename);
-
-        if (!is_file($path)) {
-            abort(404, 'A kep nem talalhato.');
-        }
-
-        return response()->file($path);
+        return $this->imageFileResponse($filename);
     }
 }

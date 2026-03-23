@@ -14,5 +14,6 @@ class Location extends Model
         'latitude',
         'longitude',
         'FishingLakeName',
+        'photo',
     ];
 }
