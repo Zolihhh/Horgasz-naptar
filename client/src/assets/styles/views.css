@@ -130,6 +130,25 @@
   color: #e6f2f8;
 }
 
+.profile-view .form-message {
+  margin: 0;
+  padding: 10px 12px;
+  border-radius: 10px;
+  font-size: 0.95rem;
+}
+
+.profile-view .form-message-success {
+  border: 1px solid rgba(126, 231, 135, 0.45);
+  background: rgba(35, 94, 45, 0.32);
+  color: #d8ffd8;
+}
+
+.profile-view .form-message-error {
+  border: 1px solid rgba(255, 129, 129, 0.42);
+  background: rgba(120, 32, 32, 0.3);
+  color: #ffd7d7;
+}
+
 .profile-view .profile-card label {
   display: grid;
   gap: 6px;

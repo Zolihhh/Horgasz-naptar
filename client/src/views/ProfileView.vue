@@ -27,6 +27,14 @@
 
       <form class="profile-card password-card" @submit.prevent="savePassword">
         <h2>Jelszó módosítás</h2>
+        <p
+          v-if="passwordMessage.text"
+          class="form-message"
+          :class="passwordMessage.type === 'success' ? 'form-message-success' : 'form-message-error'"
+        >
+          {{ passwordMessage.text }}
+        </p>
+
         <label>
           Jelenlegi jelszó
           <input v-model="passwordForm.oldpassword" type="password" required />
@@ -69,6 +77,10 @@ export default {
         newpassword: "",
         newpassword_confirmation: "",
       },
+      passwordMessage: {
+        text: "",
+        type: "success",
+      },
     };
   },
   computed: {
@@ -106,16 +118,38 @@ export default {
     },
     async savePassword() {
       this.savingPassword = true;
+      this.passwordMessage.text = "";
       try {
         await this.updatePassword(this.passwordForm);
         this.passwordForm.oldpassword = "";
         this.passwordForm.newpassword = "";
         this.passwordForm.newpassword_confirmation = "";
+        this.passwordMessage = {
+          text: "A jelszó módosítása sikeres volt.",
+          type: "success",
+        };
       } catch (error) {
-        console.log("Jelszó mentési hiba");
+        this.passwordMessage = {
+          text: this.getPasswordErrorMessage(error),
+          type: "error",
+        };
       } finally {
         this.savingPassword = false;
       }
+    },
+    getPasswordErrorMessage(error) {
+      const responseData = error?.response?.data;
+      const fieldErrors = responseData?.errors;
+
+      if (fieldErrors?.oldpassword?.length) {
+        return fieldErrors.oldpassword[0];
+      }
+
+      if (fieldErrors?.newpassword?.length) {
+        return fieldErrors.newpassword[0];
+      }
+
+      return responseData?.message || "A jelszó módosítása nem sikerült.";
     },
   },
 };

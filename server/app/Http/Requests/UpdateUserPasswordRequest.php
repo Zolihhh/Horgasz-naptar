@@ -21,4 +21,25 @@ class UpdateUserPasswordRequest extends FormRequest
             'newpassword' => ['required', 'string', Password::min(3), 'confirmed'],
         ];
     }
+
+    public function messages(): array
+    {
+        return [
+            'oldpassword.required' => 'A jelenlegi jelszó megadása kötelező.',
+            'oldpassword.current_password' => 'A jelenlegi jelszó hibás.',
+            'newpassword.required' => 'Az új jelszó megadása kötelező.',
+            'newpassword.string' => 'Az új jelszó szöveg kell legyen.',
+            'newpassword.min' => 'Az új jelszó legalább 3 karakter legyen.',
+            'newpassword.confirmed' => 'Az új jelszó megerősítése nem egyezik.',
+        ];
+    }
+
+    public function attributes(): array
+    {
+        return [
+            'oldpassword' => 'jelenlegi jelszó',
+            'newpassword' => 'új jelszó',
+            'newpassword_confirmation' => 'új jelszó megerősítése',
+        ];
+    }
 }
