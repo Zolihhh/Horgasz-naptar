@@ -21,7 +21,10 @@
         @refresh="fetchForecast"
       />
 
-      <p v-if="loading" class="state">Betöltés...</p>
+      <div v-if="loading" class="state loading-state" role="status" aria-live="polite">
+        <div class="spinner-border loading-spinner" aria-hidden="true"></div>
+        <span>Időjárás betöltése...</span>
+      </div>
       <p v-else-if="error" class="state error">{{ error }}</p>
       <p v-else-if="!filteredCities.length" class="state">Nincs találat a keresésre.</p>
 
@@ -71,9 +74,12 @@ export default {
       selectedCity: '',
       searchTerm: '',
       dailyForecast: [],
+      currentTimestamp: Date.now(),
       metricMode: 'temperature',
       loading: false,
       error: '',
+      currentTimeTimeoutId: null,
+      currentTimeIntervalId: null,
       cityStore: useCityStore()
     }
   },
@@ -95,7 +101,7 @@ export default {
       return (this.currentDay.tempMin + this.currentDay.tempMax) / 2
     },
     currentTime() {
-      return new Date().toLocaleTimeString('hu-HU', {
+      return new Date(this.currentTimestamp).toLocaleTimeString('hu-HU', {
         hour: '2-digit',
         minute: '2-digit'
       })
@@ -105,7 +111,11 @@ export default {
     }
   },
   async mounted() {
+    this.startClock()
     await this.loadCities()
+  },
+  beforeUnmount() {
+    this.stopClock()
   },
   methods: {
     round(value) {
@@ -140,6 +150,35 @@ export default {
       this.searchTerm = ''
       if (this.cities.length && !this.selectedCity) {
         this.selectedCity = this.cities[0].name
+      }
+    },
+    updateCurrentTimestamp() {
+      this.currentTimestamp = Date.now()
+    },
+    startClock() {
+      this.stopClock()
+      this.updateCurrentTimestamp()
+
+      const now = new Date()
+      const msUntilNextMinute =
+        ((60 - now.getSeconds()) * 1000 - now.getMilliseconds()) || 60000
+
+      this.currentTimeTimeoutId = window.setTimeout(() => {
+        this.updateCurrentTimestamp()
+        this.currentTimeIntervalId = window.setInterval(() => {
+          this.updateCurrentTimestamp()
+        }, 60000)
+      }, msUntilNextMinute)
+    },
+    stopClock() {
+      if (this.currentTimeTimeoutId) {
+        window.clearTimeout(this.currentTimeTimeoutId)
+        this.currentTimeTimeoutId = null
+      }
+
+      if (this.currentTimeIntervalId) {
+        window.clearInterval(this.currentTimeIntervalId)
+        this.currentTimeIntervalId = null
       }
     },
     async loadCities() {
@@ -182,8 +221,6 @@ export default {
         }
 
         this.dailyForecast = await weatherTools.fetchForecastForLocation(cityData)
-        console.log("gyultemény" , this.dailyForecast);
-        
       } catch (err) {
         this.dailyForecast = []
         this.error = err?.message || 'Hiba történt az időjárás lekérésénél.'

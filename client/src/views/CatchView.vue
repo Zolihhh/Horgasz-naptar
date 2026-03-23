@@ -34,7 +34,15 @@
       @submit="createCatch"
     />
 
-    <p v-if="isLoggedIn && loading" class="status-text">Betöltés...</p>
+    <div
+      v-if="isLoggedIn && loading"
+      class="status-text loading-state"
+      role="status"
+      aria-live="polite"
+    >
+      <div class="spinner-border loading-spinner" aria-hidden="true"></div>
+      <span>Fogások betöltése...</span>
+    </div>
     <p v-else-if="isLoggedIn && userCatchLogs.length === 0" class="status-text">
       Nincs még fogási naplód.
     </p>
