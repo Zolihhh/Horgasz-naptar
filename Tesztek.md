@@ -8,7 +8,7 @@ Ez a fajl osszefoglalja, hogy milyen teszteket hasznaltunk a projektben, es mit 
 
 Parancs:
 
-```powershell
+```bash
 cd client
 npm run test:unit -- --run
 ```
@@ -32,7 +32,7 @@ Ezek a tesztek a kovetkezoket ellenorzik:
 
 Parancs:
 
-```powershell
+```bash
 cd server
 php artisan test
 ```
@@ -56,7 +56,7 @@ Ezek a tesztek a kovetkezoket ellenorzik:
 
 Parancs:
 
-```powershell
+```bash
 cd client
 npm run build
 ```
@@ -134,7 +134,7 @@ Mit nez:
 
 Parancs:
 
-```powershell
+```bash
 cd client
 npm run test:e2e
 ```

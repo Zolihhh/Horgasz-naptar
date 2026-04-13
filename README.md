@@ -47,20 +47,20 @@ Megjegyzes: a frontend build nalunk lefutott, de a Vite figyelmeztetett, hogy a 
 
 Lepj be a backend mappaba:
 
-```powershell
+```bash
 cd server
 ```
 
 Telepitsd a PHP fuggosegeket:
 
-```powershell
+```bash
 composer install
 ```
 
 Ha szukseges, hozd letre az `.env` fajlt:
 
-```powershell
-Copy-Item .env.example .env
+```bash
+cp .env.example .env
 php artisan key:generate
 ```
 
@@ -82,14 +82,14 @@ Ezutan ket lehetoseged van:
 
 Peldak:
 
-```powershell
+```bash
 php artisan migrate
 php artisan db:seed
 ```
 
 Majd inditsd el a Laravel szervert:
 
-```powershell
+```bash
 php artisan serve
 ```
 
@@ -104,13 +104,13 @@ http://localhost:8000/api
 
 Lepj be a frontend mappaba:
 
-```powershell
+```bash
 cd client
 ```
 
 Telepitsd a JavaScript csomagokat:
 
-```powershell
+```bash
 npm install
 ```
 
@@ -122,7 +122,7 @@ VITE_API_URL=http://localhost:8000/api
 
 Inditsd el a fejlesztoi szervert:
 
-```powershell
+```bash
 npm run dev
 ```
 
@@ -136,7 +136,7 @@ http://localhost:5173
 
 Ha a weboldalt buildelni szeretned:
 
-```powershell
+```bash
 cd client
 npm run build
 ```
@@ -154,14 +154,14 @@ Ha nalad masik webszerver vagy mappa van, akkor ezeket az ertekeket modositsd a 
 
 ### Frontend unit tesztek
 
-```powershell
+```bash
 cd client
 npm run test:unit -- --run
 ```
 
 ### Frontend e2e tesztek
 
-```powershell
+```bash
 cd client
 npm run test:e2e
 ```
@@ -170,7 +170,7 @@ Az e2e teszt `http://localhost:4173` cimen fut.
 
 ### Backend tesztek
 
-```powershell
+```bash
 cd server
 php artisan test
 ```
