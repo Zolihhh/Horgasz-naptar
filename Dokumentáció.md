@@ -23,11 +23,23 @@ A projekt celja az volt, hogy ezeket egy rendszerbe szervezzuk:
 
 ## 3. Funkcionalis kovetelmenyek (mit tud az alkalmazas)
 1. Regisztracio, bejelentkezes, kijelentkezes
+
+![Bejelentkezés](Dokumentáció_képek/bejelentkezés.png)  
+
 2. Szerepkorok kezelese (admin, horgasz)
+
+![Szerepkörök kezelése](Dokumentáció_képek/szerepkörök%20kezelése.png)  
+
 3. Fogasi naplo CRUD
+
+![Fogási napló](Dokumentáció_képek/fogási%20napló.png) 
+
 4. Fogas CRUD
 5. Halfaj/csali/helyszin adatok kezelese
 6. Idojaras oldal varos alapu elorejelzessel
+
+![Bejelentkezés](Dokumentáció_képek/időjárás.png)  
+
 7. Felhasznaloi profil oldal
 
 ## 4. Technologiai dontesek es indoklas
